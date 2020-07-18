@@ -75,6 +75,9 @@
 
 \newcommand{\total}{{\mathcal T}} %% total number of serial intervals
 
+\newcommand{\PP}{{\mathcal P}}
+\newcommand{\II}{{\mathcal I}}
+
 \begin{document}
 
 \begin{flushleft}{
@@ -121,44 +124,56 @@ This model, also known as renewal equations, generalizes the dynamics of many co
 \subsection{Population- and individual-based intervention}
 
 \begin{figure}[!th]
-\includegraphics[width=0.45\textwidth]{pop_ind_compare1.pdf}
-\mbox{\hspace{0.01\textwidth}}
-\includegraphics[width=0.45\textwidth]{pop_ind_compare2.pdf}
-\\
-\includegraphics[width=0.45\textwidth]{pop_ind_compare3.pdf}
-\mbox{\hspace{0.01\textwidth}}
-\includegraphics[width=0.45\textwidth]{pop_ind_compare4.pdf}
+\includegraphics[width=1\textwidth]{pop_ind_compare.pdf}
 \caption{
 \textbf{I'm a caption}
 }
 \label{fig:indpop}
 \end{figure}
 
-To model the impact of intervention during an ongoing epidemic, we first distinguish population-based interventions, which reduce the transmission potential of all infected individuals by a constant factor regardless of their time of infection, from individual-based interventions, which depend on the time of infection.
+To model the impact of intervention during an ongoing epidemic, we first distinguish population-based interventions, which reduce the transmission potential at a given time of all infected individuals by a constant factor regardless of their time of infection, from individual-based interventions, which depend on the time of infection.
 Population-based interventions can be thought of as interventions that reduce the transmission rate and include social distancing and school closures.
 Individual-based interventions can be thought of as interventions that reduce the duration of infectious periods and include case identification and isolation.
 Some interventions, like contact tracing, depend not only on the infection time of an infected individual but also on their infector's infection time, and therefore do not belong to either population- or individual-based interventions;
 for simplicity, we do not consider these at this stage.
 
-Let $P(t)$ represent a population-level intervention that modulates the infection kernel multicatively such that $P(t)=1$ corresponds to intervention that has no effect and $P(t) < 1$ corresponds to intervention that reduces transmission.
-Then, the effective infection kernel of an individual infected at time $t$ under a population-level intervention can be written as:
+Let $\PP(t)$ represent a population-level intervention that modulates the infection kernel multiplicatively at calendar time $t$ such that $\PP(t)=1$ corresponds to intervention that has no effect and $\PP(t) < 1$ corresponds to intervention that reduces transmission.
+Then, the effective infection kernel of an individual infected at time $t$ under a population-level intervention $P$ can be written as:
 \begin{equation}
-\Keff(t, \tau) = S(t+\tau) P(t + \tau) K(\tau).
+\Keff(t, \tau) = S(t+\tau) \PP(t + \tau) K(\tau).
 \end{equation}
 For example, a social distancing measure that reduces transmission by a factor of $1/\phi$ between time \tstart and \tend can be modeled as:
 \begin{equation}
-P(t) = \begin{cases}
+\PP(t) = \begin{cases}
 1 & t < \tstart\\
 \phi & \tstart \leq t < \tend\\
 1 & \tend \leq t
 \end{cases}.
 \end{equation}
-Such intervention reduces the infectiousness of individuals who are infected after \tstart by a constant amount throughout the course of their infection (\fref{indpop}A).
+\fref{indpop}A--C illustrates the impact of such intervention on the effective infection kernel of an individual infected 5 days before $\tstart$, at $\tstart$, and 5 days before $\tend$ (assuming $S(t) \approx 1$).
+Population-level interventions can take effect immediately and sharply reduce transmission (\fref{indpop}A);
+likewise, lifting the intervention can, in theory, cause the effective infection kernel to return back to normal immediately (\fref{indpop}C).
+Even though the exact shape of the kernel depends on the time of infection and when the intervention was introduced relative to the infection time, the relative impact of intervention in reducing transmission at any given time (by a factor of $1/\phi$) does not vary across individuals.
+Such interventions also have direct effects on realized generation intervals:
+implementing (lifting) intervention decreases (increases) future transmission potential and therefore decreases (increases) the mean realized generation interval (\fref{indpop}A,C).
+If an individual is infected after \tstart (and much earlier than \tend), this intervention simply reduces the entire kernal by a constant amount and has no effect on realized generation intervals.
+This mechanism explains how susceptible depletion leads to contraction of generation intervals in a homogeneously mixing population, rather than competition between susceptibles, and further generalizes it.
 
+On the other hand, individual-based intervention $\II(t, \tau)$, such as case isolation, targets each infected individual and therefore depends on infection time $t$ as well as time since infection $\tau$; again, $\II(t, \tau) < 1$ represents reduction in transmission.
+In this case, the effective infection kernel of an individual infected at time $t$ under an individual-level intervention $\II(t, \tau)$ can be written as:
+\begin{equation}
+\Keff(t, \tau) = S(t+\tau) \II(t, \tau) K(\tau).
+\end{equation}
+For example, given hazard $h(\tau)$ of being isolated that depends on time since infection $\tau$ but not on infection time, the probability that an individual infected at time $t$ has not been isolated by $\tau$ time units after infection given that the individual-based intervention takes place between time \tstart and \tend can be modeled as:
+\begin{equation}
+\II(t, \tau) = \begin{cases}
+1 & t < \tstart-\tau \\
+\exp\left(- \int_{\max(0, \tstart - t)}^{\min(\tau, \tend-t)} h(s)\dd{s} \right) & \tstart-\tau \leq t < \tend \\
+1 & \tend \leq t
+\end{cases}
+\end{equation}
+Unlike the population-level intervention, individual-level internvetion does not take effect immediately.
 
-Population-level internvention can take effect immediately:
-when lockdown is imposed at time \tstart, overall transmission rate decreases immdiately (\fref{indpop}C).
-Population-level internvention is also strength-like \swp{because ...}.
 
 Then, given population- and individual-based interventions, $P(t)$ and $I(t, t')$, that modulate the infection kernel multicatively, the dynamics of $S(t)$ and $i(t)$ can be now written as:
 \begin{equation}
@@ -167,23 +182,6 @@ Then, given population- and individual-based interventions, $P(t)$ and $I(t, t')
 i(t) &= S(t) P(t) \int_0^\infty i(t-\tau) I(t,t-\tau) \beta(\tau) \dtau.
 \end{aligned}
 \end{equation}
-
-Individual-based intervention $I(t, t')$, such as case isolation, targets each infected individual and therefore depends on calendar time $t$ as well as time of infection $t'$.
-In particular, given hazard $h(\tau)$ of being isolated that depends on time since infection $\tau$, the probability that an individual infected at time $t'$ has not been isolated by time $t$ given that the individual-based intervention takes place between time \tstart and \tend can be modeled as:
-\begin{equation}
-I(t, t') = \begin{cases}
-1 & t < \tstart\\
-\exp\left(-\int_{\tstart-t'}^{t-t'} h(s) \dd{s}\right) & \tstart \leq t < \tend, t' < \tstart \\
-\exp\left(-\int_{0}^{t-t'} h(s) \dd{s}\right) & \tstart \leq t < \tend, \tstart \leq t' < \tend\\
-\exp\left(-\int_{\tstart-t'}^{\tend-t'} h(s) \dd{s}\right) & \tend < t, t' < \tstart \\
-\exp\left(-\int_{0}^{\tend-t'} h(s) \dd{s}\right) & \tend < t, \tstart \leq t' < \tend\\
-1 & \tend < t, \tend < t'
-\end{cases}
-\end{equation}
-Unlike the population-level intervention, individual-level internvetion does not take effect immediately.
-Individual-level intervention is also speed-like \swp{because ...}.
-For simplicity, we do not consider individual-based intervention that depends on infection of other individuals, such as contact tracing, at this stage.
-
 
 
 \subsection{Quantifying changes in the reproduction number}
@@ -225,21 +223,6 @@ By substituting true incidence $i(t)$ in the numerator and rearranging, we get a
 \begin{equation}
 \tsub{\RR}{prop}(t) = \Ro S(t) p(t) = \frac{i(t)}{\int_0^\infty i(t-\tau) g(\tau) \dtau}.
 \end{equation}
-
-Finally, several studies have considered `forward-looking' reproduction number $\Rc(t)$, defined as the average number of secondary cases caused by an individual infected at time $t$.
-This value has been referred to as the case reproduction number.
-In our case, the case reproduction number can be estimated as:
-\begin{equation}
-\begin{aligned}
-\Rc(t) &= \int_0^\infty \beta(\tau) S(t+\tau) P(t+\tau) I(t+\tau, t) \dtau,\\
-&= \int_0^\infty \RR(t+\tau) \geff(t+\tau, \tau) \dtau.
-\end{aligned}
-\end{equation}
-Therefore, the case reproduction number can be only calculated retrospectively, even though it is `forward-looking' by definition.
-
-\subsection{Using serial-interval distribution instead of generation-interval distribution}
-
-
 
 
 
