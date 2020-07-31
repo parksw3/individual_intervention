@@ -335,8 +335,14 @@ This is modeled as follows:
 where we vary $\tsub{\gamma}{late}$ between $1/3\,\, \textrm{days}^{-1}$ and $1/5\,\, \textrm{days}^{-1}$
 Initial conditions are specified as follows: $S(0) = 1 - 10^{-3}$, $I(0) = 10^{-3}$, and $R(0) = 0$.
 We run the simulation for 100 days and compute instantaneous incidence $i(t) = \beta(t) S I$. 
-Then, we compare $\RR(t)$ with estimated $\tsub{\RR}{prop}(t)$.
+Then, we compare $\RR(t)$ with $\tsub{\RR}{prop}(t)$.
 
-Since we assume that incidence is known exactly, we can 
+Since we assume that incidence is known exactly, we can, in fact, estimate the transmission rate $\beta(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives identical incidence trajectory until time $t$.
+This transmission rate is given by:
+\begin{equation}
+\beta(t) = \frac{\tsub{\RR}{prop}(t)\gamma(0)}{S(t)}.
+\end{equation}
+
+
 
 \end{document}
