@@ -129,7 +129,7 @@ R3 <- list(
 
 g1 <- ggplot(rr1) +
   geom_line(aes(time, incidence), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 110)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 105)) +
   scale_y_continuous("Intantaneous icidence", expand=c(0, 0), limits=c(0, 0.0105)) +
   theme(
     panel.grid = element_blank(),
@@ -148,13 +148,13 @@ g3 <- g1 %+% rr3 +
 
 g4 <- ggplot(R1) +
   geom_line(aes(time, est, col=type, lty=type, size=type)) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 110)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 105)) +
   scale_y_continuous("Reproduction number") +
   scale_colour_viridis_d(begin=0, end=0.8) +
   scale_size_manual(values=c(1, 0.7, 0.7)) +
   theme(
     panel.grid = element_blank(),
-    legend.position = c(1.2, 0.84),
+    legend.position = c(1.1, 0.84),
     legend.title = element_blank(),
     legend.background = element_blank()
   )
