@@ -11,6 +11,10 @@ sirfun <- function(t, y, param, betafun, gammafun) {
   })
 }
 
+gammafun_null <- function(t) {
+  rep(1/5, length(t))
+}
+
 gammafun_base1 <- function(t) {
   ifelse(t < 40, ifelse(t < 25, 1/5, 1/2), 1/3)
 }
@@ -27,24 +31,55 @@ betafun_base <- function(t) {
   3/10
 }
 
+beta_reconstruct <- function(out) {
+  time <- out$time
+  betarecon <- out$Rtest*1/5/out$S
+  
+  function(t) {
+    approx(time, betarecon, t, rule=2)$y
+  }
+}
+
 runsir <- function(yini=c(S=1-1e-3, I=1e-3, R=0),
                    tmax=100,
-                   tby=0.01,
+                   tby=0.02,
                    betafun=betafun_base,
-                   gammafun=gammafun_base) {
+                   gammafun=gammafun_base1) {
   par <- NULL
   
   times <- seq(0, tmax, by=tby)
   
   out <- as.data.frame(ode(yini, times, sirfun, par, betafun=betafun, gammafun=gammafun))
   
-  kint <- sapply(times, function(t) {
-    tau <- seq(0.01, 100, by=0.01)
-    
-    sum(exp(-cumsum(gammafun(t-tau)*0.01))*0.01)
+  tau <- seq(tby, tmax, by=tby)
+  
+  K_t_tau <- sapply(times, function(t) {
+    exp(-cumsum(gammafun(t-tau)*tby))*tby * betafun(t) * out$S[match(t, times)]
   })
   
-  Rt <- kint * betafun(tt) * out$S
+  Rt <- apply(K_t_tau, 2, sum)
+  
+  meang <- apply(K_t_tau, 2, function(x) sum(tau * x))/Rt
+  
+  F_t_tau <- sapply(times, function(t) {
+    mm <- matrix(c(1:length(tau), match(t, times)-1+1:length(tau)), ncol=2)
+    
+    mm <- mm[mm[,1] < length(times) & mm[,2] < length(times),]
+    
+    K_t_tau[mm]
+  })
+  
+  Rc <- sapply(F_t_tau, sum)
+  
+  meanf <- sapply(F_t_tau, function(x) sum(tau[1:length(x)] * x))/Rc
+  
+  b_t_tau <- sapply(tail(times, -1), function(t) {
+    mm <- match(t, times)-1
+    
+    rev(out$incidence[1:mm]) * K_t_tau[1:mm,mm]
+  })
+  
+  meanb <- c(0, sapply(b_t_tau, function(x) sum(tau[1:length(x)] * x))/sapply(b_t_tau, sum))
   
   const <- sum(exp(-gammafun(0)*200000:1*tby))
   
@@ -56,13 +91,13 @@ runsir <- function(yini=c(S=1-1e-3, I=1e-3, R=0),
   
   Rtest <- tail(inc2, -1)/sapply(1:(length(inc2)-1), function(x) sum(inc2[1:x]* exp(-1/5*(x:1)*tby))) * const
   
-  plot(Rt, type="l")
-  lines(tail(Rtest, -length(inc0)), col=2)
-  
   out$Rt <- Rt
   out$Rtest <- tail(Rtest, -length(inc0)+1)
+  out$Rc <- Rc
+  
+  out$meang <- meang
+  out$meanf <- meanf
+  out$meanb <- meanb
   
   out
 }
-
-

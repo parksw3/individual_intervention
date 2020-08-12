@@ -101,9 +101,9 @@ Sang Woo Park\textsuperscript{1,*}
 
 \section{Introduction}
 
-\section{Methods}
+\section{Mathematical Theory}
 
-\subsection{Renewal equation framework}
+\section{Renewal equation framework}
 
 We begin by introducing the renewal equation framework, which provides a flexible way of modeling the spread of infection and the impact of intervention on the spread.
 Throughout this paper, we use $s, t$ to denote calendar time and $\sigma, \tau$ to denote time since infection.
@@ -309,7 +309,7 @@ Even within a homogeneously mixing population, in which the disease is allowed t
 Either a deconvolution or a novel statistical tool is needed to accurately estimate the instantaneous distribution $g(t, \tau)$.
 To our knowledge, no studies have accomplished this yet.
 
-\subsection{Example: Semi-mechanistic SIR model}
+\section{Example: Semi-mechanistic SIR model}
 
 In order to understand how population- and individual-based interventions affect disease spread, we use a semi-mechanistic SIR model to generate synthetic data and compare estimates of $\RR(t)$:
 \begin{align}
@@ -345,9 +345,25 @@ This is modeled as follows:
 \tsub{\gamma}{late} & 40 \leq t
 \end{cases},
 \end{equation}
-where we vary $\tsub{\gamma}{late}$ between $1/3\,\, \textrm{days}^{-1}$ and $1/5\,\, \textrm{days}^{-1}$
-Initial conditions are specified as follows: $S(0) = 1 - 10^{-3}$, $I(0) = 10^{-3}$, and $R(0) = 0$.
-We run the simulation for 100 days and compute instantaneous incidence $i(t) = \beta(t) S I$. 
+where we vary $\tsub{\gamma}{late}$ between $1/3\,\, \textrm{days}^{-1}$ (partial lifting) and $1/5\,\, \textrm{days}^{-1}$ (complete lifting).
+\fref{sir_semi} compares the instantaneous incidence $i(t) = \beta(t) S I$ (A--C), estimates of $\RR(t)$, and 
+
+and true values of $\RR(t)$ and $\tsub{\RR}{prop}(t)$ with the estimated $\RR(t)$ using the EpiEstim \texttt{R} package (D--F) based on this parameterization.
+We find that $\tsub{\RR}{prop}(t)$ matches $\RR(t)$ well 
+
+We see that the estimated $\RR(t)$ from EpiEstim matches $\tsub{\RR}{prop}(t)$ rather than $\RR(t)$ because it assumes that the underlying generation-interval distribution is time-invariant.
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figure_sir_semi.pdf}
+\caption{
+\textbf{This is not a caption.}
+Simulations are run for 100 days based on the following initial conditions: $S(0) = 1 - 10^{-3}$, $I(0) = 10^{-3}$, and $R(0) = 0$
+}
+\label{fig:sir_semi}
+\end{figure}
+
+
 Then, we compare $\RR(t)$ with $\tsub{\RR}{prop}(t)$.
 
 Since we assume that incidence is known exactly, we can, in fact, estimate the transmission rate $\beta(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives identical incidence trajectory until time $t$.
@@ -355,14 +371,5 @@ This transmission rate is given by:
 \begin{equation}
 \beta(t) = \frac{\tsub{\RR}{prop}(t)\gamma(0)}{S(t)}.
 \end{equation}
-
-\section{Results}
-
-\begin{figure}
-\includegraphics[width=\textwidth]{figure_sir_semi.pdf}
-\caption{
-\textbf{This is not a caption.}
-}
-\end{figure}
 
 \end{document}
