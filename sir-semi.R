@@ -41,7 +41,7 @@ beta_reconstruct <- function(out) {
 }
 
 runsir <- function(yini=c(S=1-1e-3, I=1e-3, R=0),
-                   tmax=100,
+                   tmax=120,
                    tby=0.02,
                    betafun=betafun_base,
                    gammafun=gammafun_base1) {

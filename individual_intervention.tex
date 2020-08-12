@@ -103,7 +103,7 @@ Sang Woo Park\textsuperscript{1,*}
 
 \section{Mathematical Theory}
 
-\section{Renewal equation framework}
+\subsection{Renewal equation framework}
 
 We begin by introducing the renewal equation framework, which provides a flexible way of modeling the spread of infection and the impact of intervention on the spread.
 Throughout this paper, we use $s, t$ to denote calendar time and $\sigma, \tau$ to denote time since infection.
@@ -346,7 +346,10 @@ This is modeled as follows:
 \end{cases},
 \end{equation}
 where we vary $\tsub{\gamma}{late}$ between $1/3\,\, \textrm{days}^{-1}$ (partial lifting) and $1/5\,\, \textrm{days}^{-1}$ (complete lifting).
-\fref{sir_semi} compares the instantaneous incidence $i(t) = \beta(t) S I$ (A--C), estimates of $\RR(t)$, and 
+
+these results are presented in \fref{sir_semi}.
+
+estimates of $\RR(t)$, and 
 
 and true values of $\RR(t)$ and $\tsub{\RR}{prop}(t)$ with the estimated $\RR(t)$ using the EpiEstim \texttt{R} package (D--F) based on this parameterization.
 We find that $\tsub{\RR}{prop}(t)$ matches $\RR(t)$ well 
@@ -364,7 +367,7 @@ Simulations are run for 100 days based on the following initial conditions: $S(0
 \end{figure}
 
 
-Then, we compare $\RR(t)$ with $\tsub{\RR}{prop}(t)$.
+
 
 Since we assume that incidence is known exactly, we can, in fact, estimate the transmission rate $\beta(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives identical incidence trajectory until time $t$.
 This transmission rate is given by:

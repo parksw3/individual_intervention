@@ -1,5 +1,4 @@
 library(deSolve)
-library(tidyr)
 library(dplyr)
 library(ggplot2); theme_set(theme_bw())
 library(EpiEstim)
@@ -11,9 +10,18 @@ rr1 <- runsir(gammafun=gammafun_base1)
 rr2 <- runsir(gammafun=gammafun_base2)
 rr3 <- runsir(gammafun=gammafun_base3)
 
+betafun_r1 <- beta_reconstruct(rr1)
+betafun_r2 <- beta_reconstruct(rr2)
+betafun_r3 <- beta_reconstruct(rr3)
+
+rr1r <- runsir(betafun=betafun_r1, gammafun=gammafun_null)
+rr2r <- runsir(betafun=betafun_r2, gammafun=gammafun_null)
+rr3r <- runsir(betafun=betafun_r3, gammafun=gammafun_null)
+
+
 dd1 <- data.frame(
-  time=rr1$time,
-  incidence=rr1$incidence
+  time=rr1r$time,
+  incidence=rr1r$incidence
 ) %>%
   tail(-1) %>%
   mutate(
@@ -25,8 +33,8 @@ dd1 <- data.frame(
   )
 
 dd2 <- data.frame(
-  time=rr2$time,
-  incidence=rr2$incidence
+  time=rr2r$time,
+  incidence=rr2r$incidence
 ) %>%
   tail(-1) %>%
   mutate(
@@ -38,8 +46,8 @@ dd2 <- data.frame(
   )
 
 dd3 <- data.frame(
-  time=rr3$time,
-  incidence=rr3$incidence
+  time=rr3r$time,
+  incidence=rr3r$incidence
 ) %>%
   tail(-1) %>%
   mutate(
@@ -64,13 +72,13 @@ cori3 <- estimate_R(round(dd3$incidence*1e6),
 
 R1 <- list(
   data.frame(
-    time=rr1$time,
-    est=rr1$Rt,
+    time=rr1r$time,
+    est=rr1r$Rt,
     type="$\\mathcal{R}(t)$"
   ),
   data.frame(
-    time=rr1$time,
-    est=rr1$Rtest,
+    time=rr1r$time,
+    est=rr1r$Rtest,
     type="$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$"
   ),
   data.frame(
@@ -86,13 +94,13 @@ R1 <- list(
 
 R2 <- list(
   data.frame(
-    time=rr2$time,
-    est=rr2$Rt,
+    time=rr2r$time,
+    est=rr2r$Rt,
     type="$\\mathcal{R}(t)$"
   ),
   data.frame(
-    time=rr2$time,
-    est=rr2$Rtest,
+    time=rr2r$time,
+    est=rr2r$Rtest,
     type="$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$"
   ),
   data.frame(
@@ -108,13 +116,13 @@ R2 <- list(
 
 R3 <- list(
   data.frame(
-    time=rr3$time,
-    est=rr3$Rt,
+    time=rr3r$time,
+    est=rr3r$Rt,
     type="$\\mathcal{R}(t)$"
   ),
   data.frame(
-    time=rr3$time,
-    est=rr3$Rtest,
+    time=rr3r$time,
+    est=rr3r$Rtest,
     type="$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$"
   ),
   data.frame(
@@ -128,7 +136,7 @@ R3 <- list(
     type=factor(type, levels=c("$\\mathcal{R}(t)$", "$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$", "EpiEstim"))
   )
 
-gen1 <- rr1 %>%
+gen1 <- rr1r %>%
   select(time, meang, meanf, meanb) %>%
   gather(key, value, -time) %>%
   mutate(
@@ -136,7 +144,7 @@ gen1 <- rr1 %>%
                labels=c("Instantaneous", "Forward", "Backward"))
   )
 
-gen2 <- rr2 %>%
+gen2 <- rr2r %>%
   select(time, meang, meanf, meanb) %>%
   gather(key, value, -time) %>%
   mutate(
@@ -144,7 +152,7 @@ gen2 <- rr2 %>%
                labels=c("Instantaneous", "Forward", "Backward"))
   )
 
-gen3 <- rr3 %>%
+gen3 <- rr3r %>%
   select(time, meang, meanf, meanb) %>%
   gather(key, value, -time) %>%
   mutate(
@@ -154,7 +162,7 @@ gen3 <- rr3 %>%
 
 g1 <- ggplot(rr1) +
   geom_line(aes(time, incidence), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 105)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 125)) +
   scale_y_continuous("Intantaneous icidence", expand=c(0, 0), limits=c(0, 0.0105)) +
   theme(
     panel.grid = element_blank(),
@@ -173,7 +181,7 @@ g3 <- g1 %+% rr3 +
 
 g4 <- ggplot(R1) +
   geom_line(aes(time, est, col=type, lty=type), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 105)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 125)) +
   scale_y_continuous("Reproduction number") +
   scale_colour_viridis_d(begin=0, end=0.8) +
   scale_size_manual(values=c(1, 0.7, 0.7)) +
@@ -199,8 +207,8 @@ g6 <- g4 %+% R3 +
 
 g7 <- ggplot(gen1) +
   geom_line(aes(time, value, col=key, lty=key), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 105)) +
-  scale_y_continuous("Mean interval (days)", expand=c(0, 0), limits=c(0, 5.5)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 125)) +
+  scale_y_continuous("Mean interval (days)", expand=c(0, 0), limits=c(0, 13.5)) +
   scale_colour_viridis_d(begin=0, end=0.8, option="A") +
   theme(
     panel.grid = element_blank(),
@@ -222,9 +230,9 @@ g9 <- g7 %+% gen3 +
   )
 
 gtot <- ggarrange(g1, g2, g3, g4, g5, g6, g7, g8, g9, nrow=3,
-          labels = c("A", "B", "C", "D", "E", "F", "G", "H", "I"))
+                  labels = c("A", "B", "C", "D", "E", "F", "G", "H", "I"))
 
-tikz(file="figure_sir_semi.tex", width=8, height=8, standAlone = T)
+tikz(file="figure_sir_beta.tex", width=8, height=8, standAlone = T)
 gtot
 dev.off()
-tools::texi2dvi("figure_sir_semi.tex", pdf=T, clean=T)
+tools::texi2dvi("figure_sir_beta.tex", pdf=T, clean=T)
