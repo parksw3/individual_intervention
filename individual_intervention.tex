@@ -101,7 +101,7 @@ Sang Woo Park\textsuperscript{1,*}
 
 \section{Introduction}
 
-\section{Mathematical Theory}
+\section{Methods}
 
 \subsection{Renewal equation framework}
 
@@ -309,7 +309,7 @@ Even within a homogeneously mixing population, in which the disease is allowed t
 Either a deconvolution or a novel statistical tool is needed to accurately estimate the instantaneous distribution $g(t, \tau)$.
 To our knowledge, no studies have accomplished this yet.
 
-\section{Example: Semi-mechanistic SIR model}
+\subsection{Example: Semi-mechanistic SIR model}
 
 In order to understand how population- and individual-based interventions affect disease spread, we use a semi-mechanistic SIR model to generate synthetic data and compare estimates of $\RR(t)$:
 \begin{align}
@@ -346,6 +346,28 @@ This is modeled as follows:
 \end{cases},
 \end{equation}
 where we vary $\tsub{\gamma}{late}$ between $1/3\,\, \textrm{days}^{-1}$ (partial lifting) and $1/5\,\, \textrm{days}^{-1}$ (complete lifting).
+Simulations are run for 100 days based on the following initial conditions: $S(0) = 1 - 10^{-3}$, $I(0) = 10^{-3}$, and $R(0) = 0$.
+
+Since we assume that incidence is known exactly until time $t^\ast$, we can, in fact, estimate the transmission rate $\beta^\ast(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives identical incidence trajectory until time $t^\ast$.
+This transmission rate is given by:
+\begin{equation}
+\beta^\ast(t) = \frac{\tsub{\RR}{prop}(t)\gamma(0)}{S(t)}.
+\end{equation}
+More generally, given true incidence $i(t)$ and true $\RR(t)$ untile time $t^\ast$, modulated by some combination of population- and individual-based intervention, we can find population intervention $\PP^\ast(t)$ that gives identical incidence until time $t^\ast$:
+\begin{equation}
+\PP^\ast(t) = \frac{\tsub{\RR}{prop}(t)}{S(t)}.
+\end{equation}
+We 
+
+\section{Results}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figure_sir_semi.pdf}
+\caption{
+\textbf{This is not a caption.}
+}
+\label{fig:sir_semi}
+\end{figure}
 
 these results are presented in \fref{sir_semi}.
 
@@ -357,22 +379,5 @@ We find that $\tsub{\RR}{prop}(t)$ matches $\RR(t)$ well
 We see that the estimated $\RR(t)$ from EpiEstim matches $\tsub{\RR}{prop}(t)$ rather than $\RR(t)$ because it assumes that the underlying generation-interval distribution is time-invariant.
 
 
-\begin{figure}
-\includegraphics[width=\textwidth]{figure_sir_semi.pdf}
-\caption{
-\textbf{This is not a caption.}
-Simulations are run for 100 days based on the following initial conditions: $S(0) = 1 - 10^{-3}$, $I(0) = 10^{-3}$, and $R(0) = 0$
-}
-\label{fig:sir_semi}
-\end{figure}
-
-
-
-
-Since we assume that incidence is known exactly, we can, in fact, estimate the transmission rate $\beta(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives identical incidence trajectory until time $t$.
-This transmission rate is given by:
-\begin{equation}
-\beta(t) = \frac{\tsub{\RR}{prop}(t)\gamma(0)}{S(t)}.
-\end{equation}
 
 \end{document}

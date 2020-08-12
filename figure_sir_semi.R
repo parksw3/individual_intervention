@@ -52,15 +52,15 @@ dd3 <- data.frame(
 
 cori1 <- estimate_R(round(dd1$incidence*1e6),
                     method="parametric_si",
-                    config = make_config(t_start=2:99, t_end=3:100, mean_si = 5, std_si = 5))
+                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
 
 cori2 <- estimate_R(round(dd2$incidence*1e6),
                     method="parametric_si",
-                    config = make_config(t_start=2:99, t_end=3:100, mean_si = 5, std_si = 5))
+                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
 
 cori3 <- estimate_R(round(dd3$incidence*1e6),
                     method="parametric_si",
-                    config = make_config(t_start=2:99, t_end=3:100, mean_si = 5, std_si = 5))
+                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
 
 R1 <- list(
   data.frame(
@@ -154,7 +154,7 @@ gen3 <- rr3 %>%
 
 g1 <- ggplot(rr1) +
   geom_line(aes(time, incidence), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 105)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
   scale_y_continuous("Intantaneous icidence", expand=c(0, 0), limits=c(0, 0.0105)) +
   theme(
     panel.grid = element_blank(),
@@ -173,7 +173,7 @@ g3 <- g1 %+% rr3 +
 
 g4 <- ggplot(R1) +
   geom_line(aes(time, est, col=type, lty=type), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 105)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
   scale_y_continuous("Reproduction number") +
   scale_colour_viridis_d(begin=0, end=0.8) +
   scale_size_manual(values=c(1, 0.7, 0.7)) +
@@ -199,8 +199,8 @@ g6 <- g4 %+% R3 +
 
 g7 <- ggplot(gen1) +
   geom_line(aes(time, value, col=key, lty=key), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 105)) +
-  scale_y_continuous("Mean interval (days)", expand=c(0, 0), limits=c(0, 5.5)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
+  scale_y_continuous("Mean interval (days)", expand=c(0, 0), limits=c(0, 13.5)) +
   scale_colour_viridis_d(begin=0, end=0.8, option="A") +
   theme(
     panel.grid = element_blank(),

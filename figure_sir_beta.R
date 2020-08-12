@@ -10,14 +10,13 @@ rr1 <- runsir(gammafun=gammafun_base1)
 rr2 <- runsir(gammafun=gammafun_base2)
 rr3 <- runsir(gammafun=gammafun_base3)
 
-betafun_r1 <- beta_reconstruct(rr1)
+betafun_r1 <- beta_reconstruct(rr1[rr1$time < ,])
 betafun_r2 <- beta_reconstruct(rr2)
 betafun_r3 <- beta_reconstruct(rr3)
 
 rr1r <- runsir(betafun=betafun_r1, gammafun=gammafun_null)
 rr2r <- runsir(betafun=betafun_r2, gammafun=gammafun_null)
 rr3r <- runsir(betafun=betafun_r3, gammafun=gammafun_null)
-
 
 dd1 <- data.frame(
   time=rr1r$time,
@@ -60,15 +59,15 @@ dd3 <- data.frame(
 
 cori1 <- estimate_R(round(dd1$incidence*1e6),
                     method="parametric_si",
-                    config = make_config(t_start=2:99, t_end=3:100, mean_si = 5, std_si = 5))
+                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
 
 cori2 <- estimate_R(round(dd2$incidence*1e6),
                     method="parametric_si",
-                    config = make_config(t_start=2:99, t_end=3:100, mean_si = 5, std_si = 5))
+                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
 
 cori3 <- estimate_R(round(dd3$incidence*1e6),
                     method="parametric_si",
-                    config = make_config(t_start=2:99, t_end=3:100, mean_si = 5, std_si = 5))
+                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
 
 R1 <- list(
   data.frame(
@@ -162,7 +161,7 @@ gen3 <- rr3r %>%
 
 g1 <- ggplot(rr1) +
   geom_line(aes(time, incidence), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 125)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
   scale_y_continuous("Intantaneous icidence", expand=c(0, 0), limits=c(0, 0.0105)) +
   theme(
     panel.grid = element_blank(),
@@ -181,7 +180,7 @@ g3 <- g1 %+% rr3 +
 
 g4 <- ggplot(R1) +
   geom_line(aes(time, est, col=type, lty=type), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 125)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
   scale_y_continuous("Reproduction number") +
   scale_colour_viridis_d(begin=0, end=0.8) +
   scale_size_manual(values=c(1, 0.7, 0.7)) +
@@ -207,7 +206,7 @@ g6 <- g4 %+% R3 +
 
 g7 <- ggplot(gen1) +
   geom_line(aes(time, value, col=key, lty=key), size=1) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 125)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
   scale_y_continuous("Mean interval (days)", expand=c(0, 0), limits=c(0, 13.5)) +
   scale_colour_viridis_d(begin=0, end=0.8, option="A") +
   theme(
