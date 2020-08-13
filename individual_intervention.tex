@@ -357,14 +357,18 @@ More generally, given true incidence $i(t)$ and true $\RR(t)$ untile time $t^\as
 \begin{equation}
 \PP^\ast(t) = \frac{\tsub{\RR}{prop}(t)}{S(t)}.
 \end{equation}
-We 
+We refer to this intervention as the \emph{equivalent} population-based intervention.
+
 
 \section{Results}
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figure_sir_semi.pdf}
 \caption{
-\textbf{This is not a caption.}
+\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under individual-based intervention.}
+(A--C) Changes in instantaneous incidence over time.
+(D--F) Changes in instantaneous reproduction number $\RR(t)$, proportional reproduction number $\tsub{\RR}{prop}(t)$, and estimated $\RR(t)$ using EpiEstim.
+(G--I) Changes in mean instantaneous, forward, and backward generation intervals.
 }
 \label{fig:sir_semi}
 \end{figure}
@@ -377,6 +381,20 @@ and true values of $\RR(t)$ and $\tsub{\RR}{prop}(t)$ with the estimated $\RR(t)
 We find that $\tsub{\RR}{prop}(t)$ matches $\RR(t)$ well 
 
 We see that the estimated $\RR(t)$ from EpiEstim matches $\tsub{\RR}{prop}(t)$ rather than $\RR(t)$ because it assumes that the underlying generation-interval distribution is time-invariant.
+
+\section{Results}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figure_sir_beta.pdf}
+\caption{
+\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent population-based intervention.}
+(A--C) Changes in instantaneous incidence over time.
+(D--F) Changes in instantaneous reproduction number $\RR(t)$, proportional reproduction number $\tsub{\RR}{prop}(t)$, and estimated $\RR(t)$ using EpiEstim.
+(G--I) Changes in mean instantaneous, forward, and backward generation intervals.
+The equivalent population-based intervention is calculated by taking $\beta^\ast(t) = \tsub{\RR}{prop}(t)\gamma(0)/S(t)$, where $\tsub{\RR}{prop}(t)$ corresponds to the estimates shown in \fref{sir_semi}.
+}
+\label{fig:sir_beta}
+\end{figure}
 
 
 

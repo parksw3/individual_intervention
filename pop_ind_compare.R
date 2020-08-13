@@ -109,7 +109,7 @@ k_ind3 <- k_intrinsic3 %>%
 gbase <- ggplot(k_intrinsic1) +
   geom_polygon(aes(tau, den), fill="gray70") +
   scale_x_continuous("Time since infection, $\\tau$ (days)", expand=c(0, 0), limits=c(0, 15)) +
-  scale_y_continuous("Forward kernel, $K_{t}(\\tau)$",
+  scale_y_continuous("Forward kernel, $F_{t}(\\tau)$",
                      breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1),
                      expand=c(0, 0), limits=c(0, 1.1),
                      sec.axis = sec_axis(~., name="Relative changes in infection kernel", breaks=c(0, 0.5, 1))) +
