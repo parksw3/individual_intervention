@@ -10,7 +10,7 @@ rr1 <- runsir(gammafun=gammafun_base1)
 rr2 <- runsir(gammafun=gammafun_base2)
 rr3 <- runsir(gammafun=gammafun_base3)
 
-betafun_r1 <- beta_reconstruct(rr1[rr1$time < ,])
+betafun_r1 <- beta_reconstruct(rr1)
 betafun_r2 <- beta_reconstruct(rr2)
 betafun_r3 <- beta_reconstruct(rr3)
 

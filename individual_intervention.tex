@@ -132,7 +132,7 @@ This model, also known as renewal equations, generalizes the dynamics of many co
 While renewal equations are often written in the form of \eref{renewal}, it is also useful to consider the forward-looking renewal equation because neither $\RR(t)$ nor $g(t, \tau)$ are directly measurable (even under the assumption that all infection events can be observed); instead, both quantities rely on the assumption that the condition at time $t$ remains unchanged.
 Consider the forward kernel $F_t(\tau)$, which represent the rate at which an individual infected at time $t$ generates a secondary cases $\tau$ time units after infection: 
 \begin{equation}
-F_t(\tau) = K(t+\tau, \tau) = \RR(t + \tau) g(t, t+\tau).
+F_t(\tau) = K(t+\tau, \tau) = \RR(t + \tau) g(t+\tau, \tau).
 \label{eq:fkernel}
 \end{equation}
 Unlike the infection kernel $K(t, \tau)$, the forward kernel $F_t(\tau)$ is directly measurable, at least in theory.
