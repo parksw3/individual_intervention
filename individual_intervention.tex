@@ -101,7 +101,7 @@ Sang Woo Park\textsuperscript{1,*}
 
 \section{Introduction}
 
-\section{Methods}
+\section{Mathematical theory}
 
 \subsection{Renewal equation framework}
 
@@ -281,6 +281,19 @@ By substituting true incidence $i(t)$ in the numerator and rearranging, we obtai
 \end{equation}
 Despite its wide use, this estimator is difficult to interpret in general and does not necessarily serve as a threshold value.
 
+\subsection{Quantifying changes in time-dependent growth rate}
+
+The instantaneous reproduction number $\RR(t)$ measures whether the epidemic will \emph{eventually} grow or decline if current conditions remain unchanged;
+counterintuitively, it does not tell us whether the epidemic is growing or not at a given moment.
+Interpreting $\RR(t)$ estimates is further impeded by the fact that conditions change during an epidemic.
+Instead, if we want to quantify whether incidence is increasing or decreasing, we can simply calculate the epidemic growth rate.
+Often growth rates are used measure the initial exponential growth rate; here we generalize the idea by taking the per-capita growth rate:
+\begin{equation}
+r(t) = \frac{1}{i(t)} \frac{\dd{i(t)}}{\dd{t}}.
+\end{equation}
+Then, by definition, incidence grows when $r(t) > 0$ (and vice versa).
+Although this measure seems tautological, it is the best available measure for capturing whether incidence is growing or not at a given moment.
+
 \subsection{Quantifying changes in the effective generation-interval distribution}
 
 In order to accurately estimate the instantaneous reproduction number, we have to be able to first quantify how the instantaneous generation-interval distribution $g(t, \tau)$ changes across time $t$.
@@ -309,7 +322,7 @@ Even within a homogeneously mixing population, in which the disease is allowed t
 Either a deconvolution or a novel statistical tool is needed to accurately estimate the instantaneous distribution $g(t, \tau)$.
 To our knowledge, no studies have accomplished this yet.
 
-\subsection{Example: Semi-mechanistic SIR model}
+\section{Example: Semi-mechanistic SIR model}
 
 In order to understand how population- and individual-based interventions affect disease spread, we use a semi-mechanistic SIR model to generate synthetic data and compare estimates of $\RR(t)$:
 \begin{align}
@@ -324,7 +337,7 @@ In this case, the instantaneous kernel can be written as:
 \begin{equation}
 K(t, \tau) = \beta(t) S(t) \exp\left(-\int_{t-\tau}^t \gamma(s) \dd{s} \right).
 \end{equation}
-Here, we see that changes in transmission rate $\beta(t)$ and removal rate $\gamma(t)$ correspond to population- and individual-based intervention.
+We see that changes in transmission rate $\beta(t)$ and removal rate $\gamma(t)$ correspond to population- and individual-based intervention.
 In particular, abrupt changes in $\gamma(t)$ does not affect the incidence immediately due to delays in isolating individuals.
 Finally, the instantaneous reproduction number is given by:
 \begin{equation}
@@ -332,6 +345,13 @@ Finally, the instantaneous reproduction number is given by:
 \end{equation}
 When $\gamma(t) = \gamma(0)$, we obtain a familiar form: $\RR(t) = \Ro S(t)$,
 where $\Ro = \beta(0)/\gamma(0)$.
+
+Here, we compare two different scenarios.
+In the first scenario, we consider smooth changes in $\beta$ while using fixed $\gamma$, reflecting slow introduction of social distancing measures, followed by slow lifting of it.
+In the second scenario, we consider abrupt changes in $\gamma$ while using fixed $\beta$, reflecting a beginning and an end of an intense case isolation and contact tracing efforts.
+We refer to these scenarios as corresponding population- and individual-based intervention scenarios because they give identical incidence curves, meaning that changes in $\beta$ and $\gamma$ are jointly unidentifiable (see Methods and Materials).
+
+
 
 Here, we consider a simple scenario in which a flu-like pathogen with $\Ro = 1.5$ invades an immunologically naive population.
 In the beginning, the disease spreads without any intervention.

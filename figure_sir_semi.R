@@ -11,21 +11,6 @@ rr1 <- runsir(gammafun=gammafun_base1)
 rr2 <- runsir(gammafun=gammafun_base2)
 rr3 <- runsir(gammafun=gammafun_base3)
 
-rr1a <- rr1 %>%
-  select(time, incidence, I) %>%
-  rename(prevalence=I) %>%
-  gather(key, value, -time)
-
-rr2a <- rr2 %>%
-  select(time, incidence, I) %>%
-  rename(prevalence=I) %>%
-  gather(key, value, -time)
-
-rr3a <- rr3 %>%
-  select(time, incidence, I) %>%
-  rename(prevalence=I) %>%
-  gather(key, value, -time)
-
 dd1 <- data.frame(
   time=rr1$time,
   incidence=rr1$incidence
@@ -145,22 +130,19 @@ R3 <- list(
 
 speed1 <- data.frame(
   time=tail(rr1$time, -1),
-  incidence=diff(rr1$incidence)/tail(rr1$incidence, -1),
-  prevalence=diff(rr1$I)/tail(rr1$I, -1)
+  incidence=diff(rr1$incidence)/tail(rr1$incidence, -1)
 ) %>%
   gather(key, value, -time)
 
 speed2 <- data.frame(
   time=tail(rr2$time, -1),
-  incidence=diff(rr2$incidence)/tail(rr2$incidence, -1),
-  prevalence=diff(rr2$I)/tail(rr2$I, -1)
+  incidence=diff(rr2$incidence)/tail(rr2$incidence, -1)
 ) %>%
   gather(key, value, -time)
 
 speed3 <- data.frame(
   time=tail(rr3$time, -1),
-  incidence=diff(rr3$incidence)/tail(rr3$incidence, -1),
-  prevalence=diff(rr3$I)/tail(rr3$I, -1)
+  incidence=diff(rr3$incidence)/tail(rr3$incidence, -1)
 ) %>%
   gather(key, value, -time)
 
@@ -188,11 +170,11 @@ gen3 <- rr3 %>%
                labels=c("Instantaneous", "Forward", "Backward"))
   )
 
-g1 <- ggplot(rr1a) +
-  geom_line(aes(time, value, col=key, lty=key), size=1) +
-  geom_vline(xintercept=c(25, 40), col="gray", lty=2, size=1) +
+g1 <- ggplot(rr1) +
+  geom_line(aes(time, incidence), size=1) +
+  geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
-  scale_y_log10("Intantaneous incidence/prevalence", expand=c(0, 0), limits=c(0.000001, 0.07)) +
+  scale_y_continuous("Intantaneous incidence", expand=c(0, 0), limits=c(0, 0.0105)) +
   scale_colour_viridis_d(begin=0, end=0.8, option="B") +
   theme(
     panel.grid = element_blank(),
@@ -201,13 +183,13 @@ g1 <- ggplot(rr1a) +
     legend.title = element_blank()
   )
 
-g2 <- g1 %+% rr2a +
+g2 <- g1 %+% rr2 +
   theme(
     axis.title.y = element_blank(),
     legend.position = "none"
   )
 
-g3 <- g1 %+% rr3a +
+g3 <- g1 %+% rr3 +
   theme(
     axis.title.y = element_blank(),
     legend.position = "none"
@@ -216,7 +198,7 @@ g3 <- g1 %+% rr3a +
 g4 <- ggplot(R1) +
   geom_line(aes(time, est, col=type, lty=type), size=1) +
   geom_hline(yintercept=1, size=1, col="gray", lty=2) +
-  geom_vline(xintercept=c(25, 40), col="gray", lty=2, size=1) +
+  geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
   scale_y_continuous("Reproduction number") +
   scale_colour_viridis_d(begin=0, end=0.8) +
@@ -242,12 +224,11 @@ g6 <- g4 %+% R3 +
   )
 
 g7 <- ggplot(speed1) +
-  geom_line(aes(time, value, col=key, lty=key), size=1) +
+  geom_line(aes(time, value), size=1) +
   geom_hline(yintercept=0, lty=2, col="gray", size=1) +
-  geom_vline(xintercept=c(25, 40), col="gray", lty=2, size=1) +
+  geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
-  scale_y_continuous("Growth rate ($\\textrm{days}^{-1}$)", expand=c(0, 0), limits=c(-0.0045, 0.0025)) +
-  scale_colour_viridis_d(begin=0, end=0.8, option="B") +
+  scale_y_continuous("Growth rate (1/days)", expand=c(0, 0), limits=c(-0.0045, 0.0025)) +
   theme(
     panel.grid = element_blank(),
     legend.position = c(0.73, 0.84),
@@ -270,7 +251,7 @@ g9 <- g7 %+% speed3 +
 
 g10 <- ggplot(gen1) +
   geom_line(aes(time, value, col=key, lty=key), size=1) +
-  geom_vline(xintercept=c(25, 40), col="gray", lty=2, size=1) +
+  geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
   scale_y_continuous("Mean interval (days)", expand=c(0, 0), limits=c(0, 13.5)) +
   scale_colour_viridis_d(begin=0, end=0.8, option="A") +
@@ -296,7 +277,7 @@ g12 <- g10 %+% gen3 +
 gtot <- ggarrange(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, nrow=4,
           labels = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"))
 
-tikz(file="figure_sir_semi.tex", width=8, height=8, standAlone = T)
+tikz(file="figure_sir_semi.tex", width=8, height=10, standAlone = T)
 gtot
 dev.off()
 tools::texi2dvi("figure_sir_semi.tex", pdf=T, clean=T)
