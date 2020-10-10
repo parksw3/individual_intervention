@@ -88,9 +88,7 @@ g6 <- g4 %+% s6 +
 gtot <- ggarrange(g1, g2, g3, g4, g5, g6, nrow=2,
                   labels = c("A", "B", "C", "D", "E", "F"))
 
-tikz(file="figure_beta_gamma.tex", width=8, height=4, standAlone = T)
+tikz(file="figure_beta_gamma.tex", width=8, height=6, standAlone = T)
 gtot
 dev.off()
 tools::texi2dvi("figure_beta_gamma.tex", pdf=T, clean=T)
-
-
