@@ -5,3 +5,7 @@ Can we call R_i R_i? Haven't we already discussed this?
 I don't agree that people usually use (6): they usually don't notice whether they're using (6) or (12) or what (a point you try to make later). 
 
 Do we really need F?
+
+I am concerned now about the population-based/individual-based nomenclature. It feels to me more like perspectives than like a real dichotomy, now. Also, as a speed reviewer pointed out, things like condoms "feel" individual, but we would define them as "population". 
+
+Can I convince you that it's bad practice to push "target" files (rather than "source" files) in the main pipeline? I've moved some tracked pdf files to a subdirectory, and would like to move the non-source .tex files as well.
