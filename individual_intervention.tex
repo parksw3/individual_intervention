@@ -47,6 +47,7 @@
 \newcommand{\Rx}[1]{\ensuremath{{\mathcal R}_{#1}}\xspace} 
 \newcommand{\Ro}{\Rx{0}}
 \newcommand{\Rc}{\Rx{\mathrm{c}}}
+\newcommand{\Ri}{\Rx{\mathrm{i}}}
 \newcommand{\RR}{\ensuremath{{\mathcal R}}\xspace}
 \newcommand{\Rhat}{\ensuremath{{\hat\RR}}}
 \newcommand{\Rnaive}{\ensuremath{{\mathcal R}_{\textrm{\tiny naive}}}\xspace}
@@ -104,7 +105,7 @@ Sang Woo Park\textsuperscript{1,*}, Kaiyuan Sun, Benjamin M. Bolker, Bryan T. Gr
 \swp{Intros are always hard... will eventually re-write a lot of it but wanted to keep something there for now...}
 
 The reproduction number \RR---defined as the average number of secondary cases caused by a primary case---is a key characterstic of an emerging epidemic:
-It provides information about whether a disease can invade (i.e., when $\RR > 1$), the level of intervention required to prevent further spread, and the final size of an epidemic.
+It provides information about whether a disease can invade, the level of intervention required to prevent further spread, and the final size of an epidemic.
 When an epidemic is ongoing, transmission is affected by changes in population-level immunity and non-pharmaceutical interventions---
 these changes in transmission dynamics can be captured by $\RR(t)$, often referred to as the \emph{effective} or \emph{time-dependent} reproduction number.
 Interpretation and estimation of $\RR(t)$ has been a key area of research during the current COVID-19 pandemic due to its policy implications.
@@ -135,22 +136,21 @@ Popularized by Cori et al, an estimator for $\RR(t)$ is given by:
 \begin{equation}
 \RR(t) = \frac{i(t)}{\int_0^\infty g(\sigma) i(t-\sigma) \dsigma}.
 \end{equation}
-Current best practices assume that the generation-interval distribution $g(\tau)$ does not vary over time....
+Current practices generally assume that the generation-interval distribution $g(\tau)$ does not vary over time....
 This is good for capturing population-based intervention, but not individual-based intervention.
 For example, if a strict NPI (e.g., digital contact tracing) that prevents individuals from transmitting after symptom onset, then $g$ would look really different...
 Neglecting such changes in $g$ can introduce biases.
 
 In this manuscript, we explore how population- and individual-based interventions can affect population- and individual-level measures of transmission.
-Use $r(t)$ as a complementary measure along with $\RR(t)$!!!!!
+\swp{Use $r(t)$ as a complementary measure along with $\RR(t)$!!!!!}
 
 \section{Mathematical theory}
 
 \subsection{Renewal equation framework}
 
-We begin by introducing the renewal equation framework, which provides a flexible way of modeling the spread of infection and the impact of intervention on the spread.
-Throughout this paper, we use $s, t$ to denote calendar time and $\sigma, \tau$ to denote time since infection.
-Let $K(t, \tau)$ represent the infection kernel, defined as the rate at which secondary cases are generated at time $t$ by an individual infected $\tau$ time units ago;
-the shape of this kernel can depend on internal factors (e.g., variation in infectiousness over the course of infection) or external factors (e.g., susceptible depletion, nonpharmaceutical interventions, changes in behavior).
+The renewal equation framework provides a flexible way of modeling the spread of infection and the impact of intervention on the spread.
+Let $K(t, \tau)$ represent the infection kernel, defined as the rate at which secondary cases are generated at time $t$ by an individual infected $\tau$ time units ago (we will use $s, t$ to denote calendar time and $\sigma, \tau$ to denote time since infection throughout).
+The shape of this kernel can depend on internal factors (e.g., variation in infectiousness over the course of infection) or external factors (e.g., susceptible depletion, nonpharmaceutical interventions, changes in behavior).
 The integral of $K(t, \tau)$, representing the total infectiousness of an individual infected at time $t$ given conditions at time $t$, corresponds to the instantaneous reproduction number: $\RR(t) = \int K(t, \sigma) \dsigma$.
 The kernel, normalized by the total infectiousness, provides information about the time scale of transmission; we refer to this quantity as the instantaneous generation-interval distribution: $g(t, \tau) = K(t, \tau)/\RR(t)$.
 Then, incidence at time $t$ caused by a cohort of individuals infected $\tau$ time units ago can be written as the product of the instantaneous reproduction number $\RR(t)$, the instantaneous generation-interval distribution $g(t, \tau)$, and incidence at time $t-\tau$, $i(t-\tau)$:
