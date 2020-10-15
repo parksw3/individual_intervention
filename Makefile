@@ -10,10 +10,9 @@ vim_session:
 
 ######################################################################
 
-pdfs_found = figure_sir_beta.pdf figure_sir_semi.pdf individual_intervention.pdf pop_ind_compare.pdf
-
 ## individual_intervention.pdf: individual_intervention.tex
 
+Sources += individual_intervention.txt
 
 ######################################################################
 
