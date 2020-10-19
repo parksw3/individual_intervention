@@ -26,7 +26,7 @@ Ignore += makestuff
 msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
 makestuff/Makefile:
-	ln -s ../makestuff .
+	git clone $(msrepo)/makestuff
 	ls makestuff/Makefile
 
 -include makestuff/os.mk
