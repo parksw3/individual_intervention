@@ -12,7 +12,6 @@ vim_session:
 
 ## individual_intervention.pdf: individual_intervention.tex
 
-Sources += individual_intervention.txt
 Sources += individual_intervention.tex
 
 ######################################################################
