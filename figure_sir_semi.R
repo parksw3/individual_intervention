@@ -7,13 +7,11 @@ library(egg)
 library(tikzDevice)
 source("sir-semi.R")
 
-rr1 <- runsir(gammafun=gammafun_base1)
-rr2 <- runsir(gammafun=gammafun_base2)
-rr3 <- runsir(gammafun=gammafun_base3)
+rr <- runsir(gammafun=gammafun_base2)
 
-dd1 <- data.frame(
-  time=rr1$time,
-  incidence=rr1$incidence
+dd <- data.frame(
+  time=rr$time,
+  incidence=rr$incidence
 ) %>%
   tail(-1) %>%
   mutate(
@@ -24,129 +22,61 @@ dd1 <- data.frame(
     incidence=sum(incidence)
   )
 
-dd2 <- data.frame(
-  time=rr2$time,
-  incidence=rr2$incidence
-) %>%
-  tail(-1) %>%
-  mutate(
-    time=ceiling(time)
-  ) %>%
-  group_by(time) %>%
-  summarize(
-    incidence=sum(incidence)
-  )
+cori <- estimate_R(round(dd$incidence*1e6),
+                   method="parametric_si",
+                   config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
 
-dd3 <- data.frame(
-  time=rr3$time,
-  incidence=rr3$incidence
-) %>%
-  tail(-1) %>%
-  mutate(
-    time=ceiling(time)
-  ) %>%
-  group_by(time) %>%
-  summarize(
-    incidence=sum(incidence)
-  )
-
-cori1 <- estimate_R(round(dd1$incidence*1e6),
-                    method="parametric_si",
-                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
-
-cori2 <- estimate_R(round(dd2$incidence*1e6),
-                    method="parametric_si",
-                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
-
-cori3 <- estimate_R(round(dd3$incidence*1e6),
-                    method="parametric_si",
-                    config = make_config(t_start=2:119, t_end=3:120, mean_si = 5, std_si = 5))
-
-R1 <- list(
+Ri <- list(
   data.frame(
-    time=rr1$time,
-    est=rr1$Rt,
-    type="$\\mathcal{R}(t)$"
+    time=rr$time,
+    est=rr$Rt,
+    type="$\\mathcal{R}_{\\textrm{\\tiny i}}(t)$"
   ),
   data.frame(
-    time=rr1$time,
-    est=rr1$Rtest,
+    time=rr$time,
+    est=rr$Rtest,
     type="$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$"
   ),
   data.frame(
-    time=cori1$R$t_end,
-    est=cori1$R$`Median(R)`,
+    time=cori$R$t_end,
+    est=cori$R$`Median(R)`,
     type="EpiEstim"
+  ),
+  data.frame(
+    time=rr$time,
+    est=rr$Rforward,
+    type="$\\mathcal{R}_{\\textrm{\\tiny forward}}(t)$"
   )
 ) %>%
   bind_rows %>%
   mutate(
-    type=factor(type, levels=c("$\\mathcal{R}(t)$", "$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$", "EpiEstim"))
+    type=factor(type, levels=c("$\\mathcal{R}_{\\textrm{\\tiny i}}(t)$", "$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$", "EpiEstim",
+                               "$\\mathcal{R}_{\\textrm{\\tiny forward}}(t)$"))
   )
 
-R2 <- list(
+Rc <- list(
   data.frame(
-    time=rr2$time,
-    est=rr2$Rt,
-    type="$\\mathcal{R}(t)$"
+    time=rr$time,
+    est=rr$Rc,
+    type="$\\mathcal{R}_{\\textrm{\\tiny c}}(t)$"
   ),
   data.frame(
-    time=rr2$time,
-    est=rr2$Rtest,
-    type="$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$"
+    time=rr$time,
+    est=rr$wallinga,
+    type="Wallinga-Teunis"
   ),
   data.frame(
-    time=cori2$R$t_end,
-    est=cori2$R$`Median(R)`,
-    type="EpiEstim"
+    time=rr$time,
+    est=rr$Rforward,
+    type="$\\mathcal{R}_{\\textrm{\\tiny forward}}(t)$"
   )
 ) %>%
   bind_rows %>%
   mutate(
-    type=factor(type, levels=c("$\\mathcal{R}(t)$", "$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$", "EpiEstim"))
+    type=factor(type, levels=c("$\\mathcal{R}_{\\textrm{\\tiny c}}(t)$", "Wallinga-Teunis", "$\\mathcal{R}_{\\textrm{\\tiny forward}}(t)$"))
   )
 
-R3 <- list(
-  data.frame(
-    time=rr3$time,
-    est=rr3$Rt,
-    type="$\\mathcal{R}(t)$"
-  ),
-  data.frame(
-    time=rr3$time,
-    est=rr3$Rtest,
-    type="$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$"
-  ),
-  data.frame(
-    time=cori3$R$t_end,
-    est=cori3$R$`Median(R)`,
-    type="EpiEstim"
-  )
-) %>%
-  bind_rows %>%
-  mutate(
-    type=factor(type, levels=c("$\\mathcal{R}(t)$", "$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$", "EpiEstim"))
-  )
-
-speed1 <- data.frame(
-  time=tail(rr1$time, -1),
-  incidence=diff(rr1$incidence)/tail(rr1$incidence, -1)
-) %>%
-  gather(key, value, -time)
-
-speed2 <- data.frame(
-  time=tail(rr2$time, -1),
-  incidence=diff(rr2$incidence)/tail(rr2$incidence, -1)
-) %>%
-  gather(key, value, -time)
-
-speed3 <- data.frame(
-  time=tail(rr3$time, -1),
-  incidence=diff(rr3$incidence)/tail(rr3$incidence, -1)
-) %>%
-  gather(key, value, -time)
-
-gen1 <- rr1 %>%
+gen <- rr %>%
   select(time, meang, meanf, meanb) %>%
   gather(key, value, -time) %>%
   mutate(
@@ -154,130 +84,55 @@ gen1 <- rr1 %>%
                labels=c("Instantaneous", "Forward", "Backward"))
   )
 
-gen2 <- rr2 %>%
-  select(time, meang, meanf, meanb) %>%
-  gather(key, value, -time) %>%
-  mutate(
-    key=factor(key, levels=c("meang", "meanf", "meanb"), 
-               labels=c("Instantaneous", "Forward", "Backward"))
-  )
-
-gen3 <- rr3 %>%
-  select(time, meang, meanf, meanb) %>%
-  gather(key, value, -time) %>%
-  mutate(
-    key=factor(key, levels=c("meang", "meanf", "meanb"), 
-               labels=c("Instantaneous", "Forward", "Backward"))
-  )
-
-g1 <- ggplot(rr1) +
-  geom_line(aes(time, incidence), size=1) +
-  geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
-  scale_y_continuous("Intantaneous incidence", expand=c(0, 0), limits=c(0, 0.0105)) +
-  scale_colour_viridis_d(begin=0, end=0.8, option="B") +
-  theme(
-    panel.grid = element_blank(),
-    axis.title.x = element_blank(),
-    legend.position = c(0.73, 0.84),
-    legend.title = element_blank()
-  )
-
-g2 <- g1 %+% rr2 +
-  theme(
-    axis.title.y = element_blank(),
-    legend.position = "none"
-  )
-
-g3 <- g1 %+% rr3 +
-  theme(
-    axis.title.y = element_blank(),
-    legend.position = "none"
-  )
-
-g4 <- ggplot(R1) +
+g1 <- ggplot(Ri) +
   geom_line(aes(time, est, col=type, lty=type), size=1) +
   geom_hline(yintercept=1, size=1, col="gray", lty=2) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
-  scale_y_continuous("Reproduction number") +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
+  scale_y_continuous("Reproduction number", limits=c(NA, 2)) +
   scale_colour_viridis_d(begin=0, end=0.8) +
   scale_size_manual(values=c(1, 0.7, 0.7)) +
   theme(
     panel.grid = element_blank(),
-    legend.position = c(1.1, 0.84),
+    legend.position = c(0.9, 0.8),
     legend.title = element_blank(),
     legend.background = element_blank(),
     axis.title.x = element_blank()
   )
 
-g5 <- g4 %+% R2 +
-  theme(
-    legend.position = "none",
-    axis.title.y = element_blank()
-  )
-
-g6 <- g4 %+% R3 +
-  theme(
-    legend.position = "none",
-    axis.title.y = element_blank()
-  )
-
-g7 <- ggplot(speed1) +
-  geom_line(aes(time, value), size=1) +
-  geom_hline(yintercept=0, lty=2, col="gray", size=1) +
+g2 <- ggplot(Rc) +
+  geom_line(aes(time, est, col=type, lty=type), size=1) +
+  geom_hline(yintercept=1, size=1, col="gray", lty=2) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
-  scale_y_continuous("Growth rate (1/days)", expand=c(0, 0), limits=c(-0.0045, 0.0025)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
+  scale_y_continuous("Reproduction number", limits=c(0, 2)) +
+  scale_colour_viridis_d(begin=0, end=0.8, option="E") +
+  scale_size_manual(values=c(1, 0.7, 0.7)) +
   theme(
     panel.grid = element_blank(),
-    legend.position = c(0.73, 0.84),
+    legend.position = c(0.9, 0.84),
     legend.title = element_blank(),
     legend.background = element_blank(),
     axis.title.x = element_blank()
   )
 
-g8 <- g7 %+% speed2 +
-  theme(
-    legend.position = "none",
-    axis.title.y = element_blank()
-  )
-
-g9 <- g7 %+% speed3 +
-  theme(
-    legend.position = "none",
-    axis.title.y = element_blank()
-  )
-
-g10 <- ggplot(gen1) +
+g3 <- ggplot(gen) +
   geom_line(aes(time, value, col=key, lty=key), size=1) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
   scale_y_continuous("Mean interval (days)", expand=c(0, 0), limits=c(0, 13.5)) +
   scale_colour_viridis_d(begin=0, end=0.8, option="A") +
   theme(
     panel.grid = element_blank(),
-    legend.position = c(0.73, 0.84),
+    legend.position = c(0.9, 0.84),
     legend.title = element_blank(),
     legend.background = element_blank()
   )
 
-g11 <- g10 %+% gen2 +
-  theme(
-    legend.position = "none",
-    axis.title.y = element_blank()
-  )
+gtot <- ggarrange(g1, g2, g3, nrow=3,
+                  labels = c("A", "B", "C"))
 
-g12 <- g10 %+% gen3 +
-  theme(
-    legend.position = "none",
-    axis.title.y = element_blank()
-  )
-
-gtot <- ggarrange(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, nrow=4,
-          labels = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"))
-
-tikz(file="figure_sir_semi.tex", width=8, height=10, standAlone = T)
+tikz(file="figure_sir_semi.tex", width=8, height=8, standAlone = T)
 gtot
 dev.off()
 tools::texi2dvi("figure_sir_semi.tex", pdf=T, clean=T)

@@ -6,34 +6,15 @@ library(egg)
 library(tikzDevice)
 source("sir-semi.R")
 
-rr1 <- runsir(gammafun=gammafun_base1)
 rr2 <- runsir(gammafun=gammafun_base2)
-rr3 <- runsir(gammafun=gammafun_base3)
 
-betafun_r1 <- beta_reconstruct(rr1)
 betafun_r2 <- beta_reconstruct(rr2)
-betafun_r3 <- beta_reconstruct(rr3)
 
 tvec <- seq(0, 120, by=0.02)
-
-s1 <- data.frame(
-  time=tvec,
-  beta=betafun_r1(tvec)
-)
 
 s2 <- data.frame(
   time=tvec,
   beta=betafun_r2(tvec)
-)
-
-s3 <- data.frame(
-  time=tvec,
-  beta=betafun_r3(tvec)
-)
-
-s4 <- data.frame(
-  time=tvec,
-  gamma=gammafun_base1(tvec)
 )
 
 s5 <- data.frame(
@@ -41,54 +22,62 @@ s5 <- data.frame(
   gamma=gammafun_base2(tvec)
 )
 
-s6 <- data.frame(
-  time=tvec,
-  gamma=gammafun_base3(tvec)
-)
+speed <- data.frame(
+  time=tail(rr2$time, -1),
+  incidence=diff(rr2$incidence)/tail(rr2$incidence, -1)
+) %>%
+  gather(key, value, -time)
 
-g1 <- ggplot(s1) +
+g1 <- ggplot(s2) +
   geom_line(aes(time, beta), size=1) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
-  scale_y_continuous("Transmission rate (1/day)", expand=c(0, 0), limits=c(0, 0.35)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
+  scale_y_continuous("$\\beta(t)$ (1/day)", expand=c(0, 0), limits=c(0, 0.35)) +
   theme(
     panel.grid = element_blank(),
     axis.title.x = element_blank()
   )
 
-g2 <- g1 %+% s2 +
-  theme(
-    axis.title.y = element_blank()
-  )
-
-g3 <- g1 %+% s3 +
-  theme(
-    axis.title.y = element_blank()
-  )
-
-g4 <- ggplot(s4) +
+g2 <- ggplot(s5) +
   geom_line(aes(time, gamma), size=1) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
-  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 130)) +
-  scale_y_continuous("Removal rate (1/day)", expand=c(0, 0), limits=c(0, 0.55)) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
+  scale_y_continuous("$\\gamma(t)$ (1/day)", expand=c(0, 0), limits=c(0, 0.55)) +
   theme(
     panel.grid = element_blank()
   )
 
-g5 <- g4 %+% s5 +
+g3 <- ggplot(rr2) +
+  geom_line(aes(time, incidence), size=1) +
+  geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
+  scale_y_continuous("Incidence (1/day)", expand=c(0, 0), limits=c(0, 0.0105)) +
+  scale_colour_viridis_d(begin=0, end=0.8, option="B") +
   theme(
-    axis.title.y = element_blank()
+    panel.grid = element_blank(),
+    axis.title.x = element_blank(),
+    legend.position = c(0.73, 0.84),
+    legend.title = element_blank()
   )
 
-g6 <- g4 %+% s6 +
+g4 <- ggplot(speed) +
+  geom_line(aes(time, value), size=1) +
+  geom_hline(yintercept=0, lty=2, col="gray", size=1) +
+  geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
+  scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
+  scale_y_continuous("Growth rate (1/days)", expand=c(0, 0), limits=c(-0.0045, 0.0025)) +
   theme(
-    axis.title.y = element_blank()
+    panel.grid = element_blank(),
+    legend.position = c(0.73, 0.84),
+    legend.title = element_blank(),
+    legend.background = element_blank(),
+    axis.title.x = element_blank()
   )
 
-gtot <- ggarrange(g1, g2, g3, g4, g5, g6, nrow=2,
-                  labels = c("A", "B", "C", "D", "E", "F"))
+gtot <- ggarrange(g1, g2, g3, g4, nrow=4,
+                  labels = c("A", "B", "C", "D"))
 
-tikz(file="figure_beta_gamma.tex", width=8, height=6, standAlone = T)
+tikz(file="figure_beta_gamma.tex", width=8, height=8, standAlone = T)
 gtot
 dev.off()
 tools::texi2dvi("figure_beta_gamma.tex", pdf=T, clean=T)
