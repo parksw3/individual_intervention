@@ -380,11 +380,12 @@ In practice, realized serial intervals (i.e., time between symptom onset of the 
 Second, the Wallinga-Teunis-like estimator is an estimator for $\Rc(t)$ only for a cohort of infectors that were infected at the same time (i.e., when the instantaneous generation-interval distribution and incidence infection is used);
 it is not an estimator for $\Rc(t)$ for other cohorts (i.e., when it is applied to case reports to estimate the serial reproduction number) because there does not exist a corresponding instantaneous distributions for realized serial-interval distributions.
 
-Some studies have suggested substituting the forward distribution $f_t(\tau)$, including the forward serial-interval distribution, instead to estimate $\RR(t)$:
+Some studies have suggested substituting the forward distribution $f_t(\tau)$, including the forward serial-interval distribution, instead to estimate the ``time-varying'' or the ``effective'' reproduction number $\RR(t)$ \citep{liu2018measurability, ali2020serial}:
 \begin{equation}
 \tsub{\RR}{forward}(t) = \frac{i(t)}{\int_0^\infty i(t-\sigma) f_{t-\sigma}(\sigma) \dsigma}.
 \end{equation}
 However, this choice is also suboptimal as the forward distribution differs systematically from the instantaneous distribution.
+Here, we compare $\tsub{\RR}{forward}(t)$ with $\Ri(t)$ and $\Rc(t)$ to illustrate how it differs from them.
 
 \subsection{Quantifying changes in time-dependent growth rate}
 
@@ -443,32 +444,54 @@ Here, we compare two different scenarios, in which interventions are introduced 
 In the first scenarios, we consider smooth introduction and lifting of strength-like intervention, modeled by changes in $\beta$ while using fixed $\gamma$ (\fref{assumption}A).
 In the second scenarios, we consider sudden introduction and lifting of speed-like intervention, modeled by changes in $\gamma$ while using fixed $\beta$ (\fref{assumption}B).
 We refer to these two scenarios as \emph{equivalent} strength- and speed-like intervention scenarios because they give identical incidence curves (\fref{assumption}C), meaning that changes in $\beta$ and $\gamma$ are jointly unidentifiable from incidence curve alone (see Methods and Materials).
-In both cases, growth rate $r(t)$ estimates are identical and provide robust measures for whether incidence is increasing ($r(t) > 0$) or decreasing ($r(t) < 0$); however, reproduction numbers differ between two scenarios.
+In both cases, growth rate $r(t)$ estimates are identical and provide robust measures for whether incidence is increasing ($r(t) > 0$) or decreasing ($r(t) < 0$); however, reproduction number estimates differ between two scenarios.
 
-\begin{figure}
+\begin{figure}[!th]
 \includegraphics[width=\textwidth]{figure_sir_beta.pdf}
 \caption{
-\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent population-based intervention.}
-(A--C) Changes in instantaneous incidence over time.
-(D--F) Changes in instantaneous reproduction number $\RR(t)$, proportional reproduction number $\tsub{\RR}{prop}(t)$, and estimated $\RR(t)$ using EpiEstim.
-(G--I) Changes in instantaneous growth rate.
-(J--L) Changes in mean instantaneous, forward, and backward generation intervals.
+\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent strength-like intervention.}
+(A) Changes in true instantaneous reproduction number $\Ri(t)$, proportional reproduction number $\tsub{\RR}{prop}(t)$, estimated $\Ri(t)$ using EpiEstim, and estimted $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
+(B) Changes in true case reproduction number $\Rc(t)$, estimated $\Rc(t)$ using Wallinga-Teunis estimator with intrinsic generation-interval distribution, and estimted $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
+(C) Changes in mean instantaneous, forward, and backward generation intervals.
 }
 \label{fig:sir_beta}
 \end{figure}
 
 Epidemiological dynamics under equivalent strength-like interventions are presented in \fref{sir_beta}.
-In this case, the instantaneous reproduction number $\Ri(t)$ matches the proportional reproduction number $\tsub{\RR}{prop}(t)$ (\fref{sir_beta}D--F).
-Likewise, the estimated $\RR(t)$ using \texttt{EpiEstim} matches the true $\Ri(t)$;
-the initial overestimation of $\RR(t)$ is caused by left-censoring (\fref{sir_beta}D--F).
+In this case, the proportional reproduction number $\tsub{\RR}{prop}(t)$, which relies on the intrinsic generation-interval distribution, matches the instantaneous reproduction number $\Ri(t)$, which relies on the instantaneous generation-interval distribution (\fref{sir_beta}A).
+Therefore, we are able to correctly estimate $\Ri(t)$ using \texttt{EpiEstim} (\fref{sir_beta}A)---
+minor differences between \texttt{EpiEstim} estimates and $\tsub{\RR}{prop}(t)$ are caused by discretization.
+
+Likewise, we can accurately estimates the case reproduction number $\Rc(t)$ using the Wallinga-Teunis estimator based the intrinsic generation-interval distribution (\fref{sir_beta}B).
+This is because the instantaneous generation-interval distribution does not change over time under strength-like interventions (\fref{sir_beta}C).
+Using the forward generation-interval distribution, instead of the instantaenous generation-interval distribution, yields smooth, biased estimates ($\tsub{\RR}{forward}(t)$ in \fref{sir_beta}A) because the forward distribution changes, even when the instantaneous distribution does not change (\fref{sir_beta}C);
+instead, its shape better matches that of $\Rc(t)$.
+As described earlier (\fref{indpop}A--C), introducing and lifting strength-like interventions cause the forward generation intervals become shorter and longer, respectively (\fref{sir_beta}C);
+the backward distribution exaggerates these changes as it depends on the forward distributions as well as previous incidence.
+
+Epidemiological dynamics under equivalent strength-like interventions are presented in \fref{sir_semi}.
+In this case, $\tsub{\RR}{prop}(t)$ differs from the true $\Ri(t)$ (\fref{sir_semi}A) because changes in the instantaneous generation-interval distribution, caused by speed-like interventions (\fref{sir_semi}C).
+Therefore, \texttt{EpiEstim} inaccurately estimates $\Ri(t)$ (\fref{sir_semi}A)---
+in particular, \texttt{EpiEstim} estimates that $\Ri(t)$ crossed the threshold $\Ri(t)=1$ much later (around $t=60$) than it actually did (around $t=45$).
+
+Using the intrinsic distribution is also problematic for estimating the case reproduction number $\Rc(t)$ (\fref{sir_semi}B).
+The true $\Rc(t)$ changes sharply, reflecting sharp changes in the removal rate $\gamma(t)$ (\fref{assumption}B), but using the intrinsic distribution gives smooth estimates of $\Rc(t)$.
+In addition, $\tsub{\RR}{forward}(t)$ matches $\Ri(t)$ and $\Rc(t)$ better than their corresponding estimates using the intrinsic generation-interval distribution (EpiEstim and Wallinga-Teunis in \fref{sir_semi}, respectively) because the forward generation-interval distribution captures the effects of speed-like interventions (\fref{sir_semi}C).
+Surprisingly, the backward generation-interval distribution stays nearly constant because the effect of decreasing incidence (which lengthens the backward generation intervals) cancels out with that of shorter realized generation intervals, caused by speed-like interventions (\fref{sir_semi}C).
+
+Under both equivalent strength- and speed-like intervention scenarios, we see that neither $\Ri(t) > 1$ nor $\Rc(t) > 1$ neceesarily correspond to increasing incidence, $r(t) > 0$ (compare \fref{assumption}D with \fref{sir_beta} and \fref{sir_semi}).
+That is, incidence of infection $i(t)$ can increase (or decrease) at any given time $t$ even when $\Ri(t) < 1$ or $\Rc(t) < 1$ (and $\Ri(t) > 1$ or $\Rc(t) > 1$).
+Since $\Ri(t)$ is a counterfactual quantity, it does not describe what is happening at time $t$; instead it describes what can happen after time $t$ if conditions remain unchanged.
+Since $\Rc(t)$ describes what happened after time $t$, it is also not a good measure for what is happening at time $t$.
+On the other hand, $r(t)$ describes what is happening at time $t$ by definition.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figure_sir_semi.pdf}
 \caption{
-\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent individual-based intervention.}
-(A--C) Changes in instantaneous incidence over time.
-(D--F) Changes in instantaneous reproduction number $\RR(t)$, proportional reproduction number $\tsub{\RR}{prop}(t)$, and estimated $\RR(t)$ using EpiEstim.
-(G--I) Changes in mean instantaneous, forward, and backward generation intervals.
+\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent speed-like intervention.}
+(A) Changes in true instantaneous reproduction number $\Ri(t)$, proportional reproduction number $\tsub{\RR}{prop}(t)$, estimated $\Ri(t)$ using EpiEstim, and estimted $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
+(B) Changes in true case reproduction number $\Rc(t)$, estimated $\Rc(t)$ using Wallinga-Teunis estimator with intrinsic generation-interval distribution, and estimted $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
+(C) Changes in mean instantaneous, forward, and backward generation intervals.
 }
 \label{fig:sir_semi}
 \end{figure}

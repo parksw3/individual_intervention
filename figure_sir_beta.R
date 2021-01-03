@@ -1,4 +1,5 @@
 library(deSolve)
+library(tidyr)
 library(dplyr)
 library(ggplot2); theme_set(theme_bw())
 library(EpiEstim)
@@ -93,7 +94,8 @@ g1 <- ggplot(Ri) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
   scale_y_continuous("Reproduction number", limits=c(NA, 2)) +
-  scale_colour_viridis_d(begin=0, end=0.8) +
+  scale_color_manual(values=c("black", "#E69F00", "#56B4E9", "#009E73")) +
+  scale_linetype_manual(values=1:4) +
   scale_size_manual(values=c(1, 0.7, 0.7)) +
   theme(
     panel.grid = element_blank(),
@@ -109,7 +111,8 @@ g2 <- ggplot(Rc) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
   scale_y_continuous("Reproduction number", limits=c(0, 2)) +
-  scale_colour_viridis_d(begin=0, end=0.8, option="E") +
+  scale_color_manual(values=c("#F0E442", "#0072B2", "#009E73")) +
+  scale_linetype_manual(values=c(1, 2, 4)) +
   scale_size_manual(values=c(1, 0.7, 0.7)) +
   theme(
     panel.grid = element_blank(),
