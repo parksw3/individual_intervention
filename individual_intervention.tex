@@ -107,7 +107,7 @@ When an epidemic is ongoing, transmission dynamics are affected by changes in po
 these changes in transmission dynamics can be described by $\RR(t)$, often referred to as the \emph{effective} or \emph{time-dependent} reproduction number \citep{wallinga2004different, fraser2007estimating, cori2013new}.
 Interpretation and estimation of $\RR(t)$ have been a key area of research during the current COVID-19 pandemic due to its policy implications \citep{pan2020association,flaxman2020estimating,gostic2020practical}.
 
-One of the main challenges in interpretating $\RR(t)$ can be attributed, in part, to its standard definition.
+\jd{will reorg a bit} One of the main challenges in interpretating $\RR(t)$ can be attributed, in part, to its standard definition.
 As we also noted earlier, it is typically defined as the average number of new infections caused by an infected individual.
 While this definition is biologically intuitive, it is mathematically imprecise as we can define time-dependent reproduction numbers in two different ways.
 
@@ -119,21 +119,24 @@ On the other hand, the case reproduction number $\Rc(t)$---popularized by \cite{
 Since $\Rc(t)$ is a realized measure, $\Rc(t)$ depends on conditions after time $t$ and can only be estimated retrospectively.
 Although the verbal definition for $\RR(t)$ closely resembles that of $\Rc(t)$, its mathematical definition actually corresponds to that of $\Ri(t)$.
 Due to the imprecision in the verbal definition of $\RR(t)$, the counterfactual quality of $\Ri(t)$ (and therefore, $\RR(t)$) is often neglected in its interpretation---
-that is, $\Ri(t)$ does not necessarily tell us whether incidence is increasing or decreasing at time $t$.
+that is, $\Ri(t)$ does not necessarily tell us whether incidence is increasing or decreasing at time $t$. \jd{Do we need or want to say that \RR\ has a mathematical definition?}
 
+\jd{Adds to what? this seems tangential}
 Estimating $\Ri(t)$ and $\Rc(t)$ adds another layer of complexity as it requires knowledge of true incidence of infection $i(t)$ and the generation-interval distribution $g(\tau)$, where generation intervals describe time between infections of an infector and an infectee.
 Here, we focus on the latter: which generation-interval distribution do we need to estimate $\Ri(t)$ and $\Rc(t)$?
 Current frameworks for estimating of $\Ri(t)$ and $\Rc(t)$, including widely-used software such as EpiEstim, rely on a time-independent distribution to estimate $\Ri(t)$ throughout the entire epidemic \citep{cori2013new}.
 \cite{gostic2020practical} recently suggested that the intrinsic generation-interval distribution, which is different from the realized generation-interval distributions, is required to estimate $\Ri(t)$.
 However, it was noted more than a decade ago that the required distribution can change due to interventions that reduce infectiousness in later stages of infection \citep{fraser2007estimating}.
 
-We show that a counterfactual distribution---which we referred to as the instantaneous generation-interval distribution---is required to accurately estimate a counterfactual measure, $\Ri(t)$.
-Likewise, a realized distribution---the backward generation-interval distribution---is required to estimate a realized measure, $\Rc(t)$;
+We show that a counterfactual distribution---the instantaneous generation-interval distribution---is required to accurately estimate the counterfactual measure $\Ri(t)$.
+Likewise, a realized distribution---the backward generation-interval distribution---is required to estimate the realized measure $\Rc(t)$;
 since the renewal process can be equivalently expressed in terms of both $\Ri(t)$ and $\Rc(t)$ (and their corresponding distributions), we can also estimate $\Rc(t)$ using the instantaneous generation-interval distribution, obtaining a Wallinga-Teunis-like estimator \citep{wallinga2004different}.
-Under strength-like interventions (e.g., vaccination, social distancing, and mask wearing)---which we define as interventions whose relative effectiveness depends on population-level coverage (i.e., strength of intervention) but not on time since infection---the instantaneous generation-interval distribution remains unchanged (and therefore can be equivalent to the intrinsic distribution).
+\jd{Taken literally there is a contradiction here. We require backward GIs to estimate \Rc\, but we can do it without them.}
+
+\jd{A bit more introduction to these concepts, and cite our in-press.} Under strength-like interventions (e.g., vaccination, social distancing, and mask wearing)---which we define as interventions whose relative effectiveness depends on population-level coverage (i.e., strength of intervention) but not on time since infection---the instantaneous generation-interval distribution remains unchanged (and therefore can be equivalent to the intrinsic distribution). \jd{Can be is confusing here; I guess you're thinking of changes in susceptibles. It might be useful for us to talk more than we do about forward GIs.}
 On the other hand, under speed-like interventions (e.g., self-isolation and contact tracing)---which we define as interventions whose relative effectiveness depends on time since infection (and therefore the speed of intervention)---the instantaneous generation-interval distribution changes.
-Neglecting such changes can bias estimates of $\RR(t)$, including when it crosses the threshold $\RR(t)=1$.
-Instead, we generalize the idea of exponential growth rate $r$ beyond the exponential phase and show that growth rates $r(t)$ are robust under both strength- and speed-like responses as it does not require assumptions about the underlying distribution.
+Neglecting such changes can bias estimates of $\RR(t)$, including estimates of when it crosses the threshold $\RR(t)=1$.
+As an alternative, we explore the use of time-dependent rates of exponential growth rate $r(t)$. We show that growth rates $r(t)$ are robust under both strength- and speed-like responses as it does not require assumptions about the underlying distribution. \jd{For estimating what? It's not really about robustly estimating $r$ or \RR\ here, but about estimating drivers. Return to this.}
 
 \section{Mathematical theory}
 
