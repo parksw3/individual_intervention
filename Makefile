@@ -16,6 +16,22 @@ Sources += individual_intervention.tex
 
 ######################################################################
 
+## Figures are tikz and not pipelined yet 2021 May 04 (Tue)
+
+autowrapR = defined
+
+%.tex: %.Rout ;
+
+## scenarios.pdf: scenarios.R
+
+bgsim.Rout: bgsim.R sir-semi.rda
+	$(pipeR)
+
+scenarios.Rout: scenarios.R bgsim.rda
+	$(pipeR)
+
+######################################################################
+
 ### Makestuff
 
 ## Sources += $(wildcard *.mk)
@@ -31,7 +47,7 @@ makestuff/Makefile:
 
 -include makestuff/os.mk
 
--include makestuff/wrapR.mk
+-include makestuff/pipeR.mk
 -include makestuff/texi.mk
 
 -include makestuff/git.mk
