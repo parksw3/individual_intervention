@@ -197,10 +197,12 @@ since transmission dynamics can change rapidly during an ongoing epidemic, insta
 \includegraphics[width=1\textwidth]{pop_ind_compare.pdf}
 \caption{
 \textbf{The impact of population- and individual-based interventions on forward kernels.}
-The impact of constant strength (A--c) and speed (D--F) intervention on forward kernels of individuals infected at different time:
+The impact of constant strength (A--C) and speed (D--F) intervention on forward kernels of individuals infected at different time:
 5 days before intervention onset (A, D), during intervention (B, E), and 5 days before intervention offset (C, F).
-Gray shaded curves represent the intrinsic kernel $K_0(\tau)$.
-Colored curves represent the forward kernel $F_t(\tau)$.
+Gray shaded curves represent the intrinsic kernel $K_0(\tau)$, which is modeled using a gamma distribution with a mean of 5 days and a squared coefficient of variation of 0.2.
+Colored curves represent the forward kernel $F_t(\tau)$ under strength-like (A--C) and speed-like (D--F) interventions.
+The strength-like intervention is assumed to reduce kernel by a factor of 2.
+The speed-like intervention is assumed to have a constant hazard of $1/5/\textrm{days}$ during the intervention period.
 Solid black lines represent relative changes in the kernel: $F_t(\tau)/K_0(\tau)$.
 Solid vertical lines the mean intrinsic generation interval.
 Dashed vertical lines the mean forward generation interval.

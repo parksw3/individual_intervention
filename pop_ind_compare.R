@@ -11,7 +11,7 @@ R0 <- 2
 tstart <- 30
 tend <- 60
 
-gdist <- function(tau) dweibull(tau, shape=2.826, scale=5.665)
+gdist <- function(tau) dgamma(tau, shape=5, rate=1)
 
 Pfun <- function(t1, tstart, tend) {
   if (t1 >= tstart && t1 <= tend) {
