@@ -133,8 +133,8 @@ Likewise, a realized distribution---the backward generation-interval distributio
 since the renewal process can be equivalently expressed in terms of both $\Ri(t)$ and $\Rc(t)$ (and their corresponding distributions), we can also estimate $\Rc(t)$ using the instantaneous generation-interval distribution, obtaining a Wallinga-Teunis-like estimator \citep{wallinga2004different}.
 \jd{Taken literally there is a contradiction here. We require backward GIs to estimate \Rc\, but we can do it without them.}
 \swp{Not sure if it's a contradiction. We still need backward GI. I'm saying that you can rewrite backward GI using something else. That's not saying we don't need backward GI.}
-Under strength-like interventions (e.g., vaccination, social distancing, and mask wearing)---which we define as interventions whose relative effectiveness depends on population-level coverage (i.e., strength of intervention) but not on time since infection---the instantaneous generation-interval distribution remains unchanged (and therefore is equivalent to the intrinsic distribution).
-On the other hand, under speed-like interventions (e.g., self-isolation and contact tracing)---which we define as interventions whose relative effectiveness depends on time since infection (and therefore the speed of intervention)---the instantaneous generation-interval distribution changes.
+Under strength-like interventions (e.g., vaccination, social distancing, and mask wearing)---which we define as interventions whose relative effectiveness depends on population-level coverage (i.e., strength of intervention) but not on time since infection---the instantaneous generation-interval distribution remains unchanged.
+On the other hand, under speed-like interventions (e.g., self-isolation and contact tracing)---which we define as interventions whose relative effectiveness depends on time since infection (i.e., speed of intervention)---the instantaneous generation-interval distribution changes.
 Neglecting such changes can bias estimates of reproduction numbers (both $\Ri(t)$ and $\Rc(t)$), including when it crosses the threshold of 1.
 Instead, we generalize the idea of exponential growth rate $r$ beyond the exponential phase and show that the time-varying growth rate $r(t)$ is a robust measure for changes in incidence under both strength- and speed-like responses as it does not require assumptions about the underlying distribution.
 
@@ -516,10 +516,9 @@ Novel statistical methods are needed to accurately estimate the instantaneous di
 
 Most state-of-art statistical softwares for estimating reproduction numbers therefore assume that the generation-interval distributions remain constant---indeed, this may be the most parsimonious and best available approach given difficulties in estimating a counterfactual distribution.
 We refer to these estimates as proportional reproduction number as they capture proportional reduction in incidence, rather than transmission.
-Under 
 
 
-The renewal eqution framework based on the instantaneous form (\eref{renewal_instantaneous}) has been widely used in epidemic modeling due to its flexibility.
+The renewal equation framework based on the instantaneous form (\eref{renewal_instantaneous}) has been widely used in epidemic modeling due to its flexibility.
 A few studies relied on the forward form (\eref{renewal_forward}), but they incorrectly assumed a time-invariant generation-interval distribution;
 as we show here, the forward generation-interval distribution, paired with the case reproduction number, correctly 
 
@@ -527,14 +526,18 @@ as we show here, the forward generation-interval distribution, paired with the c
 Even when the case reproduction number was first introduced by \cite{wallinga2004different}, 
 To our knowledge, this is the first study to correctly link the case reproduction number with the forward renewal equation, using the forward generation-interval distribution, and demonstrate the equivalence 
 
+Our study has important practical implications for describing disease dynamics and communicating model estimates.
+
+
 
 \section{Methods}
 
+\subsection{Equivalent strength- and speed-like interventions}
 
 Here, we consider a simple scenario in which a flu-like pathogen with $\Ro = 1.5$ invades an immunologically naive population.
 In the beginning, the disease spreads without any intervention.
 On day 25, an intense case isolation measure is implemented. 
-On day 40, the intervention is completely/partially lifted.
+On day 40, the intervention is partially lifted.
 This is modeled as follows:
 \begin{equation}
 \beta(t) = 3/10\,\,\textrm{days}^{-1}, \gamma(t) = \begin{cases}
