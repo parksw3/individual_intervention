@@ -89,12 +89,14 @@ g1 <- ggplot(Ri) +
   geom_hline(yintercept=1, size=1, col="gray", lty=2) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
-  scale_y_continuous("Reproduction number", limits=c(NA, 2)) +
-  scale_colour_viridis_d(begin=0, end=0.8) +
-  scale_size_manual(values=c(1, 0.7, 0.7)) +
+  scale_y_log10("Reproduction number", limits=c(0.2, 2),
+                breaks=c(0.25, 0.5, 1, 2),
+                labels=c("1/4", "1/2", 1, 2)) +
+  scale_color_manual(values=c("black", "#E69F00", "#56B4E9", "#009E73")) +
+  scale_linetype_manual(values=1:4) +
   theme(
     panel.grid = element_blank(),
-    legend.position = c(0.9, 0.8),
+    legend.position = c(0.9, 0.3),
     legend.title = element_blank(),
     legend.background = element_blank(),
     axis.title.x = element_blank()
@@ -105,12 +107,13 @@ g2 <- ggplot(Rc) +
   geom_hline(yintercept=1, size=1, col="gray", lty=2) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
-  scale_y_continuous("Reproduction number", limits=c(0, 2)) +
-  scale_colour_viridis_d(begin=0, end=0.8, option="E") +
-  scale_size_manual(values=c(1, 0.7, 0.7)) +
+  scale_y_log10("Reproduction number", limits=c(0.2, 2),
+                breaks=c(0.25, 0.5, 1, 2),
+                labels=c("1/4", "1/2", 1, 2)) +
+  scale_color_manual(values=c("#F0E442", "#0072B2", "#009E73")) +
   theme(
     panel.grid = element_blank(),
-    legend.position = c(0.9, 0.84),
+    legend.position = c(0.9, 0.3),
     legend.title = element_blank(),
     legend.background = element_blank(),
     axis.title.x = element_blank()

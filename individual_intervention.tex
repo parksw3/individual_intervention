@@ -50,7 +50,7 @@
 \newcommand{\Ri}{\Rx{\mathrm{i}}}
 \newcommand{\RR}{\ensuremath{{\mathcal R}}\xspace}
 \newcommand{\Rhat}{\ensuremath{{\hat\RR}}}
-\newcommand{\Rnaive}{\ensuremath{{\mathcal R}_{\textrm{\tiny naive}}}\xspace}
+\newcommand{\Rprop}{\Rx{\mathrm{prop}}}
 \newcommand{\tsub}[2]{#1_{{\textrm{\tiny #2}}}}
 \newcommand{\dd}[1]{\ensuremath{\, \mathrm{d}#1}}
 \newcommand{\dtau}{\dd{\tau}}
@@ -107,63 +107,36 @@ When an epidemic is ongoing, transmission dynamics are affected by changes in po
 these changes in transmission dynamics can be described by $\RR(t)$, often referred to as the \emph{effective} or \emph{time-dependent} reproduction number \citep{wallinga2004different, fraser2007estimating, cori2013new}.
 Interpretation and estimation of $\RR(t)$ have been a key area of research during the ongoing COVID-19 pandemic due to its policy implications \citep{pan2020association,flaxman2020estimating,gostic2020practical}.
 
-<<<<<<< HEAD
 One of the main challenges in interpretating $\RR(t)$ can be attributed, in part, to its standard definition: the average number of new infections caused by an infected individual.
 While this definition is biologically intuitive, it is mathematically imprecise as time-dependent reproduction numbers can be defined in multiple ways, depending on the cohort (e.g., a group of individuals who developed symptoms or were infected at the same time) and the types of transmission scenarios (i.e., realized or counterfactual transmission processes).
 Here, we primarily focus on two main measures of transmission that look at a cohort of infectees or infectors that were infected at the same time: the instantaneous reproduction number $\Ri(t)$ and the case reproduction number $\Rc(t)$.
-=======
-\jd{will reorg a bit} One of the main challenges in interpretating $\RR(t)$ can be attributed, in part, to its standard definition.
-As we also noted earlier, it is typically defined as the average number of new infections caused by an infected individual.
-While this definition is biologically intuitive, it is mathematically imprecise as we can define time-dependent reproduction numbers in two different ways.
->>>>>>> f090c63bbc564fa146245f2bab8dfd44fe99b970
 
 First, the instantaneous reproduction number $\Ri(t)$---popularized by \cite{cori2013new}---corresponds to the average number of new infections that an individual infected at time $t$ (i.e., an individual from a cohort of infectees) will generate over the course of their infection if conditions at time $t$ remain unchanged \citep{fraser2007estimating}.
 The instantaneous reproduction number $\Ri(t)$ characterizes conditions at time $t$ and provides a real-time estimate of whether the disease will continue to spread if conditions were to stay the same.
 However, since transmission dynamics change throughout an epidemic, $\Ri(t)$ is a counterfactual measure and must be interpreted with care.
 
 On the other hand, the case reproduction number $\Rc(t)$---popularized by \cite{wallinga2004different}---corresponds to the average number of new infections that an individual infected at time $t$ generated over the course of their infection.
-<<<<<<< HEAD
 $\Rc(t)$ is a realized measure, which depends on conditions after time $t$ and can only be estimated retrospectively.
-Although the verbal definition for $\RR(t)$ (``the average number of new infections caused by an infected individual'') closely resembles that of $\Rc(t)$, its mathematical definition actually corresponds to that of $\Ri(t)$ \citep{gostic2020practical}.
+Although the verbal definition for $\RR(t)$ (``the average number of new infections caused by an infected individual'') closely resembles that of $\Rc(t)$, its mathematical definitions from compartmental models (e.g., basic reproduction multiplied by the proportion susceptible) actually correspond to that of $\Ri(t)$ \citep{gostic2020practical}.
 Due to the imprecision of the verbal definition of $\RR(t)$, the counterfactual quality of $\Ri(t)$ (and therefore, $\RR(t)$) is often neglected in its interpretation---
 specifically, in contrast to a widely accepted view, $\Ri(t) > 1$ or $<1$ does not provide information about whether the number of infections is increasing or decreasing at time $t$.
 
-Estimating $\Ri(t)$ and $\Rc(t)$ adds another layer of complexity as it requires knowledge of true incidence of infection $i(t)$ and the generation-interval distribution $g(\tau)$, where generation intervals describe time between infections of an infector and an infectee \citep{svensson2007note}.
+Estimating $\Ri(t)$ and $\Rc(t)$ requires knowledge of true incidence of infection $i(t)$ and the generation-interval distribution $g(\tau)$, where generation intervals describe time between infections of an infector and an infectee \citep{svensson2007note}.
 Here, we focus on the latter: which generation-interval distributions do we need to correctly estimate $\Ri(t)$ and $\Rc(t)$?
-=======
-Since $\Rc(t)$ is a realized measure, $\Rc(t)$ depends on conditions after time $t$ and can only be estimated retrospectively.
-Although the verbal definition for $\RR(t)$ closely resembles that of $\Rc(t)$, its mathematical definition actually corresponds to that of $\Ri(t)$.
-Due to the imprecision in the verbal definition of $\RR(t)$, the counterfactual quality of $\Ri(t)$ (and therefore, $\RR(t)$) is often neglected in its interpretation---
-that is, $\Ri(t)$ does not necessarily tell us whether incidence is increasing or decreasing at time $t$. \jd{Do we need or want to say that \RR\ has a mathematical definition?}
-
-\jd{Adds to what? this seems tangential}
-Estimating $\Ri(t)$ and $\Rc(t)$ adds another layer of complexity as it requires knowledge of true incidence of infection $i(t)$ and the generation-interval distribution $g(\tau)$, where generation intervals describe time between infections of an infector and an infectee.
-Here, we focus on the latter: which generation-interval distribution do we need to estimate $\Ri(t)$ and $\Rc(t)$?
->>>>>>> f090c63bbc564fa146245f2bab8dfd44fe99b970
 Current frameworks for estimating of $\Ri(t)$ and $\Rc(t)$, including widely-used software such as EpiEstim, rely on a time-independent distribution to estimate $\Ri(t)$ throughout the entire epidemic \citep{cori2013new}.
 \cite{gostic2020practical} recently suggested that the intrinsic generation-interval distribution (measuring the intrinsic infectiousness of an infected individual, \cite{champredon2015intrinsic}), which is different from the realized generation-interval distributions, is required to estimate $\Ri(t)$.
 However, it was noted more than a decade ago that the required distribution to estimate $\Ri(t)$ can change due to interventions that reduce infectiousness in later stages of infection \citep{fraser2007estimating}.
 
-<<<<<<< HEAD
 To answer this question, we provide a mathematical framework that correctly links $\Ri(t)$ and $\Rc(t)$ with the renewal process of infection.
 We show that a counterfactual distribution---which we referred to as the instantaneous generation-interval distribution---is required to accurately estimate a counterfactual measure of transmission, $\Ri(t)$.
 Likewise, a realized distribution---the backward generation-interval distribution---is required to estimate a realized measure of transmission, $\Rc(t)$;
 since the renewal process can be equivalently expressed in terms of both $\Ri(t)$ and $\Rc(t)$ (and their corresponding distributions), we can also estimate $\Rc(t)$ using the instantaneous generation-interval distribution, obtaining a Wallinga-Teunis-like estimator \citep{wallinga2004different}.
+\jd{Taken literally there is a contradiction here. We require backward GIs to estimate \Rc\, but we can do it without them.}
+\swp{Not sure if it's a contradiction. We still need backward GI. I'm saying that you can rewrite backward GI using something else. That's not saying we don't need backward GI.}
 Under strength-like interventions (e.g., vaccination, social distancing, and mask wearing)---which we define as interventions whose relative effectiveness depends on population-level coverage (i.e., strength of intervention) but not on time since infection---the instantaneous generation-interval distribution remains unchanged (and therefore is equivalent to the intrinsic distribution).
 On the other hand, under speed-like interventions (e.g., self-isolation and contact tracing)---which we define as interventions whose relative effectiveness depends on time since infection (and therefore the speed of intervention)---the instantaneous generation-interval distribution changes.
 Neglecting such changes can bias estimates of reproduction numbers (both $\Ri(t)$ and $\Rc(t)$), including when it crosses the threshold of 1.
-Instead, we generalize the idea of exponential growth rate $r$ beyond the exponential phase and show that growth rates $r(t)$ are robust under both strength- and speed-like responses as it does not require assumptions about the underlying distribution.
-=======
-We show that a counterfactual distribution---the instantaneous generation-interval distribution---is required to accurately estimate the counterfactual measure $\Ri(t)$.
-Likewise, a realized distribution---the backward generation-interval distribution---is required to estimate the realized measure $\Rc(t)$;
-since the renewal process can be equivalently expressed in terms of both $\Ri(t)$ and $\Rc(t)$ (and their corresponding distributions), we can also estimate $\Rc(t)$ using the instantaneous generation-interval distribution, obtaining a Wallinga-Teunis-like estimator \citep{wallinga2004different}.
-\jd{Taken literally there is a contradiction here. We require backward GIs to estimate \Rc\, but we can do it without them.}
-
-\jd{A bit more introduction to these concepts, and cite our in-press.} Under strength-like interventions (e.g., vaccination, social distancing, and mask wearing)---which we define as interventions whose relative effectiveness depends on population-level coverage (i.e., strength of intervention) but not on time since infection---the instantaneous generation-interval distribution remains unchanged (and therefore can be equivalent to the intrinsic distribution). \jd{Can be is confusing here; I guess you're thinking of changes in susceptibles. It might be useful for us to talk more than we do about forward GIs.}
-On the other hand, under speed-like interventions (e.g., self-isolation and contact tracing)---which we define as interventions whose relative effectiveness depends on time since infection (and therefore the speed of intervention)---the instantaneous generation-interval distribution changes.
-Neglecting such changes can bias estimates of $\RR(t)$, including estimates of when it crosses the threshold $\RR(t)=1$.
-As an alternative, we explore the use of time-dependent rates of exponential growth rate $r(t)$. We show that growth rates $r(t)$ are robust under both strength- and speed-like responses as it does not require assumptions about the underlying distribution. \jd{For estimating what? It's not really about robustly estimating $r$ or \RR\ here, but about estimating drivers. Return to this.}
->>>>>>> f090c63bbc564fa146245f2bab8dfd44fe99b970
+Instead, we generalize the idea of exponential growth rate $r$ beyond the exponential phase and show that the time-varying growth rate $r(t)$ is a robust measure for changes in incidence under both strength- and speed-like responses as it does not require assumptions about the underlying distribution.
 
 \section{Mathematical theory}
 
@@ -347,11 +320,7 @@ f_{t-\tau}(\tau) = \frac{K(t,\tau)}{\int_0^\infty K(t-\tau+\sigma,\sigma) \dsigm
 \end{equation}
 The forward distribution $f_{t-\tau}(\tau)$ is normalized by the average number of new infections caused by an individual infected at time $t-\tau$ (i.e., the case reproduction number, $\Rc(t-\tau)$).
 On the other hand, the instantaneous distribution $g(t, \tau)$ is normalized by the sum of average number of new infections that an individual infected at time $t-\sigma$ generated at time $t$ (integrated across $\sigma$).
-
-Therefore, even if we can observe all realized generation intervals throughout an epidemic, estimating the instantaneous distribution $g(t, \tau)$ is not trivial.
-Even within a homogeneously mixing population, in which the disease is allowed to spread unchecked (and therefore $g(t, \tau) = g_0(\tau)$ for all $t$), aggregating all realized generation intervals underestimates the mean intrinsic generation interval due to susceptible depletion \citep{park2020inferring}.
-Either a deconvolution or a novel statistical tool is needed to accurately estimate the instantaneous distribution $g(t, \tau)$.
-To our knowledge, no studies have accomplished this yet.
+While we can exactly calculate how the instantaneous generation-interval distribution changes over the course of an epidemic in theory, estimating such changes in practice is expected to be a difficult problem.
 
 \subsection{Quantifying changes in time-dependent reproduction numbers}
 
@@ -382,9 +351,9 @@ Given incidence between time $0$ and $t-\epsilon$ for $\epsilon > 0$, we can cal
 \begin{align}
 p(t) &= \frac{\Ro S(t) \PP(t) \int_0^\infty \II(t, \sigma) g_0(\sigma) i(t-\sigma)\dsigma}{\Ro S(t) \int_0^\infty g_0(\sigma) i(t-\sigma) \dsigma}.
 \end{align}
-By substituting true incidence $i(t)$ in the numerator and rearranging, we obtain the classical expression for the estimator for $\RR(t)$---which we refer to as $\tsub{\RR}{prop}(t)$---that depends on the proportion of the susceptible population and proportional reduction in incidence, rather than reduction in infectiousness:
+By substituting true incidence $i(t)$ in the numerator and rearranging, we obtain the classical expression for the estimator for $\RR(t)$---which we refer to as $\Rprop(t)$---that depends on the proportion of the susceptible population and proportional reduction in incidence, rather than reduction in infectiousness:
 \begin{equation}
-\tsub{\RR}{prop}(t) = \Ro S(t) p(t) = \frac{i(t)}{\int_0^\infty g_0(\sigma) i(t-\sigma) \dsigma}.
+\Rprop(t) = \Ro S(t) p(t) = \frac{i(t)}{\int_0^\infty g_0(\sigma) i(t-\sigma) \dsigma}.
 \end{equation}
 Despite its wide use, this estimator is difficult to interpret and does not necessarily serve as a threshold value.
 
@@ -484,7 +453,7 @@ In both cases, growth rate $r(t)$ estimates are identical (\fref{assumption}D) a
 \includegraphics[width=\textwidth]{figure_sir_beta.pdf}
 \caption{
 \textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent strength-like intervention.}
-(A) Changes in true instantaneous reproduction number $\Ri(t)$, proportional reproduction number $\tsub{\RR}{prop}(t)$, estimated $\Ri(t)$ using EpiEstim, and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
+(A) Changes in true instantaneous reproduction number $\Ri(t)$, proportional reproduction number $\Rprop(t)$, estimated $\Ri(t)$ using EpiEstim (assuming a population of one million), and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
 (B) Changes in true case reproduction number $\Rc(t)$, estimated $\Rc(t)$ using Wallinga-Teunis estimator with intrinsic generation-interval distribution, and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
 (C) Changes in mean instantaneous, forward, and backward generation intervals.
 }
@@ -492,9 +461,10 @@ In both cases, growth rate $r(t)$ estimates are identical (\fref{assumption}D) a
 \end{figure}
 
 Epidemiological dynamics under equivalent strength-like interventions are presented in \fref{sir_beta}.
-In this case, the proportional reproduction number $\tsub{\RR}{prop}(t)$, which relies on the intrinsic generation-interval distribution, matches the instantaneous reproduction number $\Ri(t)$, which relies on the instantaneous generation-interval distribution (\fref{sir_beta}A).
-Therefore, we are able to correctly estimate $\Ri(t)$ using \texttt{EpiEstim} (\fref{sir_beta}A)---
-minor differences between \texttt{EpiEstim} estimates and $\tsub{\RR}{prop}(t)$ are caused by discretization.
+In this case, the proportional reproduction number $\Rprop(t)$, which relies on the intrinsic generation-interval distribution, matches the instantaneous reproduction number $\Ri(t)$, which relies on the instantaneous generation-interval distribution (\fref{sir_beta}A).
+Therefore, we are able to correctly estimate $\Ri(t)$ using \texttt{EpiEstim} (\fref{sir_beta}A).
+The initial overestimation from \texttt{EpiEstim} is caused by the left censoring \citep{gostic2020practical}.
+Minor differences between \texttt{EpiEstim} estimates and $\Rprop(t)$ are caused by discretization.
 
 Likewise, we can accurately estimates the case reproduction number $\Rc(t)$ using the Wallinga-Teunis estimator based the intrinsic generation-interval distribution (\fref{sir_beta}B).
 This is because the instantaneous generation-interval distribution does not change over time under strength-like interventions (\fref{sir_beta}C).
@@ -502,11 +472,12 @@ Using the forward generation-interval distribution, instead of the instantaneous
 instead, its shape better matches that of $\Rc(t)$.
 As described earlier (\fref{indpop}A--C), introducing and lifting strength-like interventions cause the forward generation intervals become shorter and longer, respectively (\fref{sir_beta}C);
 the backward distribution exaggerates these changes as it depends on the forward distributions as well as previous incidence.
+The mean backward generation interval begins from 0 days in this case due to left censoring.
 
 Epidemiological dynamics under equivalent speed-like interventions are presented in \fref{sir_semi}.
-In this case, $\tsub{\RR}{prop}(t)$ differs from the true $\Ri(t)$ (\fref{sir_semi}A) because changes in the instantaneous generation-interval distribution, caused by speed-like interventions (\fref{sir_semi}C).
+In this case, $\Rprop(t)$ differs from the true $\Ri(t)$ (\fref{sir_semi}A) because changes in the instantaneous generation-interval distribution, caused by speed-like interventions (\fref{sir_semi}C).
 Therefore, \texttt{EpiEstim} inaccurately estimates $\Ri(t)$ (\fref{sir_semi}A)---
-in particular, \texttt{EpiEstim} estimates that $\Ri(t)$ crossed the threshold $\Ri(t)=1$ much later (around $t=60$) than it actually did (around $t=45$).
+in particular, \texttt{EpiEstim} estimates that $\Ri(t)$ crossed the threshold $\Ri(t)=1$ later (around $t=55$) than it actually did (around $t=45$).
 
 Using the intrinsic distribution is also problematic for estimating the case reproduction number $\Rc(t)$ (\fref{sir_semi}B).
 The true $\Rc(t)$ changes sharply, reflecting sharp changes in the removal rate $\gamma(t)$ (\fref{assumption}B), but using the intrinsic distribution gives smooth estimates of $\Rc(t)$.
@@ -523,7 +494,7 @@ On the other hand, $r(t)$ describes what is happening at time $t$ by definition.
 \includegraphics[width=\textwidth]{figure_sir_semi.pdf}
 \caption{
 \textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent speed-like intervention.}
-(A) Changes in true instantaneous reproduction number $\Ri(t)$, proportional reproduction number $\tsub{\RR}{prop}(t)$, estimated $\Ri(t)$ using EpiEstim, and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
+(A) Changes in true instantaneous reproduction number $\Ri(t)$, proportional reproduction number $\Rprop(t)$, estimated $\Ri(t)$ using EpiEstim (assuming a population of one million), and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
 (B) Changes in true case reproduction number $\Rc(t)$, estimated $\Rc(t)$ using Wallinga-Teunis estimator with intrinsic generation-interval distribution, and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
 (C) Changes in mean instantaneous, forward, and backward generation intervals.
 }
@@ -534,13 +505,27 @@ On the other hand, $r(t)$ describes what is happening at time $t$ by definition.
 
 The impact of epidemic interventions are often characterized by changes in ``effective'' reproduction numbers, $\RR(t)$.
 Despite historical emphasis on estimating $\RR(t)$, current frameworks neglect possibility that the underlying generation-interval distribution can change over time---an insight that goes back $>10$ years \citep{fraser2007estimating}.
-Here, we distinguish two reproduction numbers: instantaneous reproduction number $\Ri(t)$ and case reproduction number $\Rc(t)$, describing counterfactual and realized transmission processes, respectively.
-We then show a counterfactual generation-interval distribution, which we refer to as the instantaneous generation-interval distribution, is required to correctly estimate the instantaneous reproduction number. 
+Here, we distinguish two reproduction numbers---instantaneous reproduction number $\Ri(t)$ and case reproduction number $\Rc(t)$, which describe counterfactual and realized transmission processes, respectively---and show that both reproduction numbers can correctly describe the renewal process of infection when paired with correct generation-interval distributions.
+In particular, a counterfactual generation-interval distribution, which we refer to as the instantaneous generation-interval distribution, is required to correctly estimate the instantaneous reproduction number. 
 This distribution is affected by speed-like, but not strength-like, interventions.
-Neglecting changes in this distribution biases estimates of $\Ri(t)$, including when $\Ri(t)$ crosses the threshold value of 1.
+Neglecting changes in this distribution gives biased estimates of $\Ri(t)$, including when $\Ri(t)$ crosses the threshold value of 1.
+
+However, estimating the instantaneous generation-interval distribution is expected to be difficult as it systematically differs from the realized generation intervals: even if we can observe all realized generation intervals throughout an epidemic, estimating the instantaneous distribution $g(t, \tau)$ is not trivial.
+For example, even within a homogeneously mixing population, in which the disease is allowed to spread unchecked (and therefore $g(t, \tau) = g_0(\tau)$ for all $t$), aggregating all realized generation intervals underestimates the mean intrinsic generation interval due to susceptible depletion \citep{park2020inferring}.
+Novel statistical methods are needed to accurately estimate the instantaneous distribution $g(t, \tau)$.
+
+Most state-of-art statistical softwares for estimating reproduction numbers therefore assume that the generation-interval distributions remain constant---indeed, this may be the most parsimonious and best available approach given difficulties in estimating a counterfactual distribution.
+We refer to these estimates as proportional reproduction number as they capture proportional reduction in incidence, rather than transmission.
+Under 
 
 
+The renewal eqution framework based on the instantaneous form (\eref{renewal_instantaneous}) has been widely used in epidemic modeling due to its flexibility.
+A few studies relied on the forward form (\eref{renewal_forward}), but they incorrectly assumed a time-invariant generation-interval distribution;
+as we show here, the forward generation-interval distribution, paired with the case reproduction number, correctly 
 
+
+Even when the case reproduction number was first introduced by \cite{wallinga2004different}, 
+To our knowledge, this is the first study to correctly link the case reproduction number with the forward renewal equation, using the forward generation-interval distribution, and demonstrate the equivalence 
 
 
 \section{Methods}
@@ -564,11 +549,11 @@ Simulations are run for 100 days based on the following initial conditions: $S(0
 Since we assume that incidence is known exactly until time $t^\ast$, we can, in fact, estimate the transmission rate $\beta^\ast(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives identical incidence trajectory until time $t^\ast$.
 This transmission rate is given by:
 \begin{equation}
-\beta^\ast(t) = \frac{\tsub{\RR}{prop}(t)\gamma(0)}{S(t)}.
+\beta^\ast(t) = \frac{\Rprop(t)\gamma(0)}{S(t)}.
 \end{equation}
 More generally, given true incidence $i(t)$ and true $\RR(t)$ until time $t^\ast$, modulated by some combination of population- and individual-based intervention, we can find population intervention $\PP^\ast(t)$ that gives identical incidence until time $t^\ast$:
 \begin{equation}
-\PP^\ast(t) = \frac{\tsub{\RR}{prop}(t)}{S(t)}.
+\PP^\ast(t) = \frac{\Rprop(t)}{S(t)}.
 \end{equation}
 We refer to this intervention as the \emph{equivalent} population-based intervention.
 
