@@ -191,7 +191,7 @@ The forward renewal equation reveals an important insight: Even if the instantan
 Therefore, renewal equation models that rely on the forward form (\eref{renewal_forward}) but assume time-invariant $f_t(\tau)$ are theoretically unjustified and should not be used.
 \jd{I would like to expand this treatment a bit. What would you think of introducing the current \eref{fkernel} in two steps?}
 
-\jd{I am not seeing how this \P works. It shows $g$ makes sense in the linearized case -- but everything makes sense in the linearized case; it's only indirect evidence for indirectness and I think makes things less clear? Hard for me to tell.}
+\jd{I am not seeing how this \P\ works. It shows $g$ makes sense in the linearized case -- but everything makes sense in the linearized case; it's only indirect evidence for indirectness and I think makes things less clear? Hard for me to tell.}
 The forward renewal equation further allows us to verify that the instantaneous quantities ($\Ri(t, \tau)$ and $g(t, \tau)$) indeed represent counterfactual conditions:
 Assuming that conditions at time $t$ remain constant (i.e., if $K(s, \tau) = K(t, \tau)$ for all $s \geq t$), we obtain $F_{t}(\tau) = K(t, \tau)$ (and therefore, $\Rc(t) = \Ri(t)$ and $f_{t}(\tau) = g(t,\tau)$).
 In other words, $\Ri(t)$ and $g(t,\tau)$ describe number of secondary infections that an individual infected at time $t$ will generate, and when these infections will occur, if conditions at time $t$ remain constant;
@@ -215,6 +215,8 @@ Dashed vertical lines the mean forward generation interval.
 }
 \label{fig:indpop}
 \end{figure}
+
+\jd{Should we outline pure strength and pure speed first? Most individual-level interventions are more mixed according to the original idea. Sorry that I'm waffling a bit here.}
 
 To model the impact of intervention during an ongoing epidemic, we first distinguish strength-like interventions, which reduces the infectiousness of all (or some fraction of) infected individuals by a constant amount regardless of their time since infection, from speed-like interventions, which target each infected individual separately and therefore depend on their time of infection \citep{dushoff2021speed}.
 Strength-like interventions can be thought of as population-level interventions that reduce the transmission rate and include social distancing, school closures, and vaccination.
