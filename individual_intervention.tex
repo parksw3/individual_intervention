@@ -112,9 +112,10 @@ One of the main challenges in interpreting $\RR(t)$ can be attributed, in part, 
 While this definition is biologically intuitive, it is mathematically imprecise as time-dependent reproduction numbers can be defined in multiple ways, depending on the cohort (e.g., a group of individuals who developed symptoms or were infected at the same time) and the types of transmission scenarios (i.e., realized or counterfactual transmission processes).
 Here, we primarily focus on two main measures of transmission that look at a cohort of infectees or infectors that were infected at the same time: the instantaneous reproduction number $\Ri(t)$ and the case reproduction number $\Rc(t)$.
 
-\jd{Is it worth trying to be clear that classic \Ri\ doesn't actually depend on when the person gets infected, only on when the conditions are held constant at?}
-First, the instantaneous reproduction number $\Ri(t)$---popularized by \cite{cori2013new}---corresponds to the average number of new infections that an individual infected at time $t$ (i.e., an individual from a cohort of infectees) will generate over the course of their infection if conditions at time $t$ remain unchanged \citep{fraser2007estimating}.
-The instantaneous reproduction number $\Ri(t)$ characterizes conditions at time $t$ and provides a real-time estimate of whether the disease will continue to spread if conditions were to stay the same.
+\jd{Is it worth trying to be clear that classic \Ri\ doesn't actually depend on when the person gets infected, only on when the conditions are held constant at?} \swp{How about this?}
+First, the instantaneous reproduction number $\Ri(t)$---popularized by \cite{cori2013new}---was initially defined as the average number of new infections that an individual infected at time $t$ (i.e., an individual from a cohort of infectees) will generate over the course of their infection if conditions at time $t$ remain unchanged \citep{fraser2007estimating}. 
+We further note that $\Ri(t)$ does not actually depend on when the person gets infected, only on when the conditions are held constant at---that is, if we ``freeze'' conditions at time $t$, anyone who become infected after time $t$ will cause same number of infections on average.
+Therefore, the instantaneous reproduction number $\Ri(t)$ characterizes transmission conditions at time $t$ and provides a real-time estimate of whether the disease will continue to spread if conditions were to stay the same \citep{gostic2020practical}.
 However, since transmission dynamics change throughout an epidemic, $\Ri(t)$ is a counterfactual measure and must be interpreted with care.
 
 On the other hand, the case reproduction number $\Rc(t)$---popularized by \cite{wallinga2004different}---corresponds to the average number of new infections that an individual infected at time $t$ generated over the course of their infection.
@@ -136,6 +137,7 @@ since the renewal process can be equivalently expressed in terms of both $\Ri(t)
 \jd{Taken literally there is a contradiction here. We require backward GIs to estimate \Rc\, but we can do it without them.}
 \swp{Not sure if it's a contradiction. We still need backward GI. I'm saying that you can rewrite backward GI using something else. That's not saying we don't need backward GI.}
 \jd{The question is: ``required'' in what sense? How is it used? Is it rR-ish?}
+\swp{I'll wait til you get to it.}
 Under strength-like interventions (e.g., vaccination, social distancing, and mask wearing)---which we define as interventions whose relative effectiveness does not depend on time since infection---the instantaneous generation-interval distribution remains unchanged.
 On the other hand, under speed-like interventions (e.g., self-isolation and contact tracing)---which we define as interventions whose relative effectiveness depends on time since infection (i.e., speed of intervention)---the instantaneous generation-interval distribution changes.
 Neglecting such changes can bias estimates of reproduction numbers (both $\Ri(t)$ and $\Rc(t)$), including estimates of when they cross the threshold $\RR=1$.
@@ -147,8 +149,8 @@ Instead, we generalize the idea of exponential growth rate $r$ beyond the expone
 
 The renewal equation framework provides a flexible way of modeling the spread of infection and the impact of intervention on the spread \citep{fraser2007estimating}.
 Let $K(t, \tau)$ represent the infection kernel, defined as the rate at which secondary cases are generated at time $t$ by an individual infected $\tau$ time units ago (we will use $s, t$ to denote calendar time and $\sigma, \tau$ to denote time since infection throughout).
-The shape of this kernel can depend on intrinsic factors (e.g., variation in infectiousness over the course of infection) or extrinsic factors (e.g., susceptible depletion, non-pharmaceutical interventions, and changes in behavior).
-\jd{susceptible depletion is often seen as dynamically intrinsic. just saying.}
+The shape of this kernel can depend on characteristics of the infection (e.g., variation in infectiousness over the course of infection) as well as other population-level factors (e.g., susceptible depletion, non-pharmaceutical interventions, and changes in behavior).
+\jd{susceptible depletion is often seen as dynamically intrinsic. just saying.} \swp{See if you like them.}
 Then, incidence of infection at time $t$ caused by a cohort of individuals infected $\tau$ time units ago can be written as the product of kernel, $K(t, \tau)$, and incidence at time $t-\tau$, $i(t-\tau)$:
 \begin{equation}
 i_{t-\tau}(t) = K(t, \tau) i(t-\tau).
@@ -173,10 +175,9 @@ i(t) &= \Ri(t) \int_0^\infty g(t, \sigma) i(t-\sigma) \dsigma.
 \end{align}
 For example, if disease parameters remain constant in a simple model, we would expect $\Ri(t) = \Ro S(t)$ and $g(t, \tau) = g_0(\tau)$, where $g_0(\tau)$ represents the intrinsic generation-interval distribution.
 
-Now, consider the forward kernel $F_t(\tau)$, which represents the rate at which an individual infected at time $t$ generates secondary cases $\tau$ time units after infection: 
-\jd{This “rate” seems very good; make sure we use it above as well.}
+Now, consider the forward kernel $F_t(\tau)$, which represents the rate at which an individual infected at time $t$ generates secondary infections $\tau$ time units after infection: 
 \begin{equation}
-F_t(\tau) = K(t+\tau, \tau) = \Ri(t + \tau) g(t+\tau, \tau).
+F_t(\tau) = K(t+\tau, \tau).
 \label{eq:fkernel}
 \end{equation}
 The integral of $F(t, \tau)$, representing the total infectiousness of an individual infected at time $t$, corresponds to the case reproduction number: $\Rc(t) = \int F_t(\sigma) \dsigma$. 
@@ -187,15 +188,18 @@ Then, the forward renewal equation can be written as:
 i(t) &= \int_0^\infty \Rc(t-\sigma) f_{t-\sigma}(\sigma) i(t-\sigma) \dsigma.
 \label{eq:renewal_forward}
 \end{align}
-The forward renewal equation reveals an important insight: Even if the instantaneous generation-interval distribution $g(t, \tau)$ remains invariant across time (i.e., $g(t, \tau) = g_0(\tau)$), changes in $\Ri(t)$ causes the forward generation-interval distribution to change (see \eref{fkernel}).
-Therefore, renewal equation models that rely on the forward form (\eref{renewal_forward}) but assume time-invariant $f_t(\tau)$ are theoretically unjustified and should not be used.
-\jd{I would like to expand this treatment a bit. What would you think of introducing the current \eref{fkernel} in two steps?}
+Rewriting the forward kernel in terms of instantaneous quantities reveals an important insight: Even if the instantaneous generation-interval distribution $g(t, \tau)$ remains invariant across time (i.e., $g(t, \tau) = g_0(\tau)$), changes in transmission conditions (therefore, $\Ri(t)$) causes the forward generation-interval distribution to change (see \eref{fkernel}):
+\begin{equation}
+F_t(\tau) = \Ri(t + \tau) g(t+\tau, \tau).
+\end{equation}
+Therefore, renewal equation models that rely on the forward form (\eref{renewal_forward}) but assume time-invariant $f_t(\tau)$ are mathematically incorrect and should be avoided.
 
 \jd{I am not seeing how this \P\ works. It shows $g$ makes sense in the linearized case -- but everything makes sense in the linearized case; it's only indirect evidence for indirectness and I think makes things less clear? Hard for me to tell.}
-The forward renewal equation further allows us to verify that the instantaneous quantities ($\Ri(t, \tau)$ and $g(t, \tau)$) indeed represent counterfactual conditions:
+\swp{See if you like the edit}
+The forward renewal equation further allows us to verify that the instantaneous quantities ($\Ri(t)$ and $g(t, \tau)$) matches the forward realized quantities ($\Rc(t)$ and $f_t(\tau)$) when conditions remain constant, a key premise in defining instantaneous quantities:
 Assuming that conditions at time $t$ remain constant (i.e., if $K(s, \tau) = K(t, \tau)$ for all $s \geq t$), we obtain $F_{t}(\tau) = K(t, \tau)$ (and therefore, $\Rc(t) = \Ri(t)$ and $f_{t}(\tau) = g(t,\tau)$).
-In other words, $\Ri(t)$ and $g(t,\tau)$ describe number of secondary infections that an individual infected at time $t$ will generate, and when these infections will occur, if conditions at time $t$ remain constant;
-since transmission dynamics can change rapidly during an ongoing epidemic, instantaneous quantities must be interpreted with care.
+In other words, $\Ri(t)$ and $g(t,\tau)$ describe number of secondary infections that an individual infected at time $t$ will generate, and when these infections will occur, if conditions at time $t$ remain constant.
+Since transmission dynamics can change rapidly during an ongoing epidemic, instantaneous quantities must be interpreted with care.
 
 \subsection{Strength- and speed-like interventions}
 
@@ -217,6 +221,7 @@ Dashed vertical lines the mean forward generation interval.
 \end{figure}
 
 \jd{Should we outline pure strength and pure speed first? Most individual-level interventions are more mixed according to the original idea. Sorry that I'm waffling a bit here.}
+\swp{It's there. I think you'll get to it very soon.}
 
 To model the impact of intervention during an ongoing epidemic, we first distinguish strength-like interventions, which reduces the infectiousness of all (or some fraction of) infected individuals by a constant amount regardless of their time since infection, from speed-like interventions, which target each infected individual separately and therefore depend on their time of infection \citep{dushoff2021speed}.
 Strength-like interventions can be thought of as population-level interventions that reduce the transmission rate and include social distancing, school closures, and vaccination.
