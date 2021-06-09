@@ -529,19 +529,27 @@ However, estimating the instantaneous generation-interval distribution is expect
 For example, even within a homogeneously mixing population, in which the disease is allowed to spread unchecked (and therefore $g(t, \tau) = g_0(\tau)$ for all $t$), aggregating all realized generation intervals underestimates the mean intrinsic generation interval due to susceptible depletion \citep{park2020inferring}.
 Novel statistical methods are needed to accurately estimate the instantaneous distribution $g(t, \tau)$.
 
-Most state-of-art statistical softwares for estimating reproduction numbers therefore assume that the generation-interval distributions remain constant---indeed, this may be the most parsimonious and best available approach given difficulties in estimating a counterfactual distribution.
-We refer to these estimates as proportional reproduction number as they capture proportional reduction in incidence, rather than transmission.
+Most state-of-art statistical softwares for estimating reproduction numbers therefore assume that the instantaneous generation-interval distributions does not change across time (e.g., \citep{10.12688/wellcomeopenres.16006.2,flaxman2020estimating,brauner2021inferring})---indeed, this may be the most parsimonious and best available approach given difficulties in estimating a counterfactual distribution.
+We refer to these estimates as proportional reproduction number $\Rprop$ as they capture proportional reduction in incidence, rather than transmission.
+This reproduction number estimate can differ systematically from the true instantaneous reproduction number $\Ri$ under speed-like interventions such as contact tracing.
+
+In the context of the current SARS-CoV-2 pandemic, assuming a time-invariant generation-interval distribution could have been justified during the early period given that most interventions were strength-like, including lockdowns, school closures, and travel bans \citep{flaxman2020estimating,li2021temporal,brauner2021inferring}.
+Nonetheless, speed-like interventions, including intense contact tracing efforts \citep{park2020contact} and introduction of contact tracing apps \citep{wymant2021introduction}, had clear, non-negligible impact on the overall spread;
+these interventions, including awareness-driven behavioral changes (which can cause symptomatic individuals to self-isolate faster), are likely to have shortened the instantaneous generation intervals by preventing transmission during later stages of infection.
+Therefore, current estimates of $\Ri$ which relies on early estimates of the generation-interval distributions may be biased and reassessed.
+Future studies should also consider incorporating hazard-based changes for modeling speed-like interventions.
+
+Our study highlights the value of growth rates in characterizing epidemic spread.
 
 
 The renewal equation framework based on the instantaneous form (\eref{renewal_instantaneous}) has been widely used in epidemic modeling due to its flexibility.
-A few studies relied on the forward form (\eref{renewal_forward}), but they incorrectly assumed a time-invariant generation-interval distribution;
-as we show here, the forward generation-interval distribution, paired with the case reproduction number, correctly 
+A few studies relied on the forward form (\eref{renewal_forward}), but they incorrectly assumed a time-invariant generation-interval distribution \citep{nishiura2007time,alvarez2020variational,white2021statistical}.
+As we show here, the forward generation-interval distributions, which change over time as transmission conditions change, correctly links the renewal process when paired with the case reproduction number.
+To our knowledge, this is the first study to correctly link the case reproduction number with the forward renewal equation and to demonstrate the equivalence between the forward and instantaneous renewal formulations---
+even when the case reproduction number was first introduced by \cite{wallinga2004different}, they did not explicitly link the case reproduction number to the renewal process.
+Our study provides theoretical foundation for modeling epidemic processes.
 
-
-Even when the case reproduction number was first introduced by \cite{wallinga2004different}, 
-To our knowledge, this is the first study to correctly link the case reproduction number with the forward renewal equation, using the forward generation-interval distribution, and demonstrate the equivalence 
-
-Our study has important practical implications for describing disease dynamics and communicating model estimates.
+Our study has practical implications for describing disease dynamics and communicating model estimates.
 
 
 
