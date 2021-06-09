@@ -539,8 +539,13 @@ these interventions, including awareness-driven behavioral changes (which can ca
 Therefore, current estimates of $\Ri$ which relies on early estimates of the generation-interval distributions may be biased and reassessed.
 Future studies should also consider incorporating hazard-based changes for modeling speed-like interventions.
 
-Our study highlights the value of growth rates in characterizing epidemic spread.
-
+Our study highlights the value of growth rates $r(t)$ in characterizing epidemic spread \citep{abbott2020temporal,anderson2020reproduction}.
+The instantaneous reproduction number $\Ri(t)$ tell us whether the epidemic will continue to grow if conditions remain the same but does not tell us whether the epidemic is growing or not at a given moment.
+In contrast, $r(t)$ provides a robust measure of whether incidence is growing or decreasing at a given time under both strength- and speed-like interventions;
+but it does not provide information about future epidemic dynamics.
+\cite{parag2021epidemic} recently argued that $\RR(t)=1$ correspond to $r(t) = 0$ under correct assumptions about pathogen transmission and that $\RR(t)$ is theoretically more informative---however, we argue that this conclusion depends on their assumption to link $\RR(t)$ and $r(t)$ via the generation-interval distribution, an assumption that holds only when conditions remain constant.
+As we show here, this is not the case when conditions are changing---that is, the sign of $r(t)$ does not need to correspond to whether $\RR(t)$ is greater or less than 1.
+Time-varying reproduction number $\RR(t)$ and growth rate $r(t)$ encompass different information and should be used as complementary measures for describing epidemic dynamics \citep{dushoff2021speed}.
 
 The renewal equation framework based on the instantaneous form (\eref{renewal_instantaneous}) has been widely used in epidemic modeling due to its flexibility.
 A few studies relied on the forward form (\eref{renewal_forward}), but they incorrectly assumed a time-invariant generation-interval distribution \citep{nishiura2007time,alvarez2020variational,white2021statistical}.
