@@ -422,9 +422,9 @@ Although this measure seems tautological, it is the best available measure for c
 
 In order to understand how strength- and speed-based interventions affect disease spread, we use a semi-mechanistic SIR model to generate synthetic data and compare various estimates of $\RR(t)$ and $r(t)$:
 \begin{align}
-\frac{\dd{S}}{\dd{t}} &= - \beta(t)S I,\\
+\frac{\dd{S}}{\dd{t}} &= - \beta(t)S I, \label{eq:dSdt}\\
 \frac{\dd{I}}{\dd{t}} &= \beta(t)S I - \gamma(t) I,\\
-\frac{\dd{R}}{\dd{t}} &= \gamma(t) I,
+\frac{\dd{R}}{\dd{t}} &= \gamma(t) I,  \label{eq:dRdt}
 \end{align}
 where $S$, $I$, $R$ represent proportion of individuals that are susceptible, infected, and removed (either due to recovery or isolation measures);
 $\beta(t)$ represent time-varying transmission rate; and $\gamma(t)$ represent time-varying removal rate.
@@ -561,31 +561,32 @@ Our study provides theoretical foundation for modeling epidemic processes.
 
 \subsection{Equivalent strength- and speed-like interventions}
 
-Here, we consider a simple scenario in which a flu-like pathogen with $\Ro = 1.5$ invades an immunologically naive population.
-In the beginning, the disease spreads without any intervention.
-On day 25, an intense case isolation measure is implemented. 
-On day 40, the intervention is partially lifted.
+Here, we model a simple scenario in which a flu-like pathogen with $\Ro = 1.5$ invades an immunologically naive population using the semi-mechanistic SIR model (\eref{dSdt}--\eref{dRdt}).
+We begin by modeling speed-like intervention and find the equivalent strength-like intervention.  
+In particular, we assume that the disease spreads without any intervention in the beginning;
+on day 25, an intense case isolation measure is implemented; and
+on day 40, the intervention is partially lifted.
 This is modeled as follows:
 \begin{equation}
 \beta(t) = 3/10\,\,\textrm{days}^{-1}, \gamma(t) = \begin{cases}
 1/5\,\, \textrm{days}^{-1} & t < 25\\
 1/2\,\, \textrm{days}^{-1} & 25 \leq t < 40 \\
-\tsub{\gamma}{late} & 40 \leq t
-\end{cases},
+1/4\,\, \textrm{days}^{-1} & 40 \leq t
+\end{cases}.
 \end{equation}
-where we vary $\tsub{\gamma}{late}$ between $1/3\,\, \textrm{days}^{-1}$ (partial lifting) and $1/5\,\, \textrm{days}^{-1}$ (complete lifting).
 Simulations are run for 100 days based on the following initial conditions: $S(0) = 1 - 10^{-3}$, $I(0) = 10^{-3}$, and $R(0) = 0$.
 
 Since we assume that incidence is known exactly until time $t^\ast$, we can, in fact, estimate the transmission rate $\beta^\ast(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives identical incidence trajectory until time $t^\ast$.
 This transmission rate is given by:
 \begin{equation}
-\beta^\ast(t) = \frac{\Rprop(t)\gamma(0)}{S(t)}.
+\beta^\ast(t) = \frac{\Rprop(t)\gamma(0)}{S(t)},
 \end{equation}
-More generally, given true incidence $i(t)$ and true $\RR(t)$ until time $t^\ast$, modulated by some combination of population- and individual-based intervention, we can find population intervention $\PP^\ast(t)$ that gives identical incidence until time $t^\ast$:
+where the proportional reproduction number $\Rprop$ is calculated from the incidence curve $i(t)$.
+More generally, given true incidence $i(t)$ until time $t^\ast$, modulated by any combination of strength- and speed-like interventions, we can find equivalent strength-like intervention $\PP^\ast(t)$ until time $t^\ast$:
 \begin{equation}
-\PP^\ast(t) = \frac{\Rprop(t)}{S(t)}.
+\PP^\ast(t) = \frac{\Rprop(t)}{\Ro S(t)},
 \end{equation}
-We refer to this intervention as the \emph{equivalent} population-based intervention.
+which generates an identical incidence curve when the initial conditions are identical.
 
 \bibliography{individual_intervention}
 
