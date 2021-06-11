@@ -77,7 +77,7 @@
 \newcommand{\total}{{\mathcal T}} %% total number of serial intervals
 
 \newcommand{\PP}{{\mathcal P}}
-\newcommand{\II}{{\mathcal I}}
+\newcommand{\II}{\ensuremath{\mathcal I}}
 
 \begin{document}
 
@@ -194,9 +194,7 @@ F_t(\tau) = \Ri(t + \tau) g(t+\tau, \tau).
 \end{equation}
 Therefore, renewal equation models that rely on the forward form (\eref{renewal_forward}) but assume time-invariant $f_t(\tau)$ are mathematically incorrect and should be avoided.
 
-\jd{I am not seeing how this \P\ works. It shows $g$ makes sense in the linearized case -- but everything makes sense in the linearized case; it's only indirect evidence for indirectness and I think makes things less clear? Hard for me to tell.}
-\swp{See if you like the edit}
-The forward renewal equation further allows us to verify that the instantaneous quantities ($\Ri(t)$ and $g(t, \tau)$) matches the forward realized quantities ($\Rc(t)$ and $f_t(\tau)$) when conditions remain constant, a key premise in defining instantaneous quantities:
+The forward renewal equation further allows us to confirm that the instantaneous quantities ($\Ri(t)$ and $g(t, \tau)$) match the forward realized quantities ($\Rc(t)$ and $f_t(\tau)$) when conditions remain constant:
 Assuming that conditions at time $t$ remain constant (i.e., if $K(s, \tau) = K(t, \tau)$ for all $s \geq t$), we obtain $F_{t}(\tau) = K(t, \tau)$ (and therefore, $\Rc(t) = \Ri(t)$ and $f_{t}(\tau) = g(t,\tau)$).
 In other words, $\Ri(t)$ and $g(t,\tau)$ describe number of secondary infections that an individual infected at time $t$ will generate, and when these infections will occur, if conditions at time $t$ remain constant.
 Since transmission dynamics can change rapidly during an ongoing epidemic, instantaneous quantities must be interpreted with care.
@@ -220,13 +218,12 @@ Dashed vertical lines the mean forward generation interval.
 \label{fig:indpop}
 \end{figure}
 
-\jd{Should we outline pure strength and pure speed first? Most individual-level interventions are more mixed according to the original idea. Sorry that I'm waffling a bit here.}
-\swp{It's there. I think you'll get to it very soon.}
-
+\jd{Need to write intro ss a bit more carefully.}
 To model the impact of intervention during an ongoing epidemic, we first distinguish strength-like interventions, which reduces the infectiousness of all (or some fraction of) infected individuals by a constant amount regardless of their time since infection, from speed-like interventions, which target each infected individual separately and therefore depend on their time of infection \citep{dushoff2021speed}.
 Strength-like interventions can be thought of as population-level interventions that reduce the transmission rate and include social distancing, school closures, and vaccination.
 Speed-like interventions can be thought of as individual-level interventions that reduce the duration of infectious periods and include case isolation and behavioral changes (e.g., symptomatic individuals are more likely to self-isolate earlier as awareness increases).
 While our primary focuses are instantaneous quantities ($\Ri(t)$ and $g(t, \tau)$), we first illustrate the impact of strength- and speed-like interventions using realized (forward) quantities as they describe realized transmission processes and are easier to interpret.
+\jd{I feel like ``realized'' should generalize forward, backward and maybe censored, and that we should say ``forward'' when we mean forward.}
 
 Let $\PP(t)$ represent a strength-like intervention that modulates the infection kernel multiplicatively at calendar time $t$ such that $\PP(t)=1$ corresponds to intervention that has no effect and $\PP(t) < 1$ corresponds to intervention that reduces transmission.
 Then, the infection kernel under $\PP$ at calendar time $t$ can be written as:
@@ -239,7 +236,7 @@ F_t(\tau) =  \Ro S(t+\tau) \PP(t + \tau) g_0(\tau).
 \end{equation}
 Here, we see that strength-like interventions have qualitatively same impact on transmission dynamics as susceptible depletion.
 
-For example, a social distancing measure that reduces transmission rate by a factor of $1/\phi$ (i.e., constant strength) between time \tstart and \tend can be modeled as:
+For example, a social distancing measure that multiplies transmission by a factor of $1/\phi$ (i.e., constant strength) between time \tstart and \tend can be modeled as:
 \begin{equation}
 \PP(t) = \begin{cases}
 1 & t < \tstart\\
@@ -247,16 +244,18 @@ For example, a social distancing measure that reduces transmission rate by a fac
 1 & \tend \leq t
 \end{cases}.
 \end{equation}
-\fref{indpop}A--C illustrates the impact of such intervention on the forward kernel of an individual infected 5 days before $\tstart$, at $\tstart$, and 5 days before $\tend$ (assuming $S(t) \approx 1$).
+\fref{indpop}A--C illustrates the impact of such intervention on the forward kernel of an individual infected 5 days before $\tstart$, at $\tstart$, and 5 days before $\tend$ (assuming changes in $S(t)$ are negligible).
 Strength-like interventions can take effect immediately and sharply reduce transmission (\fref{indpop}A);
 likewise, lifting the intervention can, in theory, can cause the forward kernel to return back to normal immediately (\fref{indpop}C).
-Even though the exact shape of the kernel depends on the time of infection and when the intervention was introduced relative to the infection time, the relative impact of intervention in reducing transmission at any given time (by a factor of $1/\phi$) does not vary across individuals (\fref{indpop}A--C).
-Such intervention also has direct effects on realized generation intervals:
-implementing (lifting) intervention decreases (increases) future transmission potential and therefore decreases (increases) the mean realized generation interval (\fref{indpop}A,C).
+Even though the exact shape of the kernel depends on the time of infection and when the intervention was introduced relative to the infection time, the relative impact of intervention in reducing transmission at any given time (by a factor of $1/\phi$) does not vary across individuals (\fref{indpop}A--C). \jd{Not clear what point is made in last clause.}
+Such intervention has predictable effects on mean generation intervals:
+implementing (lifting) intervention decreases (increases) future transmission potential and therefore decreases (increases) the mean forward generation interval (\fref{indpop}A,C).
 If an individual is infected after \tstart (and much earlier than \tend), this intervention simply reduces the entire kernel by a constant amount and has no effect on realized generation intervals (\fref{indpop}B).
-This mechanism explains and further generalizes how susceptible depletion leads to contraction of realized generation intervals in a homogeneously mixing population \citep{kenah2008generation,nishiura2010time,champredon2015intrinsic}. 
+This observation generalizes the phenomenon of contraction of realized generation intervals due to susceptible depletion [[necessary? in a homogeneously mixing population]] \citep{kenah2008generation,nishiura2010time,champredon2015intrinsic}. 
 
-On the other hand, a speed-like intervention $\II(t, \tau)$, such as case isolation, targets each infected individual and therefore depends on calendar time $t$ as well as time since infection $\tau$.
+\jd{Sorry to get hung up on the wrong things. If we are using \II, we should introduce it earlier and use it to write what we mean by a strength-like intervention. I think we should also frame general interventions first, then talk about ``pure'' strength and speed intervention, and finally use -like for real interventions that are similar to pure interventions.}
+
+On the other hand, a speed-like intervention $\II(t, \tau)$, such as case isolation, targets each infected individual and therefore depends on time since infection $\tau$ as well as on calendar time.
 In theory, $\II(t, \tau)$ can capture almost all interventions, including strength-like interventions; here, we use $\II(t, \tau)$ to specifically model interventions that take the following form:
 \begin{equation}
 \II(t, \tau) = \exp \left(- \int_0^\tau h(t-\tau+\sigma, \sigma) \dsigma \right),
