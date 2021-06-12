@@ -62,6 +62,7 @@
 
 \newcommand{\betaeff}{\ensuremath{\tsub{\beta}{eff}}\xspace}
 \newcommand{\Keff}{\ensuremath{\tsub{K}{eff}}\xspace}
+\newcommand{\Kpost}{\ensuremath{\tsub{K}{post}}\xspace}
 
 \newcommand{\pt}{p} %% primary time
 \newcommand{\st}{s} %% secondary time
@@ -78,6 +79,7 @@
 
 \newcommand{\PP}{{\mathcal P}}
 \newcommand{\II}{\ensuremath{\mathcal I}}
+\newcommand{\HH}{\ensuremath{\mathcal H}}
 
 \begin{document}
 
@@ -150,7 +152,6 @@ Instead, we generalize the idea of exponential growth rate $r$ beyond the expone
 The renewal equation framework provides a flexible way of modeling the spread of infection and the impact of intervention on the spread \citep{fraser2007estimating}.
 Let $K(t, \tau)$ represent the infection kernel, defined as the rate at which secondary cases are generated at time $t$ by an individual infected $\tau$ time units ago (we will use $s, t$ to denote calendar time and $\sigma, \tau$ to denote time since infection throughout).
 The shape of this kernel can depend on characteristics of the infection (e.g., variation in infectiousness over the course of infection) as well as other population-level factors (e.g., susceptible depletion, non-pharmaceutical interventions, and changes in behavior).
-\jd{susceptible depletion is often seen as dynamically intrinsic. just saying.} \swp{See if you like them.}
 Then, incidence of infection at time $t$ caused by a cohort of individuals infected $\tau$ time units ago can be written as the product of kernel, $K(t, \tau)$, and incidence at time $t-\tau$, $i(t-\tau)$:
 \begin{equation}
 i_{t-\tau}(t) = K(t, \tau) i(t-\tau).
@@ -174,6 +175,11 @@ i(t) &= \Ri(t) \int_0^\infty g(t, \sigma) i(t-\sigma) \dsigma.
 \label{eq:renewal_instantaneous}
 \end{align}
 For example, if disease parameters remain constant in a simple model, we would expect $\Ri(t) = \Ro S(t)$ and $g(t, \tau) = g_0(\tau)$, where $g_0(\tau)$ represents the intrinsic generation-interval distribution.
+The intrinsic generation-interval distribution also links the basic reproduction number $\Ro$ with the initial exponential growth rate $r$ via the Euler-Lotka equation:
+\begin{equation}
+\frac{1}{\Ro} = \int_0^\infty \exp(-r \sigma) g_0(\sigma) \dsigma.
+\label{eq:euler_lotka}
+\end{equation}
 
 Now, consider the forward kernel $F_t(\tau)$, which represents the rate at which an individual infected at time $t$ generates secondary infections $\tau$ time units after infection: 
 \begin{equation}
@@ -218,14 +224,30 @@ Dashed vertical lines the mean forward generation interval.
 \label{fig:indpop}
 \end{figure}
 
-\jd{Need to write intro ss a bit more carefully.}
-To model the impact of intervention during an ongoing epidemic, we first distinguish strength-like interventions, which reduces the infectiousness of all (or some fraction of) infected individuals by a constant amount regardless of their time since infection, from speed-like interventions, which target each infected individual separately and therefore depend on their time of infection \citep{dushoff2021speed}.
-Strength-like interventions can be thought of as population-level interventions that reduce the transmission rate and include social distancing, school closures, and vaccination.
-Speed-like interventions can be thought of as individual-level interventions that reduce the duration of infectious periods and include case isolation and behavioral changes (e.g., symptomatic individuals are more likely to self-isolate earlier as awareness increases).
-While our primary focuses are instantaneous quantities ($\Ri(t)$ and $g(t, \tau)$), we first illustrate the impact of strength- and speed-like interventions using realized (forward) quantities as they describe realized transmission processes and are easier to interpret.
-\jd{I feel like ``realized'' should generalize forward, backward and maybe censored, and that we should say ``forward'' when we mean forward.}
+To model the impact of intervention during an ongoing epidemic, we introduce an intervention function $\II(t, \tau)$ which can depend on both calendar time $t$ as well as time since infection $\tau$. Then, the infection kernel under  $\II$ at calendar time $t$ can be written as:
+\begin{equation}
+K(t, \tau) = \Ro S(t) \II(t, \tau) g_0(\tau).
+\end{equation}
+While the intervention function $\II$ can capture introduction and lifting of any kinds of interventions, we begin by discussing two idealized interventions, which we refer to as constant-strength and constant-speed interventions, and generalize them to model strength- and speed-like interventions \citep{dushoff2021speed}.
 
-Let $\PP(t)$ represent a strength-like intervention that modulates the infection kernel multiplicatively at calendar time $t$ such that $\PP(t)=1$ corresponds to intervention that has no effect and $\PP(t) < 1$ corresponds to intervention that reduces transmission.
+First, consider a constant-strength intervention that suppresses the kernel by a constant amount, $\II(t, \tau) = 1/\phi$:
+\begin{equation}
+K(t, \tau) = \Ro S(t) g_0(\tau)/\phi,
+\end{equation}
+where $\phi$ represents the intervention strength and must be greater than the epidemic strength $\Ro$ to control the epidemic.
+This type of intervention can be used to model reduction in susceptibility (e.g., vaccination) or and contact rates (e.g., social distancing and school closures).
+Likewise, we can also consider a constant speed-intervention, $\II(\tau) = \exp(-h\tau)$:
+\begin{equation}
+K(t, \tau) = \Ro S(t) g_0(\tau) \exp(-h\tau),
+\end{equation}
+where $h$ represents the intervention speed and must be greater than the epidemic speed $r$ (\eref{euler_lotka}) to control the epidemic.
+This intervention is analogous to contact tracing and isolation measures that affect the kernel disproportionately across age of infection.
+
+We now introduce strength-like intervention $\PP(t)$ and speed-like intervention $\HH(t, \tau)$ that generalize these interventions and explore how they affect epidemic dynamics over time.
+While our primary focuses are instantaneous quantities ($\Ri(t)$ and $g(t, \tau)$), we first illustrate the impact of strength- and speed-like interventions using forward quantities as they describe realized transmission processes and are easier to interpret.
+
+Let $\PP(t)$ represent a strength-like intervention that modulates the infection kernel multiplicatively at calendar time $t$.
+Analogous to the constant-strength intervention, the effectiveness of $\PP(t)$ depends only on its intensity at time $t$ and not on age of infection. 
 Then, the infection kernel under $\PP$ at calendar time $t$ can be written as:
 \begin{equation}
 K(t, \tau) = \Ro S(t) \PP(t) g_0(\tau).
@@ -236,7 +258,7 @@ F_t(\tau) =  \Ro S(t+\tau) \PP(t + \tau) g_0(\tau).
 \end{equation}
 Here, we see that strength-like interventions have qualitatively same impact on transmission dynamics as susceptible depletion.
 
-For example, a social distancing measure that multiplies transmission by a factor of $1/\phi$ (i.e., constant strength) between time \tstart and \tend can be modeled as:
+For example, a constant-strength intervention that suppresses transmission by a factor of $\phi$ between time \tstart and \tend can be modeled as:
 \begin{equation}
 \PP(t) = \begin{cases}
 1 & t < \tstart\\
@@ -251,33 +273,32 @@ Even though the exact shape of the kernel depends on the time of infection and w
 Such intervention has predictable effects on mean generation intervals:
 implementing (lifting) intervention decreases (increases) future transmission potential and therefore decreases (increases) the mean forward generation interval (\fref{indpop}A,C).
 If an individual is infected after \tstart (and much earlier than \tend), this intervention simply reduces the entire kernel by a constant amount and has no effect on realized generation intervals (\fref{indpop}B).
-This observation generalizes the phenomenon of contraction of realized generation intervals due to susceptible depletion [[necessary? in a homogeneously mixing population]] \citep{kenah2008generation,nishiura2010time,champredon2015intrinsic}. 
+This observation generalizes the phenomenon of contraction of realized generation intervals due to susceptible depletion \citep{kenah2008generation,nishiura2010time,champredon2015intrinsic}. 
 
 \jd{Sorry to get hung up on the wrong things. If we are using \II, we should introduce it earlier and use it to write what we mean by a strength-like intervention. I think we should also frame general interventions first, then talk about ``pure'' strength and speed intervention, and finally use -like for real interventions that are similar to pure interventions.}
 
-On the other hand, a speed-like intervention $\II(t, \tau)$, such as case isolation, targets each infected individual and therefore depends on time since infection $\tau$ as well as on calendar time.
-In theory, $\II(t, \tau)$ can capture almost all interventions, including strength-like interventions; here, we use $\II(t, \tau)$ to specifically model interventions that take the following form:
+On the other hand, a we can model generalized speed-like interventions $\HH(t, \tau)$ in the following form:
 \begin{equation}
-\II(t, \tau) = \exp \left(- \int_0^\tau h(t-\tau+\sigma, \sigma) \dsigma \right),
+\HH(t, \tau) = \exp \left(- \int_0^\tau h(t-\tau+\sigma, \sigma) \dsigma \right),
 \end{equation}
 where $h(t, \tau)$ represents the rate at which an individual infected $\tau$ time units ago will be isolated at calendar time $t$.
-Then, $\II(t,\tau)$ can be interpreted as the probability that an individual infected $\tau$ time units ago has not been isolated by calendar time $t$.
-In this case, the infection kernel under $\II$ at calendar time $t$ is given by:
+Then, $\HH(t,\tau)$ can be interpreted as the probability that an individual infected $\tau$ time units ago has not been isolated by calendar time $t$.
+In this case, the infection kernel under $\HH$ at calendar time $t$ is given by:
 \begin{equation}
-K(t, \tau) = \Ro S(t) \II(t, \tau) g_0(\tau).
+K(t, \tau) = \Ro S(t) \HH(t, \tau) g_0(\tau).
 \end{equation}
-Likewise, the forward kernel of an individual infected at time $t$ under $\II$ can be written as:
+Likewise, the forward kernel of an individual infected at time $t$ under $\HH$ can be written as:
 \begin{equation}
-F_t(\tau) = \Ro S(t+\tau) \II(t+\tau, \tau) g_0(\tau).
+F_t(\tau) = \Ro S(t+\tau) \HH(t+\tau, \tau) g_0(\tau).
 \end{equation}
 This intervention is speed-like because its effectiveness depends on how fast we can isolate infected individuals.
 
-For example, given hazard $h(\tau)$ of being isolated, the probability that an individual infected at time $t$ has not been isolated by $\tau$ time units after infection given that the intervention takes place between time \tstart and \tend depends on the amount of time the individual has been exposed to this intervention.
+For example, given constant hazard $h(\tau)$ of being isolated between time \tstart and \tend, the probability that an individual infected at time $t$ has not been isolated by $\tau$ time units after infection depends on the amount of time the individual has been exposed to this intervention.
 If the individual is infected before $\tstart$, they will not be isolated by this intervention until after $\tstart$.
 If the individual is infected after $\tend$, they will never be isolated by this intervention.
 Therefore, such intervention can be modeled as:
 \begin{equation}
-\II(t+\tau, \tau) = \begin{cases}
+\HH(t+\tau, \tau) = \begin{cases}
 1 & t < \tstart-\tau \\
 \exp\left(- \int_{\max(0, \tstart - t)}^{\min(\tau, \tend-t)} h(\sigma)\dd{\sigma} \right) & \tstart-\tau \leq t < \tend \\
 1 & \tend \leq t
@@ -289,23 +310,23 @@ that is, the rate at which an infected individual generates secondary infections
 On the other hand, when the intervention is lifted at $\tend$, the value of the kernel at calendar time $\tend$ ($F_t(\tend-t)$ in \fref{indpop}F; more generally, $K(\tend, \tau)$) remains unchanged because some fraction of infected individuals have already been isolated.
 In general, speed-like interventions shorten realized generation intervals because they prevent late transmission (\fref{indpop}D--E).
 
-Finally, given strength- and speed-like interventions, $P(t)$ and $I(t, \tau)$, the infection kernel can be written as:
+Finally, we can decompose the generalized intervention function $\HH(t, \tau)$ as a product of strength and speeed like intervention: $\HH(t, \tau) = \PP(t) \HH(t, \tau)$. Then, the infection kernel can be written as:
 \begin{equation}
-K(t, \tau) = \Ro S(t) \PP(t) \II(t,\tau) g_0(\tau).
+K(t, \tau) = \Ro S(t) \PP(t) \HH(t,\tau) g_0(\tau).
 \end{equation}
 The corresponding forward kernel can be written as:
 \begin{equation}
-F_t(\tau) = \Ro S(t+\tau) \PP(t + \tau) \II(t+\tau, \tau) g_0(\tau).
+F_t(\tau) = \Ro S(t+\tau) \PP(t + \tau) \HH(t+\tau, \tau) g_0(\tau).
 \end{equation}
 Therefore, the dynamics of $S(t)$ and $i(t)$ can be now written as:
 \begin{align}
 \frac{\mathrm{d}S}{\mathrm{d}t} &= - i(t),\\
-i(t) &= \Ro S(t) \PP(t) \int_0^\infty \II(t, \sigma) g_0(\sigma) i(t-\sigma)\dsigma.
+i(t) &= \Ro S(t) \PP(t) \int_0^\infty \HH(t, \sigma) g_0(\sigma) i(t-\sigma)\dsigma.
 \end{align}
 In this case, the instantaneous reproduction number and generation-interval distributions are given by:
 \begin{align}
-\Ri(t) &= \RR_0 S(t) \PP(t) \int_0^\infty \II(t,\sigma) g_0(\sigma) \dsigma,\\
-g(t, \tau) &= \frac{\II(t,\tau) g_0(\tau)}{\int_0^\infty \II(t,\sigma) g_0(\sigma) \dsigma},
+\Ri(t) &= \RR_0 S(t) \PP(t) \int_0^\infty \HH(t,\sigma) g_0(\sigma) \dsigma,\\
+g(t, \tau) &= \frac{\HH(t,\tau) g_0(\tau)}{\int_0^\infty \HH(t,\sigma) g_0(\sigma) \dsigma},
 \end{align}
 which allow us to express the renewal equation in the form of \eref{renewal_instantaneous}.
 Therefore, the instantaneous generation-interval distribution changes under speed-like interventions but not under strength-like interventions, even though both types of interventions affect the realized generation-interval distribution.
@@ -341,7 +362,7 @@ While we can exactly calculate how the instantaneous generation-interval distrib
 The impact of intervention can be measured by the instantaneous reproduction number $\Ri(t)$:
 \begin{align}
 \Ri(t) &= \int_0^\infty K(t, \sigma) \dsigma, \\
-&= \RR_0 S(t) \PP(t) \int_0^\infty \II(t,\sigma) g_0(\sigma) \dsigma.
+&= \RR_0 S(t) \PP(t) \int_0^\infty \HH(t,\sigma) g_0(\sigma) \dsigma.
 \label{eq:rt}
 \end{align}
 Since $\Ri(t)$ measures conditions at time $t$, we expect to detect changes in $\Ri(t)$ as soon as intervention is implemented.
@@ -349,7 +370,7 @@ Therefore, it provides a real-time measure for whether the disease will continue
 
 Estimating $\Ri(t)$ depends on the instantaneous generation-interval distribution $g(t, \tau)$, rather than the intrinsic generation-interval distribution $g_0(\tau)$:
 \begin{equation}
-g(t, \tau) = \frac{K(t, \tau)}{\RR(t)} = \frac{\II(t,\tau) g_0(\tau)}{\int_0^\infty \II(t,\sigma) g_0(\sigma) \dsigma},
+g(t, \tau) = \frac{K(t, \tau)}{\RR(t)} = \frac{\HH(t,\tau) g_0(\tau)}{\int_0^\infty \HH(t,\sigma) g_0(\sigma) \dsigma},
 \end{equation}
 which can vary across time under speed-like interventions.
 By rearranging \eref{renewal}, we obtain the following estimator for $\RR(t)$:
@@ -363,7 +384,7 @@ such method accurately captures changes in $\Ri(t)$ under strength-like interven
 In general, when both strength- and speed-like interventions are present during an ongoing epidemic, the classical estimator that assumes a time-invariant generation-interval distribution measures a slightly different quantity.
 Given incidence between time $0$ and $t-\epsilon$ for $\epsilon > 0$, we can calculate the proportional reduction $p(t)$ in true incidence $i(t)$ at time $t$ compared to a counterfactual incidence value that we would observe at time $t$ if all intervention measures were completely removed at time $t$ (including the release of isolated individuals):
 \begin{align}
-p(t) &= \frac{\Ro S(t) \PP(t) \int_0^\infty \II(t, \sigma) g_0(\sigma) i(t-\sigma)\dsigma}{\Ro S(t) \int_0^\infty g_0(\sigma) i(t-\sigma) \dsigma}.
+p(t) &= \frac{\Ro S(t) \PP(t) \int_0^\infty \HH(t, \sigma) g_0(\sigma) i(t-\sigma)\dsigma}{\Ro S(t) \int_0^\infty g_0(\sigma) i(t-\sigma) \dsigma}.
 \end{align}
 By substituting true incidence $i(t)$ in the numerator and rearranging, we obtain the classical expression for the estimator for $\RR(t)$---which we refer to as $\Rprop(t)$---that depends on the proportion of the susceptible population and proportional reduction in incidence, rather than reduction in infectiousness:
 \begin{equation}
@@ -554,7 +575,6 @@ even when the case reproduction number was first introduced by \cite{wallinga200
 Our study provides theoretical foundation for modeling epidemic processes.
 
 \swp{Jonathan, can you try writing the last paragraph of the discussion?}
-
 
 \section{Methods}
 
