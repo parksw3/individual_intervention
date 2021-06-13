@@ -310,7 +310,7 @@ that is, the rate at which an infected individual generates secondary infections
 On the other hand, when the intervention is lifted at $\tend$, the value of the kernel at calendar time $\tend$ ($F_t(\tend-t)$ in \fref{indpop}F; more generally, $K(\tend, \tau)$) remains unchanged because some fraction of infected individuals have already been isolated.
 In general, speed-like interventions shorten realized generation intervals because they prevent late transmission (\fref{indpop}D--E).
 
-Finally, we can decompose the generalized intervention function $\HH(t, \tau)$ as a product of strength and speeed like intervention: $\HH(t, \tau) = \PP(t) \HH(t, \tau)$. Then, the infection kernel can be written as:
+Finally, we can decompose the generalized intervention function $\II(t, \tau)$ as a product of strength- and speeed-like interventions: $\II(t, \tau) = \PP(t) \HH(t, \tau)$. Then, the infection kernel can be written as:
 \begin{equation}
 K(t, \tau) = \Ro S(t) \PP(t) \HH(t,\tau) g_0(\tau).
 \end{equation}
@@ -330,10 +330,6 @@ g(t, \tau) &= \frac{\HH(t,\tau) g_0(\tau)}{\int_0^\infty \HH(t,\sigma) g_0(\sigm
 \end{align}
 which allow us to express the renewal equation in the form of \eref{renewal_instantaneous}.
 Therefore, the instantaneous generation-interval distribution changes under speed-like interventions but not under strength-like interventions, even though both types of interventions affect the realized generation-interval distribution.
-
-% probably belongs in the discussion
-% Current frameworks for estimating $\Ri(t)$ assume that all interventions are strength-like and neglect the possibility that they might be speed-like.
-% While many non-pharmaceutial interventions that were implemented during the current COVID-19 pandemic are strength-like (e.g., social distancing, school closures, limiting the size of gatherings, and vaccination), they can still elicit speed-like behavioral changes as infected individuals can become more likely to self-isolate faster after they have developed symptoms.
 
 \subsection{Quantifying changes in instantaneous generation-interval distributions}
 
