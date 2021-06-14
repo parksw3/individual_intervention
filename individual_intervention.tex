@@ -186,24 +186,25 @@ Now, consider the forward kernel $F_t(\tau)$, which represents the rate at which
 F_t(\tau) = K(t+\tau, \tau).
 \label{eq:fkernel}
 \end{equation}
+\jd{I like the way \eref{fkernel} stands out and helps the reader follow. Would it be stupid to do something analogous (and trivial) for the counter-factual kernel? $C_t(\tau) = K(t, \tau)$?. Also, I think we need to be careful how we use intrinsic in that context above.}
+\jd{But $C$ is obviously terrible terminology. I don't have a good solution unless we start using superscripts, which I generally avoid. e.g., we could talk about $K_i^t(\tau)$ and match it with $\Rx{i}(t)$ and $g_i(t)$}
 The integral of $F(t, \tau)$, representing the total infectiousness of an individual infected at time $t$, corresponds to the case reproduction number: $\Rc(t) = \int F_t(\sigma) \dsigma$. 
 The forward kernel, normalized by the total infectiousness, corresponds to the forward generation-interval distribution $f_t(\tau) = F_t(\tau)/\Rc(t)$, describing realized generation intervals for a cohort of infectors that were infected at time $t$.
 Then, the forward renewal equation can be written as:
 \begin{align}
-\frac{\mathrm{d}S}{\mathrm{d}t} &= - i(t),\\
 i(t) &= \int_0^\infty \Rc(t-\sigma) f_{t-\sigma}(\sigma) i(t-\sigma) \dsigma.
 \label{eq:renewal_forward}
 \end{align}
-Rewriting the forward kernel in terms of instantaneous quantities reveals an important insight: Even if the instantaneous generation-interval distribution $g(t, \tau)$ remains invariant across time (i.e., $g(t, \tau) = g_0(\tau)$), changes in transmission conditions (therefore, $\Ri(t)$) causes the forward generation-interval distribution to change (see \eref{fkernel}):
+Rewriting the forward kernel in terms of instantaneous quantities reveals an important insight: Even if the instantaneous generation-interval distribution $g(t, \tau)$ remains invariant across time (i.e., $g(t, \tau) = g_0(\tau)$), changes in transmission conditions (therefore, $\Ri(t)$) are expected to change the forward generation-interval distribution (see \eref{fkernel}):
 \begin{equation}
 F_t(\tau) = \Ri(t + \tau) g(t+\tau, \tau).
 \end{equation}
-Therefore, renewal equation models that rely on the forward form (\eref{renewal_forward}) but assume time-invariant $f_t(\tau)$ are mathematically incorrect and should be avoided.
+Therefore, renewal equation models that rely on the forward form (\eref{renewal_forward}) but assume time-invariant $f_t(\tau)$ should generally be avoided.
 
 The forward renewal equation further allows us to confirm that the instantaneous quantities ($\Ri(t)$ and $g(t, \tau)$) match the forward realized quantities ($\Rc(t)$ and $f_t(\tau)$) when conditions remain constant:
-Assuming that conditions at time $t$ remain constant (i.e., if $K(s, \tau) = K(t, \tau)$ for all $s \geq t$), we obtain $F_{t}(\tau) = K(t, \tau)$ (and therefore, $\Rc(t) = \Ri(t)$ and $f_{t}(\tau) = g(t,\tau)$).
+assuming that $K(s, \tau) = K(t, \tau)$ for all $s \geq t$, we obtain $F_{t}(\tau) = K(t, \tau)$ (and therefore, $\Rc(t) = \Ri(t)$ and $f_{t}(\tau) = g(t,\tau)$).
 In other words, $\Ri(t)$ and $g(t,\tau)$ describe number of secondary infections that an individual infected at time $t$ will generate, and when these infections will occur, if conditions at time $t$ remain constant.
-Since transmission dynamics can change rapidly during an ongoing epidemic, instantaneous quantities must be interpreted with care.
+Since transmission dynamics can change rapidly during an ongoing epidemic, instantaneous quantities must be interpreted with care. \jd{Last s.~still feels weird.}
 
 \subsection{Strength- and speed-like interventions}
 
@@ -230,23 +231,28 @@ To model the impact of intervention during an ongoing epidemic, we introduce an 
 K(t, \tau) = \Ro S(t) \II(t, \tau) g_0(\tau).
 \end{equation}
 While the intervention function $\II$ can capture introduction and lifting of any kinds of interventions, we begin by discussing two idealized interventions, which we refer to as constant-strength and constant-speed interventions, and generalize them to model strength- and speed-like interventions \citep{dushoff2021speed}.
+\jd{I like this s. a lot, thanks.}
 
-First, consider a constant-strength intervention that suppresses the kernel by a constant amount, $\II(t, \tau) = 1/\phi$:
+A constant-strength intervention reduces the kernel by a constant factor, $\II(t, \tau) = 1/\phi$:
 \begin{equation}
-K(t, \tau) = \Ro S(t) g_0(\tau)/\phi,
+K(t, \tau) = \Ro S(t) g_0(\tau)/\phi.
 \end{equation}
-where $\phi$ represents the intervention strength and must be greater than the epidemic strength $\Ro$ to control the epidemic.
+Here, $\phi$ represents the intervention strength and must be greater than the epidemic strength $\Ro$ to control the epidemic.
+\jd{I'm wondering if there's a clear way to roll $S(t)$ into \II\ here instead of needing to mention it separately downstream.}
+\jd{We should think about the definitions of constant. I was kind of thinking $\II(t, \tau) = 1/\phi(t)$, instead.}
 This type of intervention can be used to model reduction in susceptibility (e.g., vaccination) or and contact rates (e.g., social distancing and school closures).
-Likewise, we can also consider a constant speed-intervention, $\II(\tau) = \exp(-h\tau)$:
+Likewise, we can also consider a constant-speed intervention, $\II(\tau) = \exp(-h\tau)$ \jd{This is also fine, it implicitly matches my less-strict definition of constant. In any case, we should make the two specifications match.}:
 \begin{equation}
 K(t, \tau) = \Ro S(t) g_0(\tau) \exp(-h\tau),
 \end{equation}
 where $h$ represents the intervention speed and must be greater than the epidemic speed $r$ (\eref{euler_lotka}) to control the epidemic.
 This intervention is analogous to contact tracing and isolation measures that affect the kernel disproportionately across age of infection.
 
+\jd{I would say these are still constant-X interventions. An X-like intervention is a real-world thing that doesn't have constant $h$ or $\phi$ but is clearly closer to one than the other. For example, lockdown restrictions probably interact a little with people's sense of how likely they are to be infectious.}
 We now introduce strength-like intervention $\PP(t)$ and speed-like intervention $\HH(t, \tau)$ that generalize these interventions and explore how they affect epidemic dynamics over time.
 While our primary focuses are instantaneous quantities ($\Ri(t)$ and $g(t, \tau)$), we first illustrate the impact of strength- and speed-like interventions using forward quantities as they describe realized transmission processes and are easier to interpret.
 
+\jd{I would say we could use $\phi(t)$ here instead of needing more letters.}
 Let $\PP(t)$ represent a strength-like intervention that modulates the infection kernel multiplicatively at calendar time $t$.
 Analogous to the constant-strength intervention, the effectiveness of $\PP(t)$ depends only on its intensity at time $t$ and not on age of infection. 
 Then, the infection kernel under $\PP$ at calendar time $t$ can be written as:
@@ -258,6 +264,7 @@ Likewise, the forward kernel of an individual infected at time $t$ under $\PP$ c
 F_t(\tau) =  \Ro S(t+\tau) \PP(t + \tau) g_0(\tau).
 \end{equation}
 Here, we see that strength-like interventions have qualitatively same impact on transmission dynamics as susceptible depletion.
+\jd{Yes, but still consider dealing with this part upstream.}
 
 For example, a constant-strength intervention that suppresses transmission by a factor of $\phi$ between time \tstart and \tend can be modeled as:
 \begin{equation}
@@ -277,6 +284,7 @@ implementing (lifting) intervention decreases (increases) future transmission po
 If an individual is infected after \tstart (and much earlier than \tend), this intervention simply reduces the entire kernel by a constant amount and has no effect on realized generation intervals (\fref{indpop}B).
 This observation generalizes the phenomenon of contraction of realized generation intervals due to susceptible depletion \citep{kenah2008generation,nishiura2010time,champredon2015intrinsic}.
 
+\jd{I feel like the analogous example here is to continue imagining $h = h(t)$. I agree it's less realistic than $\phi(t)$ but I feel we could pull it off with good explanations. I may change my mind if I can get further with my reading …}
 On the other hand, a we can model generalized speed-like interventions $\HH(t, \tau)$ in the following form:
 \begin{equation}
 \HH(t, \tau) = \exp \left(- \int_0^\tau h(t-\tau+\sigma, \sigma) \dsigma \right),
@@ -297,6 +305,7 @@ For example, given hazard $h(\tau)$ of being isolated between calendar time \tst
 If the individual is infected before $\tstart$, they will not be isolated by this intervention until after $\tstart$.
 If the individual is infected after $\tend$, they will never be isolated by this intervention.
 Therefore, such intervention can be modeled as:
+\jd{Could we try to just talk about $h$ most of the time to make things look less scary? Like, clearly stake out once that \HH\ is the integral and then mostly ignore it?}
 \begin{equation}
 \HH(t+\tau, \tau) = \begin{cases}
 1 & t < \tstart-\tau \\
@@ -305,9 +314,9 @@ Therefore, such intervention can be modeled as:
 \end{cases}
 \end{equation}
 \fref{indpop}D--E illustrates the impact of a speed-like intervention with constant hazard ($h(\tau)=h$) on the forward kernel of an individual infected 5 days before $\tstart$, at $\tstart$, and 5 days before $\tend$ (assuming $S(t) \approx 1$).
-Unlike the strength-like intervention, speed-like intervention does not take effect immediately;
+Unlike the strength-like intervention, speed-like intervention does not show effects immediately;
 that is, the rate at which an infected individual generates secondary infections at time $\tstart$ (e.g., $F_t(\tstart-t)$ in \fref{indpop}D; more generally, $K(\tstart, \tau)$) remains unaffected by the intervention because it takes time to identify and isolate infected individuals.
-On the other hand, when the intervention is lifted at $\tend$, the value of the kernel at calendar time $\tend$ ($F_t(\tend-t)$ in \fref{indpop}F; more generally, $K(\tend, \tau)$) remains unchanged because some fraction of infected individuals have already been isolated.
+On the other hand, when the intervention is lifted at $\tend$, the value of the kernel at calendar time [Why this?: $\tend$ ($F_t(\tend-t)$ in \fref{indpop}F; more generally,] $K(\tend, \tau)$) remains unchanged because some fraction of infected individuals have already been isolated.
 In general, speed-like interventions shorten realized generation intervals because they prevent late transmission (\fref{indpop}D--E).
 
 Finally, we can decompose the generalized intervention function $\II(t, \tau)$ as a product of strength- and speeed-like interventions: $\II(t, \tau) = \PP(t) \HH(t, \tau)$. Then, the infection kernel can be written as:
