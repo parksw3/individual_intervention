@@ -132,7 +132,7 @@ Current frameworks for estimating of $\Ri(t)$ and $\Rc(t)$, including widely-use
 \cite{gostic2020practical} recently suggested that the intrinsic generation-interval distribution (measuring the intrinsic infectiousness of an infected individual, \cite{champredon2015intrinsic}), which is different from the realized generation-interval distributions, is required to estimate $\Ri(t)$.
 However, it was noted more than a decade ago that the required distribution to estimate $\Ri(t)$ can change due to interventions that reduce infectiousness in later stages of infection \citep{fraser2007estimating}.
 
-To answer this question, we provide a mathematical framework that correctly links $\Ri(t)$ and $\Rc(t)$ with the renewal process of infection.
+To answer this question, we provide a mathematical framework that links $\Ri(t)$ and $\Rc(t)$ with the renewal process of infection.
 We show that a counterfactual distribution---which we referred to as the instantaneous generation-interval distribution---is required to accurately estimate a counterfactual measure of transmission, $\Ri(t)$.
 Likewise, a realized distribution---the backward generation-interval distribution---is required to estimate a realized measure of transmission, $\Rc(t)$;
 since the renewal process can be equivalently expressed in terms of both $\Ri(t)$ and $\Rc(t)$ (and their corresponding distributions), we can also estimate $\Rc(t)$ using the instantaneous generation-interval distribution, obtaining a Wallinga-Teunis-like estimator \citep{wallinga2004different}.
@@ -156,15 +156,15 @@ Then, incidence of infection at time $t$ caused by a cohort of individuals infec
 \begin{equation}
 i_{t-\tau}(t) = K(t, \tau) i(t-\tau).
 \end{equation}
-Integrating across time since infection $\tau$ allows us to express the dynamics of the proportion susceptible $S(t)$ and incidence $i(t)$ in the absence of natural births or deaths as follows: 
+Integrating across time since infection $\tau$ allows us to express the dynamics of the proportion susceptible $S(t)$ and incidence $i(t)$ in the absence of natural births or deaths using a renewal-equation framework: 
 \begin{align}
 \frac{\mathrm{d}S}{\mathrm{d}t} &= - i(t),\\
 i(t) &= \int_0^\infty K(t, \sigma) i(t-\sigma) \dsigma.
 \label{eq:renewal}
 \end{align}
-This model, also known as renewal equations, generalizes the dynamics of many compartmental models, including the standard SEIR model \citep{heesterbeek1996concept, diekmann2000mathematical, roberts2004modelling, aldis2005integral, roberts2007model, champredon2018equivalence}.
+This formulation generalizes the dynamics of many compartmental models, including the standard SEIR model \citep{heesterbeek1996concept, diekmann2000mathematical, roberts2004modelling, aldis2005integral, roberts2007model, champredon2018equivalence}.
 
-Here, we show that the same renewal process of infection can be equivalently expressed in terms of instantaneous (counterfactual) quantities as well as realized quantities, meaning $\Ri(t)$ and $\Rc(t)$ with their corresponding generation-interval distributions.
+Here, we show that the dynamics of this infection infection model can be expressed equivalently in terms of instantaneous (counterfactual) quantities or in terms of realized quantities, meaning $\Ri(t)$ and $\Rc(t)$ with their corresponding generation-interval distributions.
 The integral of $K(t, \tau)$ across $\tau$ with $t$ fixed gives the instantaneous reproduction number \citep{fraser2007estimating}: $\Ri(t) = \int K(t, \sigma) \dsigma$.
 If we normalize this kernel, we get a generation-interval distribution, which provides information about the time scale of transmission.
 As with reproductive numbers, there are many different generation intervals; we call $g(t, \tau) = K(t, \tau)/\Ri(t)$ the ``instantaneous'' generation-interval distribution.
@@ -187,7 +187,7 @@ F_t(\tau) = K(t+\tau, \tau).
 \label{eq:fkernel}
 \end{equation}
 The integral of $F(t, \tau)$, representing the total infectiousness of an individual infected at time $t$, corresponds to the case reproduction number: $\Rc(t) = \int F_t(\sigma) \dsigma$. 
-The forward kernel, normalized by the total infectiousness, correspond to the forward generation-interval distribution $f_t(\tau) = F_t(\tau)/\Rc(t)$, describing realized generation intervals for a cohort of infector that were infected at time $t$.
+The forward kernel, normalized by the total infectiousness, corresponds to the forward generation-interval distribution $f_t(\tau) = F_t(\tau)/\Rc(t)$, describing realized generation intervals for a cohort of infectors that were infected at time $t$.
 Then, the forward renewal equation can be written as:
 \begin{align}
 \frac{\mathrm{d}S}{\mathrm{d}t} &= - i(t),\\
