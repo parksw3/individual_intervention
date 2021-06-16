@@ -32,6 +32,13 @@ scenarios.Rout: scenarios.R bgsim.rda
 
 ######################################################################
 
+## Redeveloping in Phila ☹
+
+figure_beta_gamma.Rout: figure_beta_gamma.R
+	$(pipeR)
+
+######################################################################
+
 ### Makestuff
 
 ## Sources += $(wildcard *.mk)
