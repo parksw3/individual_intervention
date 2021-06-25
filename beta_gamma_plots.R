@@ -1,33 +1,10 @@
-library(deSolve)
-library(dplyr)
-library(tidyr)
 library(ggplot2); theme_set(theme_bw())
-library(EpiEstim)
 library(egg)
 library(tikzDevice)
-source("sir-semi.R")
+library(shellpipes)
 
-rr2 <- runsir(gammafun=gammafun_base2)
-
-betafun_r2 <- beta_reconstruct(rr2)
-
-tvec <- seq(0, 120, by=0.02)
-
-s2 <- data.frame(
-  time=tvec,
-  beta=betafun_r2(tvec)
-)
-
-s5 <- data.frame(
-  time=tvec,
-  gamma=gammafun_base2(tvec)
-)
-
-speed <- data.frame(
-  time=tail(rr2$time, -1),
-  incidence=diff(rr2$incidence)/tail(rr2$incidence, -1)
-) %>%
-  gather(key, value, -time)
+loadEnvironments()
+startGraphics()
 
 g1 <- ggplot(s2) +
   geom_line(aes(time, beta), size=1) +
@@ -79,6 +56,4 @@ gtot <- ggarrange(g1, g2, g3, g4, nrow=4,
                   labels = c("A", "B", "C", "D"))
 
 tikz(file="figure_beta_gamma.tex", width=8, height=8, standAlone = T)
-gtot
-dev.off()
-tools::texi2dvi("figure_beta_gamma.tex", pdf=T, clean=T)
+print(gtot)

@@ -17,6 +17,8 @@ Sources += individual_intervention.tex
 
 ######################################################################
 
+Sources += $(wildcard *.R)
+
 ## Figures are tikz and not pipelined yet 2021 May 04 (Tue)
 
 autowrapR = defined
