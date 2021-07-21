@@ -1,5 +1,6 @@
 library(deSolve)
 library(dplyr)
+library(tidyr)
 library(ggplot2); theme_set(theme_bw())
 library(EpiEstim)
 library(egg)
