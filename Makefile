@@ -11,10 +11,13 @@ vim_session:
 ######################################################################
 
 ## individual_intervention.pdf: individual_intervention.tex
+## individual_intervention.tex.pdf: 
 
 Sources += individual_intervention.tex
 
 ######################################################################
+
+Sources += $(wildcard *.R)
 
 ## Figures are tikz and not pipelined yet 2021 May 04 (Tue)
 
@@ -22,6 +25,7 @@ autowrapR = defined
 
 %.tex: %.Rout ;
 
+Ignore += scenarios.tex
 ## scenarios.pdf: scenarios.R
 
 bgsim.Rout: bgsim.R sir-semi.rda
@@ -35,6 +39,12 @@ scenarios.Rout: scenarios.R bgsim.rda
 ## Redeveloping in Phila ☹
 
 figure_beta_gamma.Rout: figure_beta_gamma.R
+	$(pipeR)
+
+beta_gamma.Rout: beta_gamma.R sir-semi.rda
+	$(pipeR)
+
+beta_gamma_plots.Rout: beta_gamma_plots.R beta_gamma.rda
 	$(pipeR)
 
 ######################################################################
