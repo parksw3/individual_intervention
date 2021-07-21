@@ -10,8 +10,8 @@ vim_session:
 
 ######################################################################
 
-## individual_intervention.tex.pdf: individual_intervention.tex
 ## individual_intervention.pdf: individual_intervention.tex
+## individual_intervention.tex.pdf: 
 
 Sources += individual_intervention.tex
 
