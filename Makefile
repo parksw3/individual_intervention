@@ -2,6 +2,7 @@
 
 current: target
 -include target.mk
+Ignore = target.mk
 
 # -include makestuff/perl.def
 
@@ -20,6 +21,10 @@ Sources += individual_intervention.tex
 Sources += $(wildcard *.R)
 
 ## Figures are tikz and not pipelined yet 2021 May 04 (Tue)
+
+Rscripts = $(wildcard *.R)
+tikzfiles = $(Rscripts:.R=.tex)
+Ignore += $(tikzfiles)
 
 autowrapR = defined
 
