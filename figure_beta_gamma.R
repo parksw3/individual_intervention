@@ -52,7 +52,7 @@ g3 <- ggplot(rr2) +
   geom_line(aes(time, incidence), size=1) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
-  scale_y_continuous("Incidence (1/day)", expand=c(0, 0), limits=c(0, 0.0105)) +
+  scale_y_continuous("Incidence (1/day)", expand=c(0, 0), limits=c(0, 0.004)) +
   scale_colour_viridis_d(begin=0, end=0.8, option="B") +
   theme(
     panel.grid = element_blank(),
@@ -66,7 +66,7 @@ g4 <- ggplot(speed) +
   geom_hline(yintercept=0, lty=2, col="gray", size=1) +
   geom_vline(xintercept=c(25, 40), size=1, col="gray", lty=2) +
   scale_x_continuous("Day", expand=c(0, 0), limits=c(0, 80)) +
-  scale_y_continuous("Growth rate (1/days)", expand=c(0, 0), limits=c(-0.0045, 0.0025)) +
+  scale_y_continuous("Growth rate (1/days)", expand=c(0, 0), limits=c(-0.012, 0.006)) +
   theme(
     panel.grid = element_blank(),
     legend.position = c(0.73, 0.84),
