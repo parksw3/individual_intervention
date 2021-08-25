@@ -39,7 +39,7 @@ Ri <- list(
   data.frame(
     time=rr2r$time,
     est=rr2r$Rtest,
-    type="$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$"
+    type="$\\mathcal{R}_{\\textrm{\\tiny cori}}(t)$"
   ),
   data.frame(
     time=cori$R$t_end,
@@ -54,7 +54,7 @@ Ri <- list(
 ) %>%
   bind_rows %>%
   mutate(
-    type=factor(type, levels=c("$\\mathcal{R}_{\\textrm{\\tiny i}}(t)$", "$\\mathcal{R}_{\\textrm{\\tiny prop}}(t)$", "EpiEstim",
+    type=factor(type, levels=c("$\\mathcal{R}_{\\textrm{\\tiny i}}(t)$", "$\\mathcal{R}_{\\textrm{\\tiny cori}}(t)$", "EpiEstim",
                                "$\\mathcal{R}_{\\textrm{\\tiny forward}}(t)$"))
   )
 
