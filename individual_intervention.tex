@@ -92,7 +92,7 @@
 }
 \newline
 \\
-Sang Woo Park\textsuperscript{1,*}, Kaiyuan Sun, Benjamin M. Bolker, Bryan T. Grenfell, Jonathan Dushoff, \swp{and maybe others if needed?}
+Sang Woo Park\textsuperscript{1,*}, Kaiyuan Sun, Benjamin M. Bolker, Bryan T. Grenfell, Jonathan Dushoff, \swp{and others if needed}
 \\
 \bigskip
 \textbf{1} Department of Ecology and Evolutionary Biology, Princeton University, Princeton, NJ, USA
@@ -121,25 +121,32 @@ However, since transmission dynamics change throughout an epidemic, $\Ri(t)$ rep
 
 On the other hand, the case reproduction number $\Rc(t)$---popularized by \cite{wallinga2004different}---corresponds to the average number of new infections that an individual infected at time $t$ generated over the course of their infection.
 $\Rc(t)$ is a realized measure, which depends on conditions after time $t$ and can only be estimated retrospectively.
-Although the heuristic definition of $\RR(t)$ (``the average number of new infections caused by an infected individual'') closely resembles that of $\Rc(t)$, its mathematical definitions derived from compartmental models (e.g., basic reproduction multiplied by the proportion susceptible) actually correspond to that of $\Ri(t)$ \citep{gostic2020practical}.
-Due to the imprecision of the heuristic definition of $\RR(t)$, the counterfactual quality of $\Ri(t)$ (and therefore, $\RR(t)$) is often neglected in its interpretation---
-specifically, in contrast to a widely accepted view, $\Ri(t) > 1$ or $<1$ does not provide information about whether the number of infections is increasing or decreasing at time $t$.
-\swp{return to this s.}
+Although the heuristic definition of $\RR(t)$ (``the average number of new infections caused by an infected individual'') closely resembles that of $\Rc(t)$, the mathematical definitions of $\RR(t)$ derived from standard compartmental models (e.g., basic reproduction multiplied by the proportion susceptible) actually correspond to that of $\Ri(t)$ \citep{gostic2020practical}.
+Due to the imprecision of the heuristic definition of $\RR(t)$, the counterfactual quality of $\Ri(t)$ (and therefore, $\RR(t)$) is often neglected in its interpretation.
+% \swp{return to this s. later}
 
-Estimating $\Ri(t)$ and $\Rc(t)$ requires knowledge of true incidence of infection $i(t)$ and the generation-interval distribution $g(\tau)$, where generation intervals describe time between infections of an infector and an infectee \citep{svensson2007note}.
-Here, we focus on the latter: which generation-interval distributions do we need to correctly estimate $\Ri(t)$ and $\Rc(t)$?
-Current frameworks for estimating of $\Ri(t)$ and $\Rc(t)$, including widely-used software such as EpiEstim, rely on a time-independent distribution to estimate $\Ri(t)$ throughout the entire epidemic \citep{cori2013new}.
-\cite{gostic2020practical} recently suggested that the intrinsic generation-interval distribution (measuring the intrinsic infectiousness of an infected individual, \cite{champredon2015intrinsic}), which is different from the realized generation-interval distributions, is required to estimate $\Ri(t)$.
-However, it was noted more than a decade ago that the required distribution to estimate $\Ri(t)$ can change due to interventions that reduce infectiousness in later stages of infection \citep{fraser2007estimating}.
+Analogous to the reproduction number $\RR$, exponential growth rate $r$ describes the speed at which infection spreads at the population-level.
+When conditions remain the same, both $\RR$ and $r$ provide equivalent threshold measures for control and are linked by the generation-interval distribution $g(\tau)$, where generation intervals describe time between infections of an infector and an infectee \citep{svensson2007note}.
+Throuhgout the pandemic, most analyses relied on changes in $\RR(t)$ to evaluate the impact of intervention [CITE].
+A few studies have adopted time-varying growth rates $r(t)$ to monitor the spread of infections, but there is currently a limited understanding of the relationship between $\RR(t)$ and $r(t)$.
+For example, some studies have tried to argue that one measure is \emph{always} better than the other  \swp{need to cite and re-word properly. return later}, but the importance of these two measures depend on the type of interventions affecting the dynamics \cite{dushoff2021speed}.
 
-To answer this question, we provide a mathematical framework that links $\Ri(t)$ and $\Rc(t)$ with the renewal process of infection.
-We show that the estimation of $\Ri(t)$, a counterfactual measure of transmission, depends on a counterfactual distribution---which we referred to as the instantaneous generation-interval distribution.
-Likewise, the estimation of $\Rc(t)$, a realized measure of transmission, depends on a realized distribution---the backward generation-interval distribution;
-the backward generation-interval distribution can be further expressed in terms of the instantaneous generation-interval distribution, which in turn provides a Wallinga-Teunis-like estimator \citep{wallinga2004different}.
-Under strength-based interventions (e.g., vaccination, social distancing, and mask wearing)---which we define as interventions whose relative effectiveness does not depend on time since infection---the instantaneous generation-interval distribution remains unchanged.
-On the other hand, under speed-based interventions (e.g., self-isolation and contact tracing)---which we define as interventions whose relative effectiveness depends on time since infection (therefore, speed of intervention)---the instantaneous generation-interval distribution changes.
-Neglecting such changes can bias estimates of reproduction numbers (both $\Ri(t)$ and $\Rc(t)$), including estimates of when they cross the threshold $\RR=1$.
-Instead, we generalize the idea of exponential growth rate $r$ beyond the exponential phase and show that the time-varying growth rate $r(t)$ is a robust measure for changes in incidence under both strength- and speed-based responses as it does not require assumptions about the underlying distribution.
+\swp{return to this P later. Sounds a bit confusing right now.}
+In this study, we extend the strength--speed framework by \cite{dushoff2021speed} to iillustrate the differences between $\RR(t)$ and $r(t)$ in characterizing changes in epidemic dynamics.
+Here, epidemic ``strength'' and ``speed'' refers to the reproduction number $\RR$ and the growth rate $r$, respectively; 
+in parallel, we use ``constant-strength'' and ``constant-speed'' interventions to refer to idealized interventions that directly affect $\RR$ and $r$, respectively. 
+For example, a constant-strength intervention that reduces the transmission rate by a constant amount $\theta$ throughout infection can control the epidemic when $\theta > \RR$. 
+Analogously, a constant-speed intervention that isolates infected individuals at a constant rate $\phi$ throughout infection can control the epidemic when $\phi > r$.
+% We then use a simple SIR model to show that $\RR(t)$ is a better measure for characterizing disease spread under constant-strength interventions, whereas $r(t)$ is a better measure under constant-speed interventions.
+
+In extending the strength--speed framework, we begin by showing that the renewal process of infection can be expressed in two different, but equivalent, ways.
+The first renewal equation relies on the instantaneous reproduction number $\Ri(t)$, a counterfactual measure of transmission, and therefore requires a counterfactual distribution, which we refer to as the instantaneous generation-interval distribution.
+The second renewal equation relies on the case reproduction number $\Rc(t)$, a realized measure of transmission, and therefore requires a realized distribution, which we refer to as the forward generation-interval distribution.
+Instantaneous and forward generation-interval distributions systematically differ in their dynamics, including how their changes are (non-)sensitive to constant-strength and constant-speed interventions.
+For example, a constant-strength intervention causes the forward distribution to change over time even though the instantaneous distribution remains invariant.
+On the other hand, a constant-speed intervention causes both distributions to change, which must be taken into account to correctly estimate $\Ri(t)$ and $\Rc(t)$.
+Instead, the time-varying growth rate $r(t)$ is a robust measure for changes in incidence under both constant-strength and constant-speed interventions as it does not require assumptions about the underlying distribution.
+Finally, we link a simple SIR model with the renewal equation framework to show that changes in the transmission rate are equivalent to a constant-strength intervention, whereas changes in the recovery rate are equivalent to a constant-speed intervention---these comparisons allow us to see that $\RR(t)$ is a better measure for characterizing disease spread under constant-strength interventions, whereas $r(t)$ is a better measure under constant-speed interventions.
 
 \section{Mathematical theory}
 
@@ -392,15 +399,15 @@ In Section 3, we compare $\tsub{\RR}{forward}(t)$ with $\Ri(t)$ and $\Rc(t)$.
 
 \subsection{Quantifying changes in time-dependent growth rate}
 
-The instantaneous reproduction number $\Ri(t)$ measures whether the epidemic will \emph{eventually} grow or decline if current conditions remain unchanged;
-counterintuitively, it does not tell us whether the epidemic is growing or not at a given moment.
+The instantaneous reproduction number $\Ri(t)$ provides a long-term threshold for whether the epidemic will \emph{eventually} grow or decline if current conditions remain unchanged;
+perhaps counterintuitively, it does not tell us whether the epidemic is growing or not at a given moment.
 Instead, if we want to quantify whether incidence is increasing or decreasing, we can simply calculate the epidemic growth rate.
 Researchers often focus on the initial exponential growth rate, but we can look at the per-capita growth rate at any time:
 \begin{equation}
 r(t) = \frac{1}{i(t)} \frac{\dd{i(t)}}{\dd{t}}.
 \end{equation}
-By definition, incidence grows when $r(t) > 0$ (and vice versa).
-Although this measure seems tautological, it is the best available measure for capturing whether incidence is growing or not at a given moment.
+By definition, incidence grows when $r(t) > 0$ (and vice versa)---thus, this provides an instantaneous threshold for incidence of infection.
+
 
 \section{Example: Semi-mechanistic SIR model}
 
