@@ -504,10 +504,10 @@ Under a constant-speed intervention, however, sharp changes in $\gamma(t)$ trans
 Instead, sharp changes in $\gamma(t)$ are captured by sharp changes in $r(t)$ (compare \fref{assumption}B with \fref{assumption}D)---this can readily seen by deriving an explicit expression for $r(t)$:
 \begin{align}
 r(t) &=  \frac{1}{i(t)} \frac{\dd i(t)}{\dd t}\\
-&= \frac{1}{\beta(t)} \frac{d \beta(t)}{dt} - \beta(t) I + \beta(t) S - \gamma(t) \label{eq:explicitrt}
+&= \frac{1}{\beta(t)} \frac{\dd \beta(t)}{\dd t} - \beta(t) I + \beta(t) S - \gamma(t) \label{eq:explicitrt}
 \end{align}
 where the instantaneous incidence corresponds to $i(t) = \beta(t) S I$ for the semi-mechanistic SIR model.
-\eref{explicitrt} also shows that changes in $\beta(t)$ is going to have non-trivial effects on $r(t)$, which depend not only on $\beta(t)$ but also on per-capita changes in $\beta(t)$ and both state variables, $S$ and $I$.
+\eref{explicitrt} also shows that changes in $\beta(t)$ is going to have non-trivial effects on $r(t)$, which depend not only on $\beta(t)$ itself but also on per-capita changes in $\beta(t)$ and both state variables, $S$ and $I$.
 Therefore, $\Ri(t)$ is the best measure for capturing current conditions at time $t$ under constant-strength interventions, whereas $r(t)$ is the best measure for capturing current conditions at time $t$ under constant-speed interventions. 
 
 \section{Discussion}
@@ -516,31 +516,33 @@ The impact of epidemic interventions are often characterized by changes in ``eff
 Despite historical emphasis on estimating $\RR(t)$, current frameworks neglect possibility that the underlying generation-interval distribution can change over time---an insight that goes back $>10$ years \citep{fraser2007estimating}.
 Here, we distinguish two reproduction numbers---instantaneous reproduction number $\Ri(t)$ and case reproduction number $\Rc(t)$, which describe counterfactual and realized transmission processes, respectively---and show that both reproduction numbers can correctly describe the renewal process of infection when paired with correct generation-interval distributions.
 In particular, a counterfactual generation-interval distribution, which we refer to as the instantaneous generation-interval distribution, is required to correctly estimate the instantaneous reproduction number. 
-This distribution is affected by speed-based, but not strength-based, interventions.
+This distribution is affected by constant-speed, but not constant-strength, interventions.
 Neglecting changes in this distribution gives biased estimates of $\Ri(t)$, including estimates of when $\Ri(t)$ crosses the threshold value of 1.
+Instead, time-dependent growth rate $r(t)$ is a better measure for characterizing the impact of epidemic intervention under a constant-speed intervention.
 
-However, estimating the instantaneous generation-interval distribution is expected to be difficult as it systematically differs from the realized generation intervals: even if we can observe all realized generation intervals throughout an epidemic, estimating the instantaneous distribution $g(t, \tau)$ is not trivial.
+In practice, estimating the instantaneous generation-interval distribution is expected to be difficult as it systematically differs from the realized generation intervals: even if we can observe all realized generation intervals throughout an epidemic, estimating the instantaneous distribution $g(t, \tau)$ is not trivial.
 For example, even within a homogeneously mixing population, in which the disease is allowed to spread unchecked (and therefore $g(t, \tau) = g_0(\tau)$ for all $t$), aggregating all realized generation intervals underestimates the mean intrinsic generation interval due to susceptible depletion \citep{park2020inferring}.
 Novel statistical methods are needed to accurately estimate the instantaneous distribution $g(t, \tau)$.
 
-Most state-of-art statistical softwares for estimating reproduction numbers assumes that the instantaneous generation-interval distribution does not change across time (e.g., \citep{10.12688/wellcomeopenres.16006.2,flaxman2020estimating,brauner2021inferring})---this may be the most parsimonious and best available approach given difficulties in estimating a counterfactual distribution.
+Most state-of-art statistical softwares for estimating reproduction numbers assume that the instantaneous generation-interval distribution does not change across time (e.g., \citep{10.12688/wellcomeopenres.16006.2,flaxman2020estimating,brauner2021inferring}).
 We refer to these estimates as proportional reproduction number $\Rcori$ as they capture proportional reduction in incidence, rather than transmission.
-This reproduction number estimate can differ systematically from the true instantaneous reproduction number $\Ri$ under speed-based interventions such as contact tracing.
+While this may be the most parsimonious and best available approach for estimating $\mathcal R(t)$, we encourage researchers to not overemphasize the value of this reproduction number estimate, especially whether it crosses the threshold value or not---in particular, this reproduction number estimate can differ systematically from the true instantaneous reproduction number $\Ri$ under speed-like interventions such as contact tracing.
+Emergence of new variants with a different infectiousness profile (and therefore the intrinsic generation-interval distribution) is expected to have similar effects.
 
-In the context of the current SARS-CoV-2 pandemic, assuming a time-invariant generation-interval distribution could have been justified during the early period given that most interventions were strength-based, including lockdowns, school closures, and travel bans \citep{flaxman2020estimating,li2021temporal,brauner2021inferring}.
-Nonetheless, speed-based interventions, including intense contact tracing efforts \citep{park2020contact} and introduction of contact tracing apps \citep{wymant2021introduction}, had clear, non-negligible impact on the overall spread;
+In the context of the current SARS-CoV-2 pandemic, assuming a time-invariant generation-interval distribution could have been justified during the early period given that most interventions were strength-like, including lockdowns, school closures, and travel bans \citep{flaxman2020estimating,li2021temporal,brauner2021inferring}.
+Nonetheless, speed-like  interventions, including intense contact tracing efforts \citep{park2020contact} and introduction of contact tracing apps \citep{wymant2021introduction}, had clear, non-negligible impact on the overall spread;
 these interventions, including awareness-driven behavioral changes (which can cause symptomatic individuals to self-isolate faster), are likely to have shortened the instantaneous generation intervals by preventing transmission during later stages of infection.
 Therefore, current estimates of $\Ri$ which relies on early estimates of the generation-interval distributions may be biased and reassessed.
-Future studies should also consider incorporating hazard-based changes for modeling speed-based interventions.
+Future studies should also consider incorporating hazard-based changes for modeling speed-like interventions.
 
-\jd{This is confusing to me. We can't make too much of $r$ as a measure of whether the number is going up or down unless we talk about robust methods for estimating $r$ -- otherwise whether incidence is going up or down is the best measure of whether incidence is going up or down and the fact that we can translate that to the $r$ scale is a triviality.}
 Our study highlights the value of growth rates $r(t)$ in characterizing epidemic spread \citep{abbott2020temporal,anderson2020reproduction}.
-The instantaneous reproduction number $\Ri(t)$ tell us whether the epidemic will continue to grow if conditions remain the same but does not tell us whether the epidemic is growing or not at a given moment.
-In contrast, $r(t)$ provides a robust measure of whether incidence is growing or decreasing at a given time under both strength- and speed-based interventions;
-but it does not provide information about future epidemic dynamics.
-\cite{parag2021epidemic} recently argued that $\RR(t)=1$ correspond to $r(t) = 0$ under correct assumptions about pathogen transmission and that $\RR(t)$ is theoretically more informative---however, we argue that this conclusion depends on their assumption to link $\RR(t)$ and $r(t)$ via the generation-interval distribution, an assumption that holds only when conditions remain constant.
-As we show here, this is not the case when conditions are changing---that is, the sign of $r(t)$ does not need to correspond to whether $\RR(t)$ is greater or less than 1.
-Time-varying reproduction number $\RR(t)$ and growth rate $r(t)$ encompass different information and should be used as complementary measures for describing epidemic dynamics \citep{dushoff2021speed}.
+\swp{need to rewrite this paragraph}
+% The instantaneous reproduction number $\Ri(t)$ tell us whether the epidemic will continue to grow if conditions remain the same but does not tell us whether the epidemic is growing or not at a given moment.
+% In contrast, $r(t)$ provides a robust measure of whether incidence is growing or decreasing at a given time under both strength- and speed-based interventions;
+% but it does not provide information about future epidemic dynamics.
+% \cite{parag2021epidemic} recently argued that $\RR(t)=1$ correspond to $r(t) = 0$ under correct assumptions about pathogen transmission and that $\RR(t)$ is theoretically more informative---however, we argue that this conclusion depends on their assumption to link $\RR(t)$ and $r(t)$ via the generation-interval distribution, an assumption that holds only when conditions remain constant.
+% As we show here, this is not the case when conditions are changing---that is, the sign of $r(t)$ does not need to correspond to whether $\RR(t)$ is greater or less than 1.
+% Time-varying reproduction number $\RR(t)$ and growth rate $r(t)$ encompass different information and should be used as complementary measures for describing epidemic dynamics \citep{dushoff2021speed}.
 
 The renewal equation framework based on the instantaneous form (\eref{renewal_instantaneous}) has been widely used in epidemic modeling due to its flexibility.
 A few studies relied on the forward form (\eref{renewal_forward}), but they incorrectly assumed a time-invariant generation-interval distribution \citep{nishiura2007time,alvarez2020variational,white2021statistical}.
