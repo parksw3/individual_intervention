@@ -30,7 +30,7 @@ autowrapR = defined
 
 %.tex: %.Rout ;
 
-Ignore += scenarios.tex
+Ignore += scenarios.tex scenarios.pdf
 ## scenarios.pdf: scenarios.R
 
 bgsim.Rout: bgsim.R sir-semi.rda
