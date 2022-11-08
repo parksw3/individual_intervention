@@ -226,13 +226,15 @@ Then, the infection kernel under $\II$ at calendar time $t$ can be written as:
 K(t, \tau) = \Ro \II(t, \tau) g_0(\tau),
 \end{equation}
 where $g_0$ is the pre-intervention instantaneous generation interval (assumed to remain nearly constant for the time period of interest, apart from the effects of the intervention)
-Likewise, the forward kernel of an individual infected at time $t$ under $\II$ can be written as:
+The forward kernel of an individual infected at time $t$ under $\II$ can then be written as:
 \begin{equation}
 F_t(\tau) =  \Ro \II(t + \tau, \tau) g_0(\tau).
 \end{equation}
 The intervention function $\II(t, \tau)$ can capture any kinds of epidemiological changes, including changes in the susceptible pools $S(t)$ (either due to natural infection or vaccination) as well as introduction and lifting of non-pharmaceutical interventions.
-Here, we focus on two idealized interventions, which we refer to as constant-strength and constant-speed interventions, and later generalize them to describe strength- and speed-like interventions \citep{dushoff2021speed}.
-While our primary focuses are instantaneous quantities ($\Ri(t)$ and $g_t(\tau)$), we first illustrate the impact of constant-strength and constant-speed interventions using forward quantities as they describe realized transmission processes and are easier to interpret.
+
+We focus on two idealized interventions, which we refer to as constant-strength and constant-speed interventions, and later generalize them \citep{dushoff2021speed}.
+While our primary focus is on the instantaneous quantities ($\Ri(t)$ and $g_t(\tau)$), we first illustrate the impact of constant-strength and constant-speed interventions using forward quantities as they describe realized transmission processes and are easier to interpret.
+\jd{Stopping for now.}
 
 First, we consider a constant-strength intervention $\II(t, \tau) = \PP(t)$, which reduces the transmission rate by a constant amount across the age of infection $\tau$ at a given time $t$; note that $\PP(t)$ need not be constant across calendar time.
 For example, a constant-strength intervention that reduces transmission by a factor of $\phi$ between time \tstart and \tend can be modeled as:
