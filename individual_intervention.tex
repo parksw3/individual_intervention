@@ -141,13 +141,15 @@ For example, a constant-strength intervention that reduces the transmission rate
 Analogously, a constant-speed intervention that isolates infected individuals at a constant rate $\phi$ throughout infection can control the epidemic when $\phi > r$.
 % We then use a simple SIR model to show that $\RR(t)$ is a better measure for characterizing disease spread under constant-strength interventions, whereas $r(t)$ is a better measure under constant-speed interventions.
 
-In extending the strength--speed framework, we begin by showing that the renewal process of infection can be expressed in two different, but equivalent, ways.
+Here we extend the strength--speed framework to span between the instantaneous and case-based perspectives. We begin by showing that the renewal process of infection can be expressed in two equivalent ways.
+\jd{I struggled with changing the 2ss below. We could shorten using “corresponds to” if you like.}
 The first renewal equation relies on the instantaneous reproduction number $\Ri(t)$, and therefore connects \RR\ and $r$ using a counterfactual distribution, which we call the instantaneous generation-interval distribution.
 The second renewal equation relies on the case reproduction number $\Rc(t)$, a realized measure of transmission, and therefore connects \RR\ and $r$ using a realized distribution, which we call the forward generation-interval distribution.
-Instantaneous and forward generation-interval distributions systematically differ in their dynamics, including how their changes are (non-)sensitive to constant-strength and constant-speed interventions.
+Instantaneous and forward generation-interval distributions differ qualitatively in the way they change through time.
 For example, a constant-strength intervention causes the forward distribution to change over time even though the instantaneous distribution remains invariant.
 On the other hand, a constant-speed intervention causes both distributions to change, which must be taken into account to correctly estimate $\Ri(t)$ and $\Rc(t)$.
 Instead, the time-varying growth rate $r(t)$ is a robust measure for changes in incidence under both constant-strength and constant-speed interventions as it does not require assumptions about the underlying distribution.
+\jd{Feels weird to go back to \RR\ and $r$ here. Does this apply equally to counterfactual and forward perspectives?}
 Finally, we link a simple SIR model with the renewal equation framework to show that changes in the transmission rate are equivalent to a constant-strength intervention, whereas changes in the recovery rate are equivalent to a constant-speed intervention---we thus conclude that $\RR(t)$ is generally a better measure for characterizing disease spread under constant-strength interventions, whereas $r(t)$ is generally better under constant-speed interventions.
 
 \section{Mathematical theory}
@@ -157,7 +159,7 @@ Finally, we link a simple SIR model with the renewal equation framework to show 
 The renewal equation framework provides a flexible way of modeling the spread of infection and the impact of intervention \citep{fraser2007estimating}.
 Let $K(t, \tau)$ represent the infection kernel, defined as the rate at which secondary cases are generated at time $t$ by an individual infected $\tau$ time units ago (we will use $s, t$ to denote calendar time and $\sigma, \tau$ to denote time since infection throughout).
 The shape of this kernel can depend on characteristics of the infection (e.g., variation in infectiousness over the course of infection) as well as other population-level factors (e.g., susceptible depletion, non-pharmaceutical interventions, and changes in behavior).
-Then, incidence of infection at time $t$ caused by a cohort of individuals infected $\tau$ time units ago can be written as the product of kernel, $K(t, \tau)$, and incidence at time $t-\tau$, $i(t-\tau)$:
+Then, incidence of infection at time $t$ caused by a cohort of individuals infected $\tau$ time units ago can be written as the product of the kernel, $K(t, \tau)$, and incidence at time $t-\tau$, $i(t-\tau)$:
 \begin{equation}
 i_{t-\tau}(t) = K(t, \tau) i(t-\tau).
 \end{equation}
@@ -168,11 +170,10 @@ i(t) &= \int_0^\infty K(t, \sigma) i(t-\sigma) \dsigma.
 \end{align}
 This formulation generalizes the dynamics of many compartmental models, including the standard SEIR model \citep{heesterbeek1996concept, diekmann2000mathematical, roberts2004modelling, aldis2005integral, roberts2007model, champredon2018equivalence}.
 
-Here, we show that the dynamics of this infection infection model can be expressed equivalently in terms of instantaneous (counterfactual) quantities or in terms of realized quantities, meaning $\Ri(t)$ and $\Rc(t)$ with their corresponding generation-interval distributions.
+Here, we show that the dynamics of this infection model can be expressed equivalently in terms of instantaneous quantities or in terms of realized quantities, meaning $\Ri(t)$ and $\Rc(t)$ with their corresponding generation-interval distributions.
 The integral of $K(t, \tau)$ across $\tau$ with $t$ fixed gives the instantaneous reproduction number \citep{fraser2007estimating}: $\Ri(t) = \int K(t, \sigma) \dsigma$.
-If we normalize this kernel, we get a generation-interval distribution, which provides information about the time scale of transmission.
-As with reproductive numbers, there are many different generation-interval distributions; we call $g_t(\tau) = K(t, \tau)/\Ri(t)$ the ``instantaneous'' generation-interval distribution.
-The instantaneous reproduction number and generation-interval distribution are counterfactual quantities: they describe quantities that would be realized only if conditions remained constant (i.e., if $K(s, \tau) = K(t, \tau)$ for all $s \geq t$).
+If we normalize this kernel, we get the instantaneous generation-interval distribution $g_t(\tau) = K(t, \tau)/\Ri(t)$.
+The instantaneous reproduction number and generation-interval distribution describe (counterfactual) quantities that would be realized only if conditions remained constant (i.e., if $K(s, \tau) = K(t, \tau)$ for all $s \geq t$).
 The renewal equation (\eref{renewal}) can be rewritten using this decomposition:
 \begin{align}
 i(t) &= \Ri(t) \int_0^\infty g_t(\sigma) i(t-\sigma) \dsigma.
@@ -194,8 +195,10 @@ i(t) &= \int_0^\infty \Rc(t-\sigma) f_{t-\sigma}(\sigma) i(t-\sigma) \dsigma.
 \end{align}
 This forward renewal equation provides an equivalent description of the infection processes as the instantaneous form (\eref{renewal_instantaneous}).
 
-The forward renewal equation further allows us to confirm that the instantaneous quantities ($\Ri(t)$ and $g_t(\tau)$) match the forward realized quantities ($\Rc(t)$ and $f_t(\tau)$) when conditions remain constant:
+\jd{Added an unnecessary parenthetic remark because I want to help people navigate why $K$ might be constant, and in particular don't want them to over-interpret.}
+We can check that the instantaneous quantities ($\Ri(t)$ and $g_t(\tau)$) match the forward realized quantities ($\Rc(t)$ and $f_t(\tau)$) when conditions remain constant (or effectively constant, as in the case of early exponential spread):
 assuming that $K_s(\tau) = K_t(\tau)$ for all $s \geq t$, we obtain $F_{t}(\tau) = K(t, \tau)$ (and therefore, $\Rc(t) = \Ri(t)$ and $f_{t}(\tau) = g_t(\tau)$).
+\jd{Not sure what the following s. is trying to add; can we lose it?}
 In other words, $\Ri(t)$ and $g_t(\tau)$ describe number of secondary infections that an individual infected at time $t$ will generate, and when these infections will occur, if conditions at time $t$ were to remain constant.
 
 \subsection{Constant-strength and constant-speed interventions}
@@ -220,8 +223,9 @@ Solid vertical lines show the (fixed) mean intrinsic generation interval and das
 To model changes in epidemic dynamics, we introduce an intervention function $\II(t, \tau)$ which can depend on both calendar time $t$ as well as time since infection $\tau$. 
 Then, the infection kernel under $\II$ at calendar time $t$ can be written as:
 \begin{equation}
-K(t, \tau) = \Ro \II(t, \tau) g_0(\tau).
+K(t, \tau) = \Ro \II(t, \tau) g_0(\tau),
 \end{equation}
+where $g_0$ is the pre-intervention instantaneous generation interval (assumed to remain nearly constant for the time period of interest, apart from the effects of the intervention)
 Likewise, the forward kernel of an individual infected at time $t$ under $\II$ can be written as:
 \begin{equation}
 F_t(\tau) =  \Ro \II(t + \tau, \tau) g_0(\tau).
