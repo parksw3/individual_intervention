@@ -1,6 +1,8 @@
 ## Individual intervention
 
-current: target -include target.mk Ignore = target.mk
+current: target
+-include target.mk
+Ignore = target.mk
 
 # -include makestuff/perl.def
 
