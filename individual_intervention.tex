@@ -1,13 +1,13 @@
 \documentclass[12pt]{article}
-\usepackage[top=1in,left=1in, right = 1in, footskip=1in]{geometry}
+\usepackage[top=1in,left=1.25in,right=1.25in,footskip=1in]{geometry}
 
 \usepackage{graphicx}
 \usepackage{xspace}
 %\usepackage{adjustbox}
 
 \newcommand{\comment}{}
-\renewcommand{\comment}{\nocomment}
 \renewcommand{\comment}{\showcomment}
+\renewcommand{\comment}{\nocomment}
 
 \newcommand{\showcomment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
 \newcommand{\nocomment}[3]{}
@@ -54,7 +54,7 @@
 \newcommand{\RR}{\ensuremath{{\mathcal R}}\xspace}
 \newcommand{\Rhat}{\ensuremath{{\hat\RR}}}
 \newcommand{\Rprop}{\Rx{\mathrm{prop}}}
-\newcommand{\Rcori}{\Rx{\mathrm{cori}}}
+\newcommand{\Rcori}{\Rx{\mathrm{g0}}}
 \newcommand{\tsub}[2]{#1_{{\textrm{\tiny #2}}}}
 \newcommand{\dd}[1]{\ensuremath{\, \mathrm{d}#1}}
 \newcommand{\dtau}{\dd{\tau}}
@@ -88,9 +88,10 @@
 \begin{document}
 
 \begin{flushleft}{
-	\Large
-	\textbf\newline{
+	{\large \textbf{\newline
 		Quantifying the effects of strength- and speed-like interventions on epidemic dynamics
+	}
+	\newline \em Confidential draft 3 Jan 2023
 	}
 }
 \newline
