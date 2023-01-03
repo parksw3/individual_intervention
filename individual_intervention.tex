@@ -564,7 +564,10 @@ A few studies relied on the forward form (\eref{renewal_forward}), but they assu
 As discussed above, the forward generation-interval distribution, which correctly links the case reproduction number with case counts, is expected to change over time.
 To our knowledge, this is the first study to formally link the case reproduction number with the forward renewal equation and to demonstrate the equivalence between the forward and instantaneous renewal formulations.
 
-\swp{Jonathan, can you try writing the last paragraph of the discussion?}
+This study highlights the complementary nature of time-varying reproduction number $\RR(t)$ and growth rate $r(t)$ as measures for describing epidemic dynamics \citep{dushoff2021speed}.
+In particular, $r(t)$ can always be reliably estimated (given high-quality incidence data) but does not accurately reflect changes in current conditions, except when changes are predominantly speed-based.
+Conversely, $\RR(t)$ -- and particularly the instantaneous reproductive number $\Ri(t)$ -- provides an accurate reflection of current conditions in \emph{theory}, but can only be reliably estimated from incidence data alone when changes are primarily strength-based.
+Methods that use real-time information about \emph{changes} in disease-transmission intervals have the potential to unify these frameworks, but will often be limited by the difficulty of collecting sufficient high-quality data.
 
 \section{Methods}
 
@@ -576,6 +579,7 @@ In particular, we assume that the disease spreads without any intervention in th
 on day 25, an intense case isolation measure is implemented; and
 on day 40, the intervention is partially lifted.
 This is modeled as follows:
+\jd{I feel the mixture of fractions and inversion exponents is very weird. My first choice would be $0.3/\textrm{day}$ and my second would be $0.3\textrm{day}^{-1}$. I don't feel strongly about day vs.~days.}
 \begin{equation}
 \beta(t) = 3/10\,\,\textrm{days}^{-1}, \gamma(t) = \begin{cases}
 1/5\,\, \textrm{days}^{-1} & t < 25\\
