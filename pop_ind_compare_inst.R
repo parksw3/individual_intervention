@@ -55,7 +55,7 @@ k_intrinsic3 <- data_frame(
 k_pop1 <- k_intrinsic1 %>%
   group_by(t1, t2) %>%
   mutate(
-    pop=Pfun(t1, tstart, tend)
+    pop=Pfun(t2, tstart, tend)
   ) %>%
   mutate(
     keff=den*pop
@@ -64,7 +64,7 @@ k_pop1 <- k_intrinsic1 %>%
 k_pop2 <- k_intrinsic2 %>%
   group_by(t1, t2) %>%
   mutate(
-    pop=Pfun(t1, tstart, tend)
+    pop=Pfun(t2, tstart, tend)
   ) %>%
   mutate(
     keff=den*pop
@@ -73,7 +73,7 @@ k_pop2 <- k_intrinsic2 %>%
 k_pop3 <- k_intrinsic3 %>%
   group_by(t1, t2) %>%
   mutate(
-    pop=Pfun(t1, tstart, tend)
+    pop=Pfun(t2, tstart, tend)
   ) %>%
   mutate(
     keff=den*pop
@@ -82,7 +82,7 @@ k_pop3 <- k_intrinsic3 %>%
 k_ind1 <- k_intrinsic1 %>%
   group_by(t1, t2) %>%
   mutate(
-    ind=Ifun(t1, t2, tstart, tend)
+    ind=Ifun(tstart+tau, tstart, tstart, t2)
   ) %>%
   mutate(
     keff=den*ind
@@ -91,7 +91,7 @@ k_ind1 <- k_intrinsic1 %>%
 k_ind2 <- k_intrinsic2 %>%
   group_by(t1, t2) %>%
   mutate(
-    ind=Ifun(t1, t2, tstart, tend)
+    ind=Ifun(tstart+tau, tstart, tstart, t2)
   ) %>%
   mutate(
     keff=den*ind
@@ -100,7 +100,7 @@ k_ind2 <- k_intrinsic2 %>%
 k_ind3 <- k_intrinsic3 %>%
   group_by(t1, t2) %>%
   mutate(
-    ind=Ifun(t1, t2, tstart, tend)
+    ind=Ifun(tstart+tau, tstart, tstart, t2)
   ) %>%
   mutate(
     keff=den*ind
@@ -109,7 +109,7 @@ k_ind3 <- k_intrinsic3 %>%
 gbase <- ggplot(k_intrinsic1) +
   geom_polygon(aes(tau, den), fill="gray70") +
   scale_x_continuous("Time since infection, $\\tau$ (days)", expand=c(0, 0), limits=c(0, 15)) +
-  scale_y_continuous("Forward kernel, $F_{t}(\\tau)$ (1/days)",
+  scale_y_continuous("Instantaneous kernel, $K(t, \\tau)$ (1/days)",
                      breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1),
                      expand=c(0, 0), limits=c(0, 1.1),
                      sec.axis = sec_axis(~., name="Relative changes in infection kernel", breaks=c(0, 0.5, 1))) +
@@ -190,7 +190,7 @@ gtot <- ggarrange(g1, g2, g3, g4, g5, g6, nrow=2,
           labels=c("A", "B", "C",
                    "D", "E", "F"))
 
-tikz(file="pop_ind_compare.tex", width=8, height=6, standAlone = T)
+tikz(file="pop_ind_compare_inst.tex", width=8, height=6, standAlone = T)
 gtot
 dev.off()
-tools::texi2dvi("pop_ind_compare.tex", pdf=T, clean=T)
+tools::texi2dvi("pop_ind_compare_inst.tex", pdf=T, clean=T)

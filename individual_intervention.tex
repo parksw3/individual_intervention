@@ -123,11 +123,9 @@ Here, we primarily focus on two main measures of transmission that look at a coh
 
 The instantaneous reproduction number $\Ri(t)$---popularized by \cite{cori2013new}---was initially defined as the ``average number of people someone infected at time $t$ could expect to infect should conditions remain unchanged'' \citep{fraser2007estimating}. 
 While this definition is correct, we note that there are additional subtleties involved:
-$\Ri(t)$ does not depend directly on when person gets infected, only on the time point where the “conditions” are evaluated.
-But transmission conditions always change over the course of an epidemic due to susceptible depletion, and usually for other reasons, meaning that $\Ri(t)$ is a “counterfactual” quantity that does not estimate the number of people infected by any particular cohort.
+$\Ri(t)$ does not depend directly on when person gets infected, only on the time point where the ``conditions'' are evaluated.
+But transmission conditions always change over the course of an epidemic due to susceptible depletion, and usually for other reasons, meaning that $\Ri(t)$ is a ``counterfactual'' quantity that does not estimate the number of people infected by any particular cohort.
 Nonetheless, $\Ri(t)$ is valuable because it provides a way of characterizing transmission conditions at time, and specifically of asking whether the disease would continue to spread if those conditions were to stay the same \citep{gostic2020practical}.
-\jd{Took out “real-time” because it's a bit confusing: we don't see infections instantaneously. But I do understand why it was there.}
-\jd{I wonder if things would read better if we didn't keep repeating “(t)”}
 
 The case reproduction number $\Rc(t)$---popularized by \cite{wallinga2004different}---corresponds to the average number of new infections that an individual infected at time $t$ generated over the course of their infection.
 $\Rc(t)$ is a realized measure, which depends on conditions after time $t$ and can only be estimated retrospectively.
@@ -155,8 +153,9 @@ Instantaneous and forward generation-interval distributions differ qualitatively
 For example, a constant-strength intervention causes the forward distribution to change over time even though the instantaneous distribution remains invariant.
 On the other hand, a constant-speed intervention causes both distributions to change, which must be taken into account to correctly estimate $\Ri(t)$ and $\Rc(t)$.
 Instead, the time-varying growth rate $r(t)$ is a robust measure for changes in incidence under both constant-strength and constant-speed interventions as it does not require assumptions about the underlying distribution.
-Finally, we link a simple SIR model with the renewal-equation framework and find that changes in the transmission rate are equivalent to a constant-strength intervention, whereas changes in the recovery rate are equivalent to a constant-speed intervention---we thus conclude that $\RR(t)$ is generally a better measure for characterizing disease spread under constant-strength interventions, whereas $r(t)$ is generally better under constant-speed interventions.
-\jd{How does this generalize beyond SIR?}
+Finally, we use a simple SIR model as an example to demonstrate that changes in the transmission rate are equivalent to a constant-strength intervention, whereas changes in the recovery rate are equivalent to a constant-speed intervention;
+we note that the renewal equation theory can be generalized to more complex class of models \citep{champredon2018equivalence}.
+We conclude that $\RR(t)$ is generally a better measure for characterizing disease spread under constant-strength interventions, whereas $r(t)$ is generally better under constant-speed interventions.
 
 \section{Mathematical theory}
 
@@ -174,7 +173,8 @@ Integrating across time since infection $\tau$ allows us to express the dynamics
 i(t) &= \int_0^\infty K(t, \sigma) i(t-\sigma) \dsigma.
 \label{eq:renewal}
 \end{align}
-This formulation generalizes the dynamics of many compartmental models, including the standard SEIR model \citep{heesterbeek1996concept, diekmann2000mathematical, roberts2004modelling, aldis2005integral, roberts2007model, champredon2018equivalence}.
+This formulation generalizes the dynamics of many compartmental models, including the standard SIR and SEIR models \citep{heesterbeek1996concept, diekmann2000mathematical, roberts2004modelling, aldis2005integral, roberts2007model, champredon2018equivalence}.
+Throughout this paper, we focus on changes in infection and ignore complexities associated with observing infections, such as delays between infection and case reports.
 
 Here, we show that the dynamics of this infection model can be expressed equivalently in terms of instantaneous quantities or in terms of realized quantities, meaning $\Ri(t)$ and $\Rc(t)$ with their corresponding generation-interval distributions.
 The integral of $K(t, \tau)$ across $\tau$ with $t$ fixed gives the instantaneous reproduction number \citep{fraser2007estimating}: $\Ri(t) = \int K(t, \sigma) \dsigma$.
@@ -206,25 +206,6 @@ Assuming that $K_s(\tau) = K_t(\tau)$ for all $s \geq t$, we obtain $F_{t}(\tau)
 
 \subsection{Constant-strength and constant-speed interventions}
 
-\begin{figure}[!th]
-\includegraphics[width=1\textwidth]{pop_ind_compare.pdf}
-\caption{
-\textbf{The impact of constant-strength and constant-speed interventions on forward kernels.}
-\jd{Should we add units (1/days) to the left y-axes?}
-\jd{Is it obvious why we pay more attention to forward kernels than instantaneous kernels? What would the answers be for the instantaneous kernels? They're not changed at all by strength-like interventions, and look like panel E for speed-like? Do we say this somewhere clearly enough?}
-The impact of constant-strength (A--C) and constant-speed (D--F) intervention on forward kernels of cohort of individuals infected at different time:
-5 days before intervention onset (A, D), during intervention (B, E), and 5 days before intervention offset (C, F).
-Gray shaded curves represent the (fixed) intrinsic kernel $K_0(\tau)$, which is modeled using a gamma distribution with $\Ro$ of 2, a mean of 5 days and a squared coefficient of variation of 0.2.
-Colored curves represent the forward kernel $F_t(\tau)$ under strength-based (A--C) and speed-based (D--F) interventions.
-The strength-based intervention is assumed to reduce kernel by a factor of 2.
-The speed-based intervention is assumed to have a constant hazard of $1/5/\textrm{days}$ during the intervention period.
-Susceptible depletion is assumed to be negligible.
-Solid black lines represent relative changes in the kernel: $F_t(\tau)/K_0(\tau)$.
-Solid vertical lines show the (fixed) mean intrinsic generation interval and dashed vertical lines the mean forward generation interval.
-}
-\label{fig:indpop}
-\end{figure}
-
 To model changes in epidemic dynamics, we introduce an intervention function $\II(t, \tau)$ which can depend on both calendar time $t$ as well as time since infection $\tau$. 
 Then, the infection kernel under $\II$ at calendar time $t$ can be written as:
 \begin{equation}
@@ -239,8 +220,30 @@ The intervention function $\II(t, \tau)$ can capture any kinds of epidemiologica
 
 We focus on two idealized interventions, which we refer to as constant-strength and constant-speed interventions, and later generalize them \citep{dushoff2021speed}.
 While our primary focus is on the instantaneous quantities ($\Ri(t)$ and $g_t(\tau)$), we first illustrate the impact of constant-strength and constant-speed interventions using forward quantities as they describe realized transmission processes and are easier to interpret.
+In particular, the forward kernel allows us to describe how intervention measures will affect onward transmisison of an infected individual.
+We present the impact of these idealized interventions on instantaneous kernels in Supplementary Materials. 
+as we explain later, the impact of intervention measures on instantaneous kernel can be counterintuitive.
+
+\begin{figure}[!th]
+\includegraphics[width=1\textwidth]{pop_ind_compare.pdf}
+\caption{
+\textbf{The impact of constant-strength and constant-speed interventions on forward kernels.}
+The impact of constant-strength (A--C) and constant-speed (D--F) intervention on forward kernels of cohort of individuals infected at different time:
+5 days before intervention onset (A, D), during intervention (B, E), and 5 days before intervention offset (C, F).
+Gray shaded curves represent the (fixed) intrinsic kernel $K_0(\tau)$, which is modeled using a gamma distribution with $\Ro$ of 2, a mean of 5 days and a squared coefficient of variation of 0.2.
+Colored curves represent the forward kernel $F_t(\tau)$ under constant-strength (A--C) and constant-strength (D--F) interventions.
+The constant-strength intervention is assumed to reduce kernel by a factor of 2.
+The constant-speed intervention is assumed to have a constant hazard of $1/5/\textrm{days}$ during the intervention period.
+Susceptible depletion is assumed to be negligible.
+Solid black lines represent relative changes in the kernel: $F_t(\tau)/K_0(\tau)$.
+Solid vertical lines show the (fixed) mean intrinsic generation interval and dashed vertical lines the mean forward generation interval.
+See Supplementary Figure S1 for the impact of constant-strength and constant-speed interventions on instantaneous kernels.
+}
+\label{fig:indpop}
+\end{figure}
 
 First, we consider a constant-strength intervention $\II(t, \tau) = \PP(t)$, which reduces the transmission rate by a constant amount across the age of infection $\tau$ at a given time $t$; note that $\PP(t)$ need not be constant across calendar time.
+In particular, the forward kernel corresponds to $F_t(\tau) =  \Ro \PP(t+\tau) g_0(\tau)$, and therefore changes in intervention $\PP$ across calendar time will affect the shape of the forward kernel.
 For example, a constant-strength intervention that reduces transmission by a factor of $\theta$ between time \tstart and \tend can be modeled as:
 \begin{equation}
 \PP(t) = \begin{cases}
@@ -249,15 +252,20 @@ For example, a constant-strength intervention that reduces transmission by a fac
 1 & \tend \leq t
 \end{cases}.
 \end{equation}
-\fref{indpop}A--C illustrates the impact of such intervention on the forward kernel $F_t(\tau)$ of an individual infected 5 days before $\tstart$, at $\tstart$, and 5 days before $\tend$.
+\fref{indpop}A--C illustrates the impact of such intervention on the forward kernel $F_t(\tau)$ of an individual infected 5 days before $\tstart$, 5 days after $\tstart$, and 5 days before $\tend$.
 This constant-strength intervention reduces transmission immediately (\fref{indpop}A);
-likewise, lifting this intervention can, in theory, can cause the forward kernel to return back to normal immediately (\fref{indpop}C).
+likewise, lifting this intervention can, in theory, cause the forward kernel to return back to normal immediately (\fref{indpop}C).
 Even though the exact shape of the kernel $F_t(\tau)$ depends on the time of infection and when the intervention was introduced relative to the infection time, the relative impact of intervention in reducing transmission (black solid lines in \fref{indpop}A--C, representing $F_t(\tau)/K(0, \tau)$) is constant ($1/\theta$) for transmission that occurs during the intervention period.
 
-Such intervention has predictable effects on mean generation intervals:
+Such intervention has predictable effects on forwarrd generation intervals:
 implementing (lifting) intervention decreases (increases) future transmission potential and therefore decreases (increases) the mean forward generation interval (\fref{indpop}A,C).
 If an individual is infected after \tstart (and much earlier than \tend), this intervention simply reduces the entire kernel by a constant amount and has no effect on realized generation intervals (\fref{indpop}B).
 This observation generalizes the phenomenon of contraction of realized generation intervals due to susceptible depletion \citep{kenah2008generation,nishiura2010time,champredon2015intrinsic}.
+
+On the other hand, the instantaneous kernel at time $t$ corresponds to $K(t, \tau) = \Ro \PP(t) g_0(\tau)$, and changes in $\PP$ before or after time $t$ (e.g., onset or offset of intervention) does not affect the shape of $K(t, \tau)$.
+Therefore, before the intervention is introduced, the instantaneous kernel is identical to the intrinsic kernel (Supplementary Figure S1A).
+During the intervention, the constant-strength intervention reduces the overall height of the kernel by a factor of $\theta$ but does not affect its shape otherwise (Supplementary Figure S1B--C).
+In other words, the onset and offset of constant-strength intervention does not affect the shape of the instantaneous generation-interval distribution---this property allowed previous studies to conclude that $\Ri(t)$ should be estimated with an intrinsic generation-interval distribution \citep{gostic2020practical}.
 
 Analogously, we consider a constant-speed intervention $\II(t, \tau) = \HH(t, \tau)$ that depends on time-varying hazard of isolation $h(t)$:
 \begin{equation}
@@ -275,39 +283,40 @@ h(t) = \begin{cases}
 0 & \tend \leq t
 \end{cases}.
 \end{equation}
-In this case, the probability that an individual infected at time $t$ has not been isolated by $\tau$ time units after infection depends on the amount of time the individual has been exposed to this intervention.
+Since the forward kernel corresponds to $F_t(\tau) =  \Ro \HH(t+\tau, \tau) g_0(\tau)$, the probability that an individual infected at time $t$ has not been isolated by $\tau$ time units after infection depends on the amount of time the individual has been exposed to this intervention.
 If the individual is infected before $\tstart$, they will not be isolated by this intervention until after $\tstart$.
 If the individual is infected after $\tend$, they will never be isolated by this intervention.
 \fref{indpop}D--F illustrates the impact of such intervention on the forward kernel of an individual infected 5 days before $\tstart$, at $\tstart$, and 5 days before $\tend$.
 Unlike the constant-strength intervention, the constant-speed intervention does not show effects immediately;
 that is, the rate at which an infected individual generates secondary infections at time $\tstart$ remains unaffected by the intervention because it takes time to identify and isolate infected individuals.
 On the other hand, when the intervention is lifted at $\tend$, the value of the kernel at calendar time remains unchanged because some fraction of infected individuals have already been isolated.
-The constant-speed interventions always shorten realized generation intervals because they prevent late transmission (\fref{indpop}D--F).
+Constant-speed interventions always shorten realized generation intervals because they prevent late transmission (\fref{indpop}D--F).
 
-Finally, we can decompose the generalized intervention function $\II(t, \tau)$ as a product of constant-strength and constant-speed interventions: $\II(t, \tau) = \PP(t) \HH(t, \tau)$. 
-\jd{I guess this is the answer to my instantaneous question above. We can make this \P\ explicitly focused on instantaneous intervals (put it in the topic s.), and describe a bit more how the change works (cf.~to F1).}
-\jd{Made some changes to try to fix line numbering; behaviour seems inconsistent.}
+The effect of constant-speed intervention on the instantaneous kernel, $K(t, \tau) = \Ro \HH(t, \tau) g_0(\tau)$, is less obvious.
+For individuals infected at time $t$, the forward kernel $F_t(\tau)$ depends on the hazard between time $t$ and $t+\tau$ because $F_t(\tau)$ describes conditions \emph{after} time $t$.
+On the other hand, the instantaneous kernel $K(t, \tau)$ depends on the hazard between time $t-\tau$ and $t$ because $K(t, \tau)$ describes conditions \emph{at} time $t$.
+Once again, before the constant-speed intervention is introduced, the instantaneous kernel is identical to the intrinsic kernel (Supplementary Figure S1D).
+During intervention, in particular when $t=\tstart+x$, the instantaneous kernel reflects the first $x$ days of constant-speed intervention effort:
+therefore, $K(t,\tau)/K(0, \tau)$ decreases for the first $x$ days and plateaus (Supplementary Figure S1E--F).
+Constant-speed interventions also always shorten instantaneous generation intervals---we show later that the timing of reduction in forward and instantaneous generation intervals differs.
 
-Then, the dynamics of incidence $i(t)$ can be written as:
-%%
-\begin{align}
-i(t) &= \Ro \PP(t) \int_0^\infty \HH(t, \sigma) g_0(\sigma) i(t-\sigma)\dsigma.
-\end{align}
-%%
-In this case, the instantaneous reproduction number and generation-interval distributions are given by:
-%%
-\begin{align}
-\Ri(t) &= \RR_0 \PP(t) \int_0^\infty \HH(t,\sigma) g_0(\sigma) \dsigma,\\
-g_t(\tau) &= \frac{\HH(t,\tau) g_0(\tau)}{\int_0^\infty \HH(t,\sigma) g_0(\sigma) \dsigma},
-\end{align}
-%%
-which allow us to express the renewal equation in the form of \eref{renewal_instantaneous}.
-Therefore, the instantaneous generation-interval distribution changes under constant-speed interventions but not under constant-strength interventions, even though both types of interventions affect the realized generation-interval distribution.
+Finally, we can decompose the generalized intervention function $\II(t, \tau)$ as a product of constant-strength and constant-speed interventions: $\II(t, \tau) = \PP(t) \HH(t, \tau)$.
+In this case, the forward kernel corresponds to:
+\begin{equation}
+F_t(\tau) = \Ro \PP(t+\tau) \HH(t+\tau, \tau) g_0(\tau),
+\end{equation}
+which can be used to describe the dynamics of incidence $i(t)$ in the form of \eref{renewal_forward}.  
+Likewise, the instantaneous kernel corresponds to: 
+\begin{equation}
+K(t, \tau) = \Ro \PP(t) \HH(t, \tau) g_0(\tau),
+\end{equation}
+which can be used to describe the dynamics of incidence $i(t)$  in the form of \eref{renewal_instantaneous}.
+In both case, the combined effects of constant-strength and constant-speed intervention can be understood in terms of the product of their marginal effects.
 
 \subsection{Quantifying changes in generation-interval distributions}
 \label{ss:instg}
 
-In order to model the renewal process, we have to know how the instantaneous generation-interval distribution $g_t(\tau)$ changes across time $t$.
+In order to model the renewal process and accurately estimate $\Ri(t)$, we have to know how the instantaneous generation-interval distribution $g_t(\tau)$ changes across time $t$.
 The instantaneous distribution measures the infectiousness of an individual infected $\tau$ time units ago at time $t$ and is therefore different from the distribution of realized generation intervals (i.e., time between actual infection events).
 For example, while both the forward generation-interval distribution $f_{t-\tau}(\tau)$ and the instantaneous generation-interval distribution $g_t(\tau)$ depend on the rate at which secondary cases at time $t$ are generated by a primary case infected at time $t-\tau$, $K(t, \tau)$, they are normalized by different quantities:
 \begin{equation}
@@ -318,10 +327,10 @@ On the other hand, the instantaneous distribution $g_t(\tau)$ is normalized by a
 
 Rewriting \eref{fkernel} provides further insight into their differences:
 \begin{equation}
-f_t(\tau) = \frac{\Ri(t + \tau) g_t(\tau, \tau)}{\int \Ri(t + \sigma) g_{t+\sigma}(\sigma) \dsigma}.
+f_t(\tau) = \frac{\Ri(t + \tau) g_{t+\tau}(\tau)}{\int \Ri(t + \sigma) g_{t+\sigma}(\sigma) \dsigma}.
 \end{equation}
-Even if the instantaneous generation-interval distribution $g_t(\tau)$ remains invariant across time, changes in transmission conditions (and therefore $\Ri(t)$) can change the shape of the forward generation-interval distribution;
-for example, as we showed earlier, the forward generation-interval distribution changes under a constant-strength intervention even though the instantaneous generation-interval distribution does not.
+Even if the instantaneous generation-interval distribution $g_t(\tau)$ remains invariant across calendar time $t$, changes in transmission conditions (and therefore $\Ri(t)$) can change the shape of the forward generation-interval distribution.
+For example, as we showed earlier, the forward generation-interval distribution changes under a constant-strength intervention even though the instantaneous generation-interval distribution does not.
 Therefore, renewal equation models that rely on the forward form (\eref{renewal_forward}) with time-invariant $f_t(\tau)$ but changing \Rc\ should generally be avoided.
 
 On the other hand, if we were to take all realized generation intervals that end at time $t$ and form a distribution, we obtain what is known as the backward generation-interval distribution, $b_t(\tau)$:
@@ -344,20 +353,20 @@ b_t(\tau) = \frac{\Rc(t-\tau) f_{t-\tau}(\tau) i(t-\tau)}{\int_0^\infty \Rc(t-\s
 \end{equation}
 As defined in \eref{backward}, the total density of generation intervals between time $t-\tau$ and time $t$ corresponds to $i_{t-\tau}(t)$ (i.e., the total number of infections at time $t$ caused by a cohort of individuals that were infected at time $t-\tau$), which depends on the incidence $i(t-\tau)$ at time $t-\tau$ as well as their average infectiousness $\Rc(t-\tau)$.
 In other words, a cohort of infectors that generated more infections will have greater contribution towards the backward generation-interval distribution at a given time.
-Several studies have noted, in various contexts, that backward distributions of epidemiological delays provide biased estimates of the forward distribution due to effects of this sort \citep{nishiura2010time,champredon2015intrinsic,park2020inferring,park2020forward}.
-\jd{Broken cite here apparently.}
+Several studies have noted, in various contexts, that backward distributions of epidemiological delays provide biased estimates of the forward distribution due to effects of this sort \citep{nishiura2010time,champredon2015intrinsic,park2020forward}.
 
 \subsection{Quantifying changes in reproduction numbers}
 
 The instantaneous reproduction number $\Ri(t)$ provides a measure for the impact of intervention:
+%%
 \begin{align}
 \Ri(t) &= \int_0^\infty K(t, \sigma) \dsigma, \\
 &= \RR_0 S(t) \PP(t) \int_0^\infty \HH(t,\sigma) g_0(\sigma) \dsigma.
 \label{eq:rt}
 \end{align}
+%%
 Since $\Ri(t)$ measures conditions at time $t$, one would typically expect to detect changes in $\Ri(t)$ as soon as interventions are implemented---as we see in \eref{rt} (and also in \fref{indpop}), this is true for changes in a constant-strength intervention $\PP(t)$ but not under a constant-speed intervention $\HH(t, \sigma)$.
 Therefore, it has been previously argued that $\Ri(t)$ can provide a real-time measure for whether the disease will continue to spread or not \citep{gostic2020practical}.
-\jd{Maybe just talk directly about incubation periods; I feel like I've been dancing around them. Say that we are for now neglecting these delays maybe?}
 
 Estimating $\Ri(t)$ depends on the instantaneous generation-interval distribution $g_t(\tau)$,
 which can vary across time under constant-speed interventions:
@@ -369,10 +378,10 @@ By rearranging \eref{renewal}, we obtain the following estimator for $\RR(t)$:
 \Ri(t) = \frac{i(t)}{\int_0^\infty g_t(\sigma) i(t-\sigma) \dsigma}.
 \end{equation}
 While this estimator is similar in form to previously proposed estimators \citep{fraser2007estimating}, it differs in allowing for the underlying instantaneous generation-interval distribution to vary across time.
-In particular, the popular R package \texttt{EpiEstim}, \cite{cori2013new} uses this approach while assuming that the underlying instantaneous distribution does not change over time; 
+In particular, the popular R package \texttt{EpiEstim} uses this approach while assuming that the underlying instantaneous distribution does not change over time \citep{cori2013new};  
 such methods can accurately estimate changes in $\Ri(t)$ under constant-strength interventions, but not necessarily under more general conditions.
 
-When both strength- and speed-like interventions are present during an ongoing epidemic, classical estimators \cite{fraser2007estimating,cori2013new} measure a slightly different quantity:
+When both strength- and speed-like interventions are present during an ongoing epidemic, classical estimators \citep{fraser2007estimating,cori2013new} measure a slightly different quantity:
 \begin{equation}
 \Rcori(t) = \frac{i(t)}{\int_0^\infty g_0(\sigma) i(t-\sigma) \dsigma}.
 \end{equation}
@@ -397,14 +406,9 @@ Using \eref{b1}, we obtain a Wallinga-Teunis-like estimator \citep{wallinga2004d
 \Rc(t) = \int_0^\infty \left(\frac{g_{t+\sigma}(\sigma) i(t+\sigma)}{\int_0^\infty g_{t+\sigma}(\sigma') i(t+\sigma-\sigma') \dsigma'} \right) \dsigma.
 \label{eq:wtlike}
 \end{equation}
-This derivation clarifies that, like the classic estimator for \Ri, the classic estimator for \Rc\ is based on the instantaneous generation-interval distribution, and thus implicitly relies on the assumption that changes in transmission are strength-like and not speed-like.
+This derivation clarifies that, like the classic estimator for \Ri, the classic estimator for \Rc\ is based on the intrinsic generation-interval distribution, and thus implicitly relies on the assumption that changes in transmission are strength-like and not speed-like.
 
-% This derivation also shows that, when the instantaneous generation-interval distribution is unknown, $\Rc(t)$ can be estimated from backward generation-interval distributions, which, in some cases can be estimated from contact tracing.
-% If realized serial intervals (i.e., time between symptom onset of the infector and the infectee) are observed instead, a similar calculation can be done using the estimated backward serial-interval distribution, to estimate a case-reproduction number for a different cohort: a cohort of individuals who developed symptoms at a given time. This is the serial reproduction number \cite{park2020forward}.
-% In contrast, the Wallinga-Teunis-like estimator \eref{wtlike} cannot be used for serial intervals because the corresponding time-independent instantaneous distributions cannot be properly defined \jd{I think this is what you are trying to say. Is it possible to explain concisely why they can't be defined?}
-
-\jd{“Including” is awkward here. I think it underlines that we need to address the serial/generation thing above.}
-Some studies have suggested substituting the forward distribution $f_t(\tau)$, including the forward serial-interval distribution, instead to estimate the ``time-varying'' or the ``effective'' reproduction number $\RR(t)$ \citep{liu2018measurability, ali2020serial}:
+Some studies have suggested substituting the forward distribution $f_t(\tau)$ instead to estimate the ``time-varying'' or the ``effective'' reproduction number $\RR(t)$ \citep{liu2018measurability, ali2020serial}:
 \begin{equation}
 \tsub{\RR}{forward}(t) = \frac{i(t)}{\int_0^\infty i(t-\sigma) f_{t-\sigma}(\sigma) \dsigma}.
 \end{equation}
@@ -446,18 +450,20 @@ Finally, the instantaneous reproduction number is given by:
 \end{equation}
 When $\gamma(t) = \gamma(0)$, we obtain a familiar form: $\Ri(t) = \Ro S(t)$,
 where $\Ro = \beta(0)/\gamma(0)$.
+
 \jd{There's a weird subtlety here that we should discuss. It is not obvious how to define the instantaneous kernel, right? It seems possible to argue either for or against the idea that the instantaneous reproduction number is always $\beta(t)/\gamma(t)$ in the SIR. I guess it comes down to whether Fraser's “conditions” refer to $\gamma$ or to $f$ in this case?}
+\swp{Pretty sure we've talked about this before. Defining intantaneous kernel also seems obvious to me... in particular, this instantaneous kernel is going to properly link the renewal equation and also give the correct forward kernel. $\beta(t)/\gamma(t)$ is sensitive to sudden changes in $\gamm$ which is not what's happening to transmission.}
 
 \begin{figure}[!ht]
 \includegraphics[width=\textwidth]{figure_beta_gamma.pdf}
 \caption{
 \textbf{Assumed changes in transmission and removal rate.}
 The semi-mechanistic SIR model is simulated under two different scenarios.
-(A) Equivalent strength-based intervention scenario.
+(A) Equivalent constant-strength intervention scenario.
 Removal rate $\gamma$ is fixed to $0.2\pday$ throughout.
-(B) Equivalent speed-based intervention scenario.
+(B) Equivalent constant-speed intervention scenario.
 Transmission rate $\beta$ is fixed to $0.3\pday$ throughout.
-(C) Instantaneous incidence under equivalent strength- and speed-based intervention scenarios (both scenarios give identical incidence trajectories).
+(C) Instantaneous incidence under equivalent constant-strength and constant-speed intervention scenarios (both scenarios give identical incidence trajectories).
 (D) Growth rate estimates over time.
 }
 \label{fig:assumption}
@@ -471,7 +477,7 @@ In both cases, growth rate $r(t)$ estimates are identical (\fref{assumption}D); 
 \begin{figure}[!th]
 \includegraphics[width=\textwidth]{figure_sir_beta.pdf}
 \caption{
-\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent strength-based intervention.}
+\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent constant-strength intervention.}
 (A) Changes in true instantaneous reproduction number $\Ri(t)$, proportional reproduction number $\Rcori(t)$, estimated $\Ri(t)$ using EpiEstim (assuming a population of one million), and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
 (B) Changes in true case reproduction number $\Rc(t)$, estimated $\Rc(t)$ using Wallinga-Teunis estimator with intrinsic generation-interval distribution, and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
 (C) Changes in mean instantaneous, forward, and backward generation intervals.
@@ -494,7 +500,7 @@ The backward distribution exaggerates these changes through the epidemic growth/
 \begin{figure}
 \includegraphics[width=\textwidth]{figure_sir_semi.pdf}
 \caption{
-\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent speed-based intervention.}
+\textbf{Epidemiological dynamics of a semi-mechanistic SIR model under equivalent constant-speed intervention.}
 (A) Changes in true instantaneous reproduction number $\Ri(t)$, proportional reproduction number $\Rcori(t)$, estimated $\Ri(t)$ using EpiEstim (assuming a population of one million), and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
 (B) Changes in true case reproduction number $\Rc(t)$, estimated $\Rc(t)$ using Wallinga-Teunis estimator with intrinsic generation-interval distribution, and estimated $\tsub{\RR}{forward}(t)$ using the forward generation-interval distribution.
 (C) Changes in mean instantaneous, forward, and backward generation intervals.
@@ -527,8 +533,7 @@ Therefore, $\Ri(t)$ is a better measure for capturing current conditions at time
 \section{Discussion}
 
 The impact of epidemic interventions are often characterized by changes in ``effective'' reproduction numbers, $\RR(t)$.
-\jd{Why “despite”? Maybe we should discuss what to emphasize here.}
-Despite historical emphasis on estimating $\RR(t)$, current frameworks neglect possibility that the underlying generation-interval distribution can change over time---an insight that goes back $>10$ years \citep{fraser2007estimating}.
+Many statistical softwares have been developed to accurately estimate $\RR(t)$, but the majority of existing frameworks neglect possibility that the underlying generation-interval distribution can change over time---an insight that goes back $>10$ years \citep{fraser2007estimating}.
 Here, we distinguish two reproduction numbers---instantaneous reproduction number $\Ri(t)$ and case reproduction number $\Rc(t)$, which describe counterfactual and realized transmission processes, respectively---and show that both reproduction numbers can correctly describe the renewal process of infection when paired with correct generation-interval distributions.
 In particular, a counterfactual distribution, which we call the instantaneous generation-interval distribution, is required to correctly estimate the instantaneous reproduction number. 
 This distribution is affected by constant-speed, but not constant-strength, interventions.
@@ -566,43 +571,68 @@ As discussed above, the forward generation-interval distribution, which correctl
 To our knowledge, this is the first study to formally link the case reproduction number with the forward renewal equation and to demonstrate the equivalence between the forward and instantaneous renewal formulations.
 
 This study highlights the complementary nature of time-varying reproduction number $\RR(t)$ and growth rate $r(t)$ as measures for describing epidemic dynamics \citep{dushoff2021speed}.
-In particular, $r(t)$ can always be reliably estimated (given high-quality incidence data) but does not accurately reflect changes in current conditions, except when changes are predominantly speed-based.
-Conversely, $\RR(t)$ -- and particularly the instantaneous reproductive number $\Ri(t)$ -- provides an accurate reflection of current conditions in \emph{theory}, but can only be reliably estimated from incidence data alone when changes are primarily strength-based.
+In particular, $r(t)$ can always be reliably estimated (given high-quality incidence data) but does not accurately reflect changes in current conditions, except when changes are predominantly speed-like.
+Conversely, $\RR(t)$ -- and particularly the instantaneous reproductive number $\Ri(t)$ -- provides an accurate reflection of current conditions in \emph{theory}, but can only be reliably estimated from incidence data alone when changes are primarily strength-like.
 Methods that use real-time information about \emph{changes} in disease-transmission intervals have the potential to unify these frameworks, but will often be limited by the difficulty of collecting sufficient high-quality data.
 
 \section{Methods}
 
-\subsection{Equivalent strength- and speed-based interventions}
+\subsection{Equivalent constnat-strength and constant-speed interventions}
 
 We model a simple scenario in which a flu-like pathogen with $\Ro = 1.5$ invades an immunologically naive population using the semi-mechanistic SIR model (\eref{dSdt}--\eref{dRdt}).
-We begin by modeling speed-based intervention and find the equivalent strength-based intervention.  
+We begin by modeling constant-speed intervention and find the equivalent constant-strength intervention.  
 In particular, we assume that the disease spreads without any intervention in the beginning;
 on day 25, an intense case isolation measure is implemented; and
 on day 40, the intervention is partially lifted.
 This is modeled as follows:
-\jd{I feel the mixture of fractions and inversion exponents is very weird. My first choice would be $0.3/\textrm{day}$ and my second would be $0.3\textrm{day}^{-1}$. I don't feel strongly about day vs.~days.}
 \begin{equation}
-\beta(t) = 3/10\,\,\textrm{days}^{-1}, \gamma(t) = \begin{cases}
-1/5\,\, \textrm{days}^{-1} & t < 25\\
-1/2\,\, \textrm{days}^{-1} & 25 \leq t < 40 \\
-1/4\,\, \textrm{days}^{-1} & 40 \leq t
+\beta(t) = 0.3\,\,\textrm{days}^{-1}, \gamma(t) = \begin{cases}
+0.2\,\, \textrm{days}^{-1} & t < 25\\
+0.5\,\, \textrm{days}^{-1} & 25 \leq t < 40 \\
+0.25\,\, \textrm{days}^{-1} & 40 \leq t
 \end{cases}.
 \end{equation}
 Simulations are run for 100 days based on the following initial conditions: $S(0) = 1 - 10^{-3}$, $I(0) = 10^{-3}$, and $R(0) = 0$.
 
-Since we assume that incidence is known exactly until time $t^\ast$ we can estimate the transmission rate $\beta^\ast(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives an identical incidence trajectory until time $t^\ast$.
-\jd{Do we need  $t^\ast$?}
+Since we assume that incidence is known exactly until time $t^\ast$ we can estimate the transmission rate $\beta^\ast(t)$ (with fixed $\gamma(t)=\gamma(0)$) that gives an identical incidence trajectory until time $t < t^\ast$.
 This transmission rate is given by:
 \begin{equation}
 \beta^\ast(t) = \frac{\Rcori(t)\gamma(0)}{S(t)},
 \end{equation}
-where the proportional reproduction number $\Rcori$ is calculated from the incidence curve $i(t)$.
-More generally, given true incidence $i(t)$ until time $t^\ast$, modulated by any combination of strength- and speed-based interventions, we can find equivalent strength-based intervention $\PP^\ast(t)$ until time $t^\ast$:
+where the proportional reproduction number $\Rcori$ is calculated from the incidence curve $i(t)$ for time $t < t^\ast$.
+More generally, given true incidence $i(t)$ until time $t^\ast$, modulated by any interventions, we can find equivalent constant-strength intervention $\PP^\ast(t)$ until time $t^\ast$:
 \begin{equation}
 \PP^\ast(t) = \frac{\Rcori(t)}{\Ro S(t)},
 \end{equation}
 which generates an identical incidence curve when the initial conditions are identical.
 
+\pagebreak
+
+\section*{Supplementary Materials}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+
+\begin{figure}[!th]
+\includegraphics[width=1\textwidth]{pop_ind_compare_inst.pdf}
+\caption{
+\textbf{The impact of constant-strength and constant-speed interventions on instantaneous kernels.}
+The impact of constant-strength (A--C) and constant-speed (D--F) intervention on instantaneous kernels at different time:
+5 days before intervention onset (A, D), during intervention (B, E), and 5 days before intervention offset (C, F).
+Gray shaded curves represent the (fixed) intrinsic kernel $K_0(\tau)$, which is modeled using a gamma distribution with $\Ro$ of 2, a mean of 5 days and a squared coefficient of variation of 0.2.
+Colored curves represent the instantaneous kernel $K(t, \tau)$ under constant-strength (A--C) and constant-speed (D--F) interventions.
+The constant-strength intervention is assumed to reduce kernel by a factor of 2.
+The constant-speed intervention is assumed to have a constant hazard of $1/5/\textrm{days}$ during the intervention period.
+Susceptible depletion is assumed to be negligible.
+Solid black lines represent relative changes in the kernel: $K(t, \tau)/K_0(\tau)$.
+Solid vertical lines show the (fixed) mean intrinsic generation interval and dashed vertical lines the mean instantaneous generation interval.
+}
+\end{figure}
+
+\pagebreak
+
 \bibliography{individual_intervention}
+
+
 
 \end{document}
