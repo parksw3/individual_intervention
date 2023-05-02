@@ -7,9 +7,15 @@ library(egg)
 library(tikzDevice)
 source("sir-semi.R")
 
+## Run the SIR while specifying gamma
 rr2 <- runsir(gammafun=gammafun_base2)
 
+## Calculate the corresponding beta
 betafun_r2 <- beta_reconstruct(rr2)
+
+## Don't always simulate to check
+## runBeta <- runsir(betafun=betafun_r2)
+## runBeta$I is mis-behaving 2023 May 02 (Tue)
 
 tvec <- seq(0, 120, by=0.02)
 
