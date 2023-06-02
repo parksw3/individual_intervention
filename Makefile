@@ -41,8 +41,6 @@ scenarios.Rout: scenarios.R bgsim.rda
 
 ######################################################################
 
-## Redeveloping in Phila ☹
-
 Ignore += figure_beta_gamma.tex
 figure_beta_gamma.Rout: figure_beta_gamma.R
 	$(pipeR)
